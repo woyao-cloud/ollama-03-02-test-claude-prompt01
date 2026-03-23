@@ -1,108 +1,124 @@
-# FastAPI 后端实施计划
+# Spring Boot 后端实施计划
 
 ## 项目概述
 
-基于 BACKEND_ARCHITECTURE.md、API_SPECIFICATION.md、DATABASE_SCHEMA.md 和 AUTHENTICATION_FLOW.md 创建全栈用户管理系统的 FastAPI 后端实现计划。
+基于 BACKEND_ARCHITECTURE.md、API_SPECIFICATION.md、DATABASE_SCHEMA.md 和 AUTHENTICATION_FLOW.md 创建全栈用户管理系统的 Spring Boot 后端实现计划。
+
+**技术栈**: Spring Boot 3.5 + JDK 21 + Spring Data JPA + Spring Security + JWT + Flyway
 
 ---
 
 ## 一、任务分解（按阶段）
 
 ### 阶段 1: 项目初始化与配置
-**目标**: 建立基础项目结构和依赖配置
+**目标**: 建立 Spring Boot 基础项目结构和依赖配置
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 1.1 | 创建项目目录结构 | P0 | 30分钟 |
-| 1.2 | 配置 pyproject.toml 依赖 | P0 | 1小时 |
-| 1.3 | 配置环境变量和设置 | P0 | 1小时 |
-| 1.4 | 初始化 Alembic 迁移工具 | P0 | 30分钟 |
+| 1.1 | 创建 Maven 项目结构 (pom.xml) | P0 | 1小时 |
+| 1.2 | 配置 Spring Boot Starter 依赖 | P0 | 1小时 |
+| 1.3 | 配置多环境 YAML 配置 (dev/test/prod) | P0 | 1.5小时 |
+| 1.4 | 配置 Flyway 数据库迁移 | P0 | 1小时 |
 | 1.5 | 配置日志和错误处理 | P1 | 1小时 |
+| 1.6 | 配置 Docker 和 docker-compose | P1 | 1.5小时 |
 
-### 阶段 2: 数据库模型与迁移
-**目标**: 实现所有数据库模型和初始迁移
-
-| 任务ID | 任务描述 | 优先级 | 预计工时 |
-|--------|----------|--------|----------|
-| 2.1 | 创建基础模型基类 | P0 | 1小时 |
-| 2.2 | 实现 User 模型 | P0 | 1.5小时 |
-| 2.3 | 实现 Role 模型 | P0 | 1小时 |
-| 2.4 | 实现 Permission 模型 | P0 | 1小时 |
-| 2.5 | 实现关联表模型 (user_roles, role_permissions) | P0 | 1小时 |
-| 2.6 | 实现审计表模型 (audit_logs, user_sessions, login_attempts) | P1 | 2小时 |
-| 2.7 | 创建初始数据库迁移脚本 | P0 | 1小时 |
-| 2.8 | 创建数据库连接和会话管理 | P0 | 1.5小时 |
-
-### 阶段 3: Pydantic 模式定义
-**目标**: 定义所有请求/响应数据验证模式
+### 阶段 2: 数据库模型与 JPA 实体
+**目标**: 实现所有 JPA 实体和初始 Flyway 迁移
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 3.1 | 创建基础响应模式 | P0 | 1小时 |
-| 3.2 | 定义用户相关模式 (UserCreate, UserUpdate, UserResponse) | P0 | 2小时 |
-| 3.3 | 定义认证相关模式 (LoginRequest, TokenResponse) | P0 | 1.5小时 |
-| 3.4 | 定义角色相关模式 (RoleCreate, RoleUpdate, RoleResponse) | P0 | 1.5小时 |
-| 3.5 | 定义权限相关模式 (PermissionResponse) | P0 | 1小时 |
-| 3.6 | 定义分页和查询参数模式 | P1 | 1小时 |
+| 2.1 | 创建基础实体基类 (AbstractEntity) | P0 | 1小时 |
+| 2.2 | 实现 User JPA 实体 | P0 | 1.5小时 |
+| 2.3 | 实现 Role JPA 实体 | P0 | 1小时 |
+| 2.4 | 实现 Permission JPA 实体 | P0 | 1小时 |
+| 2.5 | 实现关联表 (user_roles, role_permissions) | P0 | 1小时 |
+| 2.6 | 实现审计实体 (AuditLog, UserSession) | P1 | 2小时 |
+| 2.7 | 创建 Flyway 初始迁移脚本 V1 | P0 | 1.5小时 |
+| 2.8 | 配置数据库连接和 HikariCP 连接池 | P0 | 1小时 |
 
-### 阶段 4: 核心服务实现
+### 阶段 3: DTO 和验证定义
+**目标**: 定义所有请求/响应数据 DTO (使用 Java Records)
+
+| 任务ID | 任务描述 | 优先级 | 预计工时 |
+|--------|----------|--------|----------|
+| 3.1 | 创建通用响应 DTO (ApiResponse) | P0 | 1小时 |
+| 3.2 | 定义用户相关 DTO (UserCreateRequest, UserResponse) | P0 | 2小时 |
+| 3.3 | 定义认证相关 DTO (LoginRequest, TokenResponse) | P0 | 1.5小时 |
+| 3.4 | 定义角色相关 DTO (RoleCreateRequest, RoleResponse) | P0 | 1.5小时 |
+| 3.5 | 定义分页查询参数 DTO | P1 | 1小时 |
+| 3.6 | 配置 Jakarta Validation 约束 | P1 | 1小时 |
+
+### 阶段 4: Spring Data Repository
+**目标**: 实现数据访问层
+
+| 任务ID | 任务描述 | 优先级 | 预计工时 |
+|--------|----------|--------|----------|
+| 4.1 | 创建 UserRepository 接口 | P0 | 1.5小时 |
+| 4.2 | 创建 RoleRepository 接口 | P0 | 1小时 |
+| 4.3 | 创建 PermissionRepository 接口 | P0 | 1小时 |
+| 4.4 | 实现自定义查询方法 | P0 | 2小时 |
+| 4.5 | 配置 Repository 审计功能 | P1 | 1小时 |
+
+### 阶段 5: 核心业务服务
 **目标**: 实现业务逻辑层
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 4.1 | 实现密码哈希服务 (Argon2id) | P0 | 1.5小时 |
-| 4.2 | 实现 JWT 令牌服务 | P0 | 2小时 |
-| 4.3 | 实现用户服务 (CRUD + 业务逻辑) | P0 | 3小时 |
-| 4.4 | 实现认证服务 (登录/登出/刷新) | P0 | 3小时 |
-| 4.5 | 实现角色服务 | P0 | 2小时 |
-| 4.6 | 实现权限服务 | P0 | 2小时 |
-| 4.7 | 实现审计日志服务 | P1 | 2小时 |
+| 5.1 | 实现密码哈希服务 (BCryptPasswordEncoder) | P0 | 1.5小时 |
+| 5.2 | 实现 JWT 令牌服务 (NimbusJwtEncoder) | P0 | 2.5小时 |
+| 5.3 | 实现 UserService (CRUD + 业务逻辑) | P0 | 3.5小时 |
+| 5.4 | 实现 AuthService (登录/登出/刷新) | P0 | 3.5小时 |
+| 5.5 | 实现 RoleService | P0 | 2小时 |
+| 5.6 | 实现 PermissionService | P0 | 1.5小时 |
+| 5.7 | 实现审计日志服务 | P1 | 2小时 |
 
-### 阶段 5: 认证与权限系统
+### 阶段 6: Spring Security 配置
 **目标**: 实现 JWT + OAuth2 + RBAC
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 5.1 | 实现 OAuth2 密码流依赖 | P0 | 2小时 |
-| 5.2 | 实现 JWT 验证依赖 | P0 | 2小时 |
-| 5.3 | 实现权限检查装饰器/依赖 | P0 | 2.5小时 |
-| 5.4 | 实现角色检查中间件 | P0 | 2小时 |
-| 5.5 | 实现账户锁定机制 | P1 | 2小时 |
-| 5.6 | 实现速率限制中间件 | P1 | 2小时 |
+| 6.1 | 配置 SecurityFilterChain | P0 | 2.5小时 |
+| 6.2 | 实现 JwtAuthenticationFilter | P0 | 2.5小时 |
+| 6.3 | 实现 JwtTokenProvider | P0 | 2小时 |
+| 6.4 | 实现 UserDetailsServiceImpl | P0 | 1.5小时 |
+| 6.5 | 配置方法级权限 (@PreAuthorize) | P0 | 2小时 |
+| 6.6 | 实现账户锁定机制 (5次失败锁定) | P1 | 2小时 |
+| 6.7 | 配置 CORS 和 CSRF 防护 | P0 | 1.5小时 |
 
-### 阶段 6: API 路由实现
+### 阶段 7: REST API 控制器
 **目标**: 实现 API_SPECIFICATION.md 中定义的所有端点
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 6.1 | 实现认证路由 (/auth/login, /auth/register, /auth/refresh, /auth/me) | P0 | 3小时 |
-| 6.2 | 实现用户路由 (/users, /users/{id}) | P0 | 3小时 |
-| 6.3 | 实现角色路由 (/roles) | P0 | 2小时 |
-| 6.4 | 实现权限路由 (/permissions) | P0 | 1.5小时 |
-| 6.5 | 实现健康检查路由 | P1 | 30分钟 |
+| 7.1 | 实现 AuthController (/auth/login, /auth/register, /auth/refresh, /auth/me) | P0 | 3.5小时 |
+| 7.2 | 实现 UserController (/users, /users/{id}) | P0 | 3.5小时 |
+| 7.3 | 实现 RoleController (/roles) | P0 | 2.5小时 |
+| 7.4 | 实现 PermissionController (/permissions) | P0 | 1.5小时 |
+| 7.5 | 实现全局异常处理 (GlobalExceptionHandler) | P0 | 2小时 |
+| 7.6 | 实现健康检查端点 (/actuator/health) | P1 | 30分钟 |
 
-### 阶段 7: 测试实现
+### 阶段 8: 测试实现
 **目标**: 实现单元测试和集成测试，覆盖率 > 85%
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 7.1 | 配置测试环境和 fixtures | P0 | 2小时 |
-| 7.2 | 编写模型单元测试 | P0 | 2小时 |
-| 7.3 | 编写服务层单元测试 | P0 | 4小时 |
-| 7.4 | 编写认证系统单元测试 | P0 | 3小时 |
-| 7.5 | 编写 API 集成测试 | P0 | 4小时 |
-| 7.6 | 编写权限系统测试 | P0 | 2小时 |
-| 7.7 | 生成测试覆盖率报告 | P0 | 1小时 |
+| 8.1 | 配置测试环境和 Testcontainers | P0 | 2.5小时 |
+| 8.2 | 编写 Repository 层测试 | P0 | 2.5小时 |
+| 8.3 | 编写 Service 层单元测试 | P0 | 4.5小时 |
+| 8.4 | 编写 Security 层单元测试 | P0 | 3.5小时 |
+| 8.5 | 编写 Controller 层集成测试 | P0 | 4.5小时 |
+| 8.6 | 编写认证授权完整流程测试 | P0 | 3小时 |
+| 8.7 | 配置 JaCoCo 覆盖率报告 | P0 | 1.5小时 |
 
-### 阶段 8: 文档与优化
+### 阶段 9: 文档与优化
 **目标**: 完善文档和性能优化
 
 | 任务ID | 任务描述 | 优先级 | 预计工时 |
 |--------|----------|--------|----------|
-| 8.1 | 配置 OpenAPI 文档 | P1 | 1小时 |
-| 8.2 | 编写 API 使用文档 | P1 | 2小时 |
-| 8.3 | 性能优化 (数据库索引、查询优化) | P1 | 3小时 |
-| 8.4 | 代码审查和重构 | P1 | 2小时 |
+| 9.1 | 配置 SpringDoc OpenAPI | P1 | 1.5小时 |
+| 9.2 | 编写 API 使用文档 | P1 | 2.5小时 |
+| 9.3 | 性能优化 (数据库索引、JVM 调优) | P1 | 3.5小时 |
+| 9.4 | 代码审查和重构 | P1 | 2.5小时 |
 
 ---
 
@@ -112,88 +128,84 @@
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/pyproject.toml` | Python 依赖配置 | 1.2 |
-| `backend/.env.example` | 环境变量模板 | 1.3 |
-| `backend/app/config.py` | 应用配置类 | 1.3 |
-| `backend/alembic.ini` | Alembic 配置文件 | 1.4 |
-| `backend/alembic/env.py` | Alembic 环境脚本 | 1.4 |
+| `backend/pom.xml` | Maven 依赖配置 | 1.1 |
+| `backend/src/main/resources/application.yml` | 主配置 | 1.3 |
+| `backend/src/main/resources/application-dev.yml` | 开发环境 | 1.3 |
+| `backend/src/main/resources/application-prod.yml` | 生产环境 | 1.3 |
+| `backend/Dockerfile` | 容器化配置 | 1.6 |
+| `backend/docker-compose.yml` | 本地开发环境 | 1.6 |
 
 ### 2.2 数据库相关文件
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/app/infrastructure/database/base.py` | SQLAlchemy 基类 | 2.1 |
-| `backend/app/infrastructure/database/session.py` | 数据库会话管理 | 2.8 |
-| `backend/app/domain/models/user.py` | User 模型 | 2.2 |
-| `backend/app/domain/models/role.py` | Role 模型 | 2.3 |
-| `backend/app/domain/models/permission.py` | Permission 模型 | 2.4 |
-| `backend/app/domain/models/associations.py` | 关联表模型 | 2.5 |
-| `backend/app/domain/models/audit.py` | 审计表模型 | 2.6 |
-| `backend/alembic/versions/0001_initial.py` | 初始迁移脚本 | 2.7 |
+| `backend/src/main/java/com/usermanagement/domain/AbstractEntity.java` | JPA 基础实体 | 2.1 |
+| `backend/src/main/java/com/usermanagement/domain/user/User.java` | 用户实体 | 2.2 |
+| `backend/src/main/java/com/usermanagement/domain/user/Role.java` | 角色实体 | 2.3 |
+| `backend/src/main/java/com/usermanagement/domain/user/Permission.java` | 权限实体 | 2.4 |
+| `backend/src/main/java/com/usermanagement/repository/UserRepository.java` | 用户仓库 | 4.1 |
+| `backend/src/main/java/com/usermanagement/repository/RoleRepository.java` | 角色仓库 | 4.2 |
+| `backend/src/main/java/com/usermanagement/repository/PermissionRepository.java` | 权限仓库 | 4.3 |
+| `backend/src/main/resources/db/migration/V1__Initial_schema.sql` | 初始迁移 | 2.7 |
 
-### 2.3 Pydantic 模式文件
-
-| 文件路径 | 描述 | 所属阶段 |
-|----------|------|----------|
-| `backend/app/schemas/base.py` | 基础模式类 | 3.1 |
-| `backend/app/schemas/user.py` | 用户相关模式 | 3.2 |
-| `backend/app/schemas/auth.py` | 认证相关模式 | 3.3 |
-| `backend/app/schemas/role.py` | 角色相关模式 | 3.4 |
-| `backend/app/schemas/permission.py` | 权限相关模式 | 3.5 |
-| `backend/app/schemas/common.py` | 通用模式 (分页等) | 3.6 |
-
-### 2.4 核心服务文件
+### 2.3 DTO 文件
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/app/core/security.py` | 密码哈希和加密 | 4.1 |
-| `backend/app/core/jwt.py` | JWT 令牌处理 | 4.2 |
-| `backend/app/application/services/user_service.py` | 用户服务 | 4.3 |
-| `backend/app/application/services/auth_service.py` | 认证服务 | 4.4 |
-| `backend/app/application/services/role_service.py` | 角色服务 | 4.5 |
-| `backend/app/application/services/permission_service.py` | 权限服务 | 4.6 |
-| `backend/app/application/services/audit_service.py` | 审计服务 | 4.7 |
+| `backend/src/main/java/com/usermanagement/web/dto/ApiResponse.java` | 通用响应 | 3.1 |
+| `backend/src/main/java/com/usermanagement/web/dto/UserCreateRequest.java` | 用户创建请求 | 3.2 |
+| `backend/src/main/java/com/usermanagement/web/dto/UserResponse.java` | 用户响应 | 3.2 |
+| `backend/src/main/java/com/usermanagement/web/dto/LoginRequest.java` | 登录请求 | 3.3 |
+| `backend/src/main/java/com/usermanagement/web/dto/TokenResponse.java` | 令牌响应 | 3.3 |
+| `backend/src/main/java/com/usermanagement/web/dto/PageRequest.java` | 分页请求 | 3.5 |
 
-### 2.5 认证与权限文件
-
-| 文件路径 | 描述 | 所属阶段 |
-|----------|------|----------|
-| `backend/app/core/auth.py` | OAuth2 和 JWT 验证 | 5.1, 5.2 |
-| `backend/app/core/permissions.py` | 权限检查逻辑 | 5.3 |
-| `backend/app/core/rbac.py` | RBAC 实现 | 5.4 |
-| `backend/app/core/rate_limit.py` | 速率限制 | 5.6 |
-| `backend/app/core/lockout.py` | 账户锁定 | 5.5 |
-
-### 2.6 API 路由文件
+### 2.4 服务层文件
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/app/api/v1/router.py` | API 路由聚合 | 6.x |
-| `backend/app/api/v1/endpoints/auth.py` | 认证端点 | 6.1 |
-| `backend/app/api/v1/endpoints/users.py` | 用户端点 | 6.2 |
-| `backend/app/api/v1/endpoints/roles.py` | 角色端点 | 6.3 |
-| `backend/app/api/v1/endpoints/permissions.py` | 权限端点 | 6.4 |
-| `backend/app/api/v1/endpoints/health.py` | 健康检查 | 6.5 |
-| `backend/app/api/deps.py` | 依赖注入 | 6.x |
+| `backend/src/main/java/com/usermanagement/service/UserService.java` | 用户服务接口 | 5.3 |
+| `backend/src/main/java/com/usermanagement/service/UserServiceImpl.java` | 用户服务实现 | 5.3 |
+| `backend/src/main/java/com/usermanagement/service/AuthService.java` | 认证服务 | 5.4 |
+| `backend/src/main/java/com/usermanagement/service/JwtService.java` | JWT 服务 | 5.2 |
+| `backend/src/main/java/com/usermanagement/service/RoleService.java` | 角色服务 | 5.5 |
+| `backend/src/main/java/com/usermanagement/service/PermissionService.java` | 权限服务 | 5.6 |
+
+### 2.5 安全相关文件
+
+| 文件路径 | 描述 | 所属阶段 |
+|----------|------|----------|
+| `backend/src/main/java/com/usermanagement/config/SecurityConfig.java` | 安全配置 | 6.1 |
+| `backend/src/main/java/com/usermanagement/security/JwtAuthenticationFilter.java` | JWT 过滤器 | 6.2 |
+| `backend/src/main/java/com/usermanagement/security/JwtTokenProvider.java` | JWT 提供者 | 6.3 |
+| `backend/src/main/java/com/usermanagement/security/UserDetailsServiceImpl.java` | 用户详情服务 | 6.4 |
+| `backend/src/main/java/com/usermanagement/security/PermissionEvaluator.java` | 权限评估器 | 6.5 |
+
+### 2.6 控制器文件
+
+| 文件路径 | 描述 | 所属阶段 |
+|----------|------|----------|
+| `backend/src/main/java/com/usermanagement/web/controller/AuthController.java` | 认证端点 | 7.1 |
+| `backend/src/main/java/com/usermanagement/web/controller/UserController.java` | 用户端点 | 7.2 |
+| `backend/src/main/java/com/usermanagement/web/controller/RoleController.java` | 角色端点 | 7.3 |
+| `backend/src/main/java/com/usermanagement/web/controller/PermissionController.java` | 权限端点 | 7.4 |
+| `backend/src/main/java/com/usermanagement/web/exception/GlobalExceptionHandler.java` | 全局异常处理 | 7.5 |
 
 ### 2.7 应用入口文件
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/app/main.py` | FastAPI 应用入口 | 1.1 |
-| `backend/app/__init__.py` | 包初始化 | 1.1 |
+| `backend/src/main/java/com/usermanagement/Application.java` | Spring Boot 入口 | 1.1 |
 
 ### 2.8 测试文件
 
 | 文件路径 | 描述 | 所属阶段 |
 |----------|------|----------|
-| `backend/tests/conftest.py` | pytest 配置和 fixtures | 7.1 |
-| `backend/tests/unit/test_models.py` | 模型单元测试 | 7.2 |
-| `backend/tests/unit/test_services.py` | 服务层单元测试 | 7.3 |
-| `backend/tests/unit/test_auth.py` | 认证系统单元测试 | 7.4 |
-| `backend/tests/integration/test_api.py` | API 集成测试 | 7.5 |
-| `backend/tests/integration/test_permissions.py` | 权限系统测试 | 7.6 |
-| `backend/tests/__init__.py` | 测试包初始化 | 7.1 |
+| `backend/src/test/resources/application-test.yml` | 测试配置 | 8.1 |
+| `backend/src/test/java/com/usermanagement/repository/UserRepositoryTest.java` | 仓库测试 | 8.2 |
+| `backend/src/test/java/com/usermanagement/service/UserServiceTest.java` | 服务测试 | 8.3 |
+| `backend/src/test/java/com/usermanagement/security/JwtTokenProviderTest.java` | JWT 测试 | 8.4 |
+| `backend/src/test/java/com/usermanagement/web/controller/AuthControllerTest.java` | 认证集成测试 | 8.5 |
+| `backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java` | 用户集成测试 | 8.5 |
 
 ---
 
@@ -205,58 +217,103 @@
 阶段 1: 项目初始化
     |
     v
-阶段 2: 数据库模型  <-- 依赖阶段 1 (配置完成)
+阶段 2: JPA 实体  <-- 依赖阶段 1 (配置完成)
     |
     v
-阶段 3: Pydantic 模式 <-- 依赖阶段 2 (模型定义)
+阶段 3: DTO 定义 <-- 依赖阶段 2 (模型定义)
     |
     v
-阶段 4: 核心服务  <-- 依赖阶段 2, 3 (模型 + 模式)
+阶段 4: Repository <-- 依赖阶段 2 (实体定义)
     |
     v
-阶段 5: 认证权限  <-- 依赖阶段 4 (服务层)
+阶段 5: 服务层 <-- 依赖阶段 3, 4 (DTO + Repository)
     |
     v
-阶段 6: API 路由  <-- 依赖阶段 3, 4, 5 (模式 + 服务 + 认证)
+阶段 6: 安全配置 <-- 依赖阶段 5 (UserService)
     |
     v
-阶段 7: 测试     <-- 依赖阶段 2-6 (所有实现)
+阶段 7: API 控制器 <-- 依赖阶段 3, 5, 6 (DTO + 服务 + 安全)
     |
     v
-阶段 8: 文档优化 <-- 依赖阶段 6, 7 (API + 测试)
+阶段 8: 测试 <-- 依赖阶段 2-7 (所有实现)
+    |
+    v
+阶段 9: 文档优化 <-- 依赖阶段 6, 7, 8 (安全 + API + 测试)
 ```
 
-### 3.2 文件依赖关系
+### 3.2 Bean 依赖关系
 
 ```
-config.py
+Config
     |
-    +--> database/session.py
+    +--> SecurityConfig
     |       |
-    |       +--> domain/models/*.py
+    |       +--> JwtTokenProvider
+    |       |       |
+    |       |       +--> JwtProperties
+    |       |
+    |       +--> JwtAuthenticationFilter
     |               |
-    |               +--> schemas/*.py
+    |               +--> UserDetailsServiceImpl
     |                       |
-    |                       +--> application/services/*.py
+    |                       +--> UserRepository
     |                               |
-    |                               +--> core/auth.py, permissions.py
-    |                                       |
-    |                                       +--> api/v1/endpoints/*.py
-    |                                               |
-    |                                               +--> api/v1/router.py
-    |                                                       |
-    +------------------------------------------------------+--> main.py
+    |                               +--> EntityManager
+    |
+    +--> DatabaseConfig
+            |
+            +--> DataSource
+            |       |
+            |       +--> HikariCP
+            |
+            +--> JpaProperties
+                    |
+                    +--> EntityManagerFactory
+                            |
+                            +--> User, Role, Permission (Entities)
+
+Service Layer
+    |
+    +--> AuthService
+    |       |
+    |       +--> UserRepository
+    |       +--> JwtTokenProvider
+    |       +--> PasswordEncoder (BCrypt)
+    |
+    +--> UserService
+    |       |
+    |       +--> UserRepository
+    |       +--> RoleRepository
+    |
+    +--> RoleService
+            |
+            +--> RoleRepository
+            +--> PermissionRepository
+
+Web Layer (Controller)
+    |
+    +--> AuthController
+    |       |
+    |       +--> AuthService
+    |       +--> LoginRequest, TokenResponse (DTO)
+    |
+    +--> UserController
+            |
+            +--> UserService
+            +--> UserCreateRequest, UserResponse (DTO)
 ```
 
 ### 3.3 关键依赖说明
 
 | 依赖项 | 被依赖项 | 说明 |
 |--------|----------|------|
-| 数据库模型 | 所有服务层 | 服务层操作数据库实体 |
-| Pydantic 模式 | API 路由、服务层 | 数据验证和序列化 |
-| JWT 服务 | 认证路由、权限检查 | 令牌生成和验证 |
-| 权限服务 | 受保护的路由 | 访问控制检查 |
-| 用户服务 | 认证服务 | 用户验证和查询 |
+| JPA 实体 | Repository, Service | 数据持久化基础 |
+| Repository | Service | 数据访问抽象 |
+| DTO | Controller, Service | API 数据契约 |
+| JwtTokenProvider | AuthService, JwtAuthenticationFilter | 令牌生成和验证 |
+| UserDetailsService | JwtAuthenticationFilter | 用户加载 |
+| SecurityConfig | 全局 | 安全配置中心 |
+| UserService | AuthService, UserController | 用户业务逻辑 |
 
 ---
 
@@ -266,28 +323,28 @@ config.py
 
 | 风险ID | 风险描述 | 影响程度 | 缓解措施 |
 |--------|----------|----------|----------|
-| R1 | SQLAlchemy 2.0 新语法学习曲线 | 中 | 预留额外学习时间，参考官方文档 |
+| R1 | JDK 21 虚拟线程稳定性 | 中 | 使用同步代码，虚拟线程作为可选优化 |
 | R2 | JWT 刷新令牌安全存储 | 高 | 使用 HttpOnly Cookie，实现令牌黑名单 |
-| R3 | 并发下的账户锁定竞争条件 | 中 | 使用数据库行级锁或 Redis 原子操作 |
-| R4 | 速率限制分布式部署 | 中 | 使用 Redis 作为共享存储 |
-| R5 | 测试覆盖率达标困难 | 中 | 采用 TDD，定期生成覆盖率报告 |
+| R3 | Spring Security 6 配置变化 | 中 | 参考官方迁移指南，使用 Lambda DSL |
+| R4 | 分布式会话管理 | 中 | 使用 JWT 无状态认证 |
+| R5 | 测试覆盖率达标困难 | 中 | 采用 TDD，使用 @DataJpaTest, @WebMvcTest |
 
 ### 4.2 进度风险
 
 | 风险ID | 风险描述 | 影响程度 | 缓解措施 |
 |--------|----------|----------|----------|
-| R6 | 权限系统复杂度超预期 | 高 | 先实现基础 RBAC，后续迭代优化 |
-| R7 | 数据库迁移问题 | 中 | 充分测试迁移脚本，保留回滚方案 |
-| R8 | 第三方库版本冲突 | 低 | 锁定依赖版本，使用虚拟环境 |
+| R6 | Spring Security 配置复杂度 | 高 | 先实现基础 JWT，逐步添加 RBAC |
+| R7 | Flyway 迁移脚本问题 | 中 | 充分测试迁移，保留回滚脚本 |
+| R8 | 依赖版本冲突 | 低 | 使用 Spring Boot BOM 管理版本 |
 
 ### 4.3 安全风险
 
 | 风险ID | 风险描述 | 影响程度 | 缓解措施 |
 |--------|----------|----------|----------|
-| R9 | 密码哈希算法选择 | 高 | 使用 Argon2id，符合 OWASP 建议 |
-| R10 | JWT 密钥管理 | 高 | 环境变量存储，生产环境定期轮换 |
-| R11 | SQL 注入风险 | 中 | 使用 SQLAlchemy ORM，避免原始 SQL |
-| R12 | 敏感数据泄露 | 高 | Pydantic 模式排除敏感字段，日志脱敏 |
+| R9 | JWT 密钥管理 | 高 | 环境变量存储，生产环境定期轮换 |
+| R10 | CORS 配置错误 | 高 | 显式配置允许的来源，不使用通配符 |
+| R11 | SQL 注入风险 | 中 | 使用 JPA 参数化查询，避免原生 SQL |
+| R12 | 敏感数据泄露 | 高 | DTO 排除敏感字段，日志脱敏处理 |
 
 ---
 
@@ -308,109 +365,193 @@ config.py
 
 ### 5.2 单元测试策略
 
-| 测试对象 | 测试内容 | 覆盖率目标 |
-|----------|----------|------------|
-| 领域模型 | 属性验证、关系、约束 | 90% |
-| 服务层 | 业务逻辑、异常处理 | 90% |
-| 工具函数 | 边界条件、错误输入 | 95% |
-| 安全模块 | 哈希、JWT 生成验证 | 100% |
+| 测试对象 | 测试内容 | 覆盖率目标 | 注解 |
+|----------|----------|------------|------|
+| 领域实体 | 验证约束、生命周期 | 90% | `@DataJpaTest` |
+| Repository | 查询方法、自定义 | 90% | `@DataJpaTest` |
+| 服务层 | 业务逻辑、事务 | 90% | `@ExtendWith(MockitoExtension.class)` |
+| 安全模块 | JWT 生成验证 | 100% | 标准单元测试 |
+| 工具函数 | 边界条件 | 95% | 标准单元测试 |
 
 ### 5.3 集成测试策略
 
-| 测试对象 | 测试内容 | 测试数据 |
-|----------|----------|----------|
-| API 端点 | 请求/响应、状态码、错误处理 | 内存 SQLite |
-| 数据库 | 迁移、CRUD、事务 | 测试数据库 |
-| 认证流程 | 登录/登出/刷新完整流程 | 模拟用户数据 |
-| 权限检查 | 不同角色访问控制 | 预定义角色权限 |
+| 测试对象 | 测试内容 | 技术 |
+|----------|----------|------|
+| API 端点 | 请求/响应、状态码 | `@SpringBootTest` + `TestRestTemplate` |
+| 认证流程 | 登录/登出/刷新完整流程 | `@SpringBootTest` + Testcontainers |
+| 权限检查 | 不同角色访问控制 | `@WithMockUser` |
+| 数据库迁移 | Flyway 脚本 | `@Testcontainers` + PostgreSQL |
 
 ### 5.4 测试环境配置
 
-```python
-# pytest 配置策略
-# conftest.py 关键 fixtures:
+```java
+// 关键测试注解配置
 
-- app: FastAPI 测试应用实例
-- client: TestClient 客户端
-- db_session: 数据库会话 (每个测试隔离)
-- test_user: 预创建测试用户
-- auth_headers: 认证请求头
-- mock_services: 服务层 Mock
+// 集成测试
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+class AuthControllerTest {
+    @Container
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
+}
+
+// Repository 测试
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ContextConfiguration(initializers = {UserRepositoryTest.Initializer.class})
+class UserRepositoryTest { }
+
+// Web 层测试
+@WebMvcTest(UserController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class UserControllerTest { }
+
+// 安全测试
+@WebMvcTest(AuthController.class)
+@Import(SecurityConfig.class)
+class AuthSecurityTest { }
 ```
 
-### 5.5 测试数据管理
-
-| 数据类型 | 管理方式 | 说明 |
-|----------|----------|------|
-| 静态测试数据 | pytest fixtures | 基础用户、角色数据 |
-| 动态测试数据 | factory-boy | 批量生成测试实体 |
-| 数据库状态 | 事务回滚 | 每个测试后清理 |
-
-### 5.6 覆盖率检查点
+### 5.5 覆盖率检查点
 
 | 阶段 | 检查项 | 目标覆盖率 |
 |------|--------|------------|
-| 阶段 4 完成 | 服务层单元测试 | 70% |
-| 阶段 5 完成 | 认证权限测试 | 80% |
-| 阶段 6 完成 | API 集成测试 | 85% |
-| 阶段 7 完成 | 整体覆盖率 | >= 85% |
+| 阶段 5 完成 | 服务层单元测试 | 70% |
+| 阶段 6 完成 | 安全配置测试 | 80% |
+| 阶段 7 完成 | Controller 集成测试 | 85% |
+| 阶段 8 完成 | 整体覆盖率 | >= 85% |
 
-### 5.7 测试执行命令
+### 5.6 测试执行命令
 
 ```bash
 # 运行所有测试
-pytest
+./mvnw test
 
 # 运行单元测试
-pytest tests/unit/
+./mvnw test -Dtest="*Test"
 
 # 运行集成测试
-pytest tests/integration/
+./mvnw test -Dtest="*IntegrationTest"
 
-# 生成覆盖率报告
-pytest --cov=app --cov-report=html --cov-report=term-missing
+# 生成覆盖率报告 (JaCoCo)
+./mvnw jacoco:report
+# 报告位置: target/site/jacoco/index.html
 
 # 运行特定模块测试
-pytest tests/unit/test_auth.py -v
+./mvnw test -Dtest=UserServiceTest
+
+# 跳过测试打包
+./mvnw package -DskipTests
 ```
 
 ---
 
 ## 六、技术选型与依赖
 
-### 6.1 核心依赖 (pyproject.toml)
+### 6.1 核心依赖 (pom.xml)
 
-```toml
-[tool.poetry.dependencies]
-python = "^3.11"
-fastapi = "^0.104.0"
-uvicorn = {extras = ["standard"], version = "^0.24.0"}
-pydantic = {extras = ["email"], version = "^2.5.0"}
-pydantic-settings = "^2.1.0"
-sqlalchemy = {extras = ["asyncpg"], version = "^2.0.23"}
-alembic = "^1.12.0"
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-passlib = {extras = ["argon2"], version = "^1.7.4"}
-python-multipart = "^0.0.6"
-httpx = "^0.25.0"
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.0</version>
+</parent>
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
-pytest-asyncio = "^0.21.0"
-pytest-cov = "^4.1.0"
-factory-boy = "^3.3.0"
-black = "^23.0.0"
-ruff = "^0.1.0"
-mypy = "^1.7.0"
+<properties>
+    <java.version>21</java.version>
+    <spring-boot.version>3.5.0</spring-boot.version>
+    <testcontainers.version>1.19.0</testcontainers.version>
+</properties>
+
+<dependencies>
+    <!-- Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Security -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+
+    <!-- JPA + Database -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <!-- Validation -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- Monitoring -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>postgresql</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.11</version>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 ### 6.2 可选依赖
 
 | 依赖 | 用途 | 阶段 |
 |------|------|------|
-| redis | 速率限制、缓存 | 5.6 |
-| celery | 异步任务 (邮件等) | 未来 |
-| sentry-sdk | 错误监控 | 8.x |
+| bucket4j | 速率限制 | 6.7 |
+| caffeine | 本地缓存 | 未来 |
+| micrometer-registry-prometheus | 监控指标 | 9.1 |
+| springdoc-openapi | API 文档 | 9.1 |
 
 ---
 
@@ -418,24 +559,30 @@ mypy = "^1.7.0"
 
 ### 7.1 代码质量检查
 
-- [ ] 所有函数有类型注解
-- [ ] 所有公共方法有 docstring
-- [ ] 代码符合 PEP 8 (Black + Ruff)
+- [ ] 所有方法有 JavaDoc 注释
+- [ ] 所有类和方法有适当的访问修饰符
+- [ ] 代码符合 Google Java Style Guide
 - [ ] 无硬编码敏感信息
-- [ ] 错误处理完善
+- [ ] 异常处理完善
+- [ ] 使用 `final` 修饰不可变引用
+- [ ] 使用 Records 定义 DTO (JDK 21)
 
 ### 7.2 安全检查
 
-- [ ] 密码使用 Argon2id 哈希
+- [ ] 密码使用 BCrypt 哈希 (强度 12)
 - [ ] JWT 密钥从环境变量读取
 - [ ] 所有端点有适当权限控制
-- [ ] 输入数据经过验证
+- [ ] 输入数据经过 Jakarta Validation 验证
 - [ ] 敏感字段不在响应中暴露
+- [ ] CORS 配置明确允许来源
+- [ ] CSRF 防护已启用
 
 ### 7.3 性能检查
 
-- [ ] 数据库查询使用 join 避免 N+1
-- [ ] 适当的数据库索引
+- [ ] 数据库查询使用 EntityGraph 避免 N+1
+- [ ] 适当的数据库索引已创建
+- [ ] 连接池配置合理 (HikariCP)
+- [ ] JVM 内存配置已优化
 - [ ] 响应时间 P95 < 200ms
 
 ### 7.4 测试检查
@@ -444,21 +591,23 @@ mypy = "^1.7.0"
 - [ ] 所有 API 端点有集成测试
 - [ ] 认证流程完整测试
 - [ ] 权限检查完整测试
+- [ ] Testcontainers 集成测试通过
 
 ---
 
 ## 八、总结
 
-本实施计划涵盖从项目初始化到测试完成的完整 FastAPI 后端开发流程，共 8 个阶段，预计总工时约 70-80 小时。
+本实施计划涵盖从项目初始化到测试完成的完整 Spring Boot 后端开发流程，共 9 个阶段，预计总工时约 90-100 小时。
 
 **关键成功因素**:
-1. 严格按照分层架构实现
-2. 测试驱动开发，确保覆盖率达标
-3. 安全优先，特别是认证和权限部分
+1. 严格按照分层架构实现 (Controller → Service → Repository → Entity)
+2. 测试驱动开发，确保覆盖率达标 (>= 85%)
+3. 安全优先，特别是 Spring Security 配置
 4. 文档同步更新
+5. 保持与原有 FastAPI API 的兼容性
 
 **里程碑**:
-- M1 (阶段 1-2): 基础架构和数据库完成
-- M2 (阶段 3-5): 核心业务逻辑完成
-- M3 (阶段 6): API 接口全部可用
-- M4 (阶段 7-8): 测试通过，文档完善
+- M1 (阶段 1-2): 基础架构和 JPA 实体完成
+- M2 (阶段 3-5): Repository 和服务层完成
+- M3 (阶段 6-7): Spring Security 和 API 完成
+- M4 (阶段 8-9): 测试通过，文档完善

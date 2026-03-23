@@ -27,13 +27,30 @@ type: feat|fix|docs|style|refactor|perf|test|chore
 
 ## 质量门禁
 
+### Java/Spring Boot 项目
+
 ```bash
 # 提交前运行
-black --check
-flake8
-mypy
-pytest --cov=app
+./mvnw clean compile                    # 编译检查
+./mvnw checkstyle:check                 # 代码风格检查
+./mvnw spotbugs:check                   # 静态代码分析
+./mvnw test                             # 运行所有测试
+./mvnw jacoco:report                    # 生成覆盖率报告
 ```
+
+### 前端项目 (保持不变)
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+### 代码风格配置
+
+- **Java**: Google Java Style Guide
+- **IDE**: 配置 IDE 自动格式化 (IntelliJ IDEA / VS Code)
+- **Checkstyle**: 使用 `checkstyle.xml` 配置文件
 
 ## 发布流程
 
