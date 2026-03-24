@@ -25,7 +25,7 @@ Task:  None
 
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
-| Phase 1: Foundation | In Progress | 85% | 2026-04-15 |
+| Phase 1: Foundation | In Progress | 95% | 2026-04-15 |
 | Phase 2: Department & Advanced | Not started | 0% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
@@ -132,15 +132,17 @@ Task:  None
 - Plan 1.2: JWT认证与安全框架
 - Plan 1.3: 用户管理模块
 - Plan 1.4: 角色权限模块
-  - Role实体和Permission实体
-  - RoleService和PermissionService
-  - RoleController和PermissionController
-  - 权限分配和管理
-  - 单元测试 (RoleServiceImplTest, PermissionServiceImplTest, RoleControllerTest, PermissionControllerTest)
-
-**待开始**:
 - Plan 1.5: 审计日志框架
 - Plan 1.6: 前端基础架构
+  - Next.js 14 + TypeScript项目
+  - Tailwind CSS + shadcn/ui组件库
+  - Zustand状态管理 (authStore, toastStore)
+  - Axios API客户端配置
+  - 登录页面
+  - 仪表板页面
+  - 用户管理页面
+
+**待开始**:
 - Phase 2: Department & Advanced 开发
 - Phase 3: Production Ready 开发
 
@@ -192,13 +194,13 @@ Task:  None
   - [ ] 实现日志查询 API
   - [ ] 配置日志保留策略
 
-- [ ] Plan 1.6: 前端基础架构
-  - [ ] 初始化 Next.js 项目
-  - [ ] 配置 Tailwind CSS + shadcn/ui
-  - [ ] 配置 Zustand 状态管理
-  - [ ] 实现登录页面
-  - [ ] 实现用户管理页面
-  - [ ] 配置 API 客户端
+- [x] Plan 1.6: 前端基础架构
+  - [x] 初始化 Next.js 项目
+  - [x] 配置 Tailwind CSS + shadcn/ui
+  - [x] 配置 Zustand 状态管理
+  - [x] 实现登录页面
+  - [x] 实现用户管理页面
+  - [x] 配置 API 客户端
 
 ---
 
