@@ -36,21 +36,13 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-# JWT Configuration (RSA keys - in production use environment variables or K8s secrets)
-jwt:
-  private-key: ${JWT_PRIVATE_KEY:MIICXQIBAAKBgQC5Z5KJ4h0vIHY3JdX7lXy8n1j0YlX5hY7k5v5w5z3r1p0j5k3l7m9n1b2v4x6z8}
-  public-key: ${JWT_PUBLIC_KEY:MIIBCgKBgQC5Z5KJ4h0vIHY3JdX7lXy8n1j0YlX5hY7k5v5w5z3r1p0j5k3l7m9n1b2v4x6z8}
-
-# Redis Configuration
-spring:
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-      timeout: 2000ms
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
+# Password Policy
+password:
+  policy:
+    min-length: 8
+    require-uppercase: true
+    require-lowercase: true
+    require-digit: true
+    require-special-char: true
+    expiry-days: 90
+    history-count: 12
