@@ -6,8 +6,8 @@
 |------|-----|
 | **Name** | 全栈用户角色权限管理系统 |
 | **ID** | usermanagement |
-| **Current Phase** | Phase 1: Foundation |
-| **Current Plan** | Plan 1.5 - Audit Log Framework |
+| **Current Phase** | Phase 2: Department & Advanced |
+| **Current Plan** | Plan 2.1 - Department Management |
 | **Status** | In Progress |
 
 ---
@@ -25,8 +25,8 @@ Task:  None
 
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
-| Phase 1: Foundation | In Progress | 95% | 2026-04-15 |
-| Phase 2: Department & Advanced | Not started | 0% | 2026-04-25 |
+| Phase 1: Foundation | ✅ Complete | 100% | 2026-04-15 |
+| Phase 2: Department & Advanced | In Progress | 16% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
 ---
@@ -101,7 +101,11 @@ Task:  None
 3. [x] 执行 Plan 1.1: 数据库设计与Flyway迁移
 4. [x] 执行 Plan 1.2: JWT认证与安全框架
 5. [x] 执行 Plan 1.3: 用户管理模块
-6. [ ] 执行 Plan 1.4: 角色权限模块
+6. [x] 执行 Plan 1.4: 角色权限模块
+7. [x] 执行 Plan 1.5: 审计日志框架
+8. [x] 执行 Plan 1.6: 前端基础架构
+9. [x] 执行 Plan 2.1: 部门管理模块
+10. [ ] 执行 Plan 2.2: 数据权限范围实现
 
 ### Context Summary
 
@@ -201,6 +205,40 @@ Task:  None
   - [x] 实现登录页面
   - [x] 实现用户管理页面
   - [x] 配置 API 客户端
+
+### Phase 2: Department & Advanced
+
+- [x] Plan 2.1: 部门管理模块
+  - [x] 创建 Department 实体类
+  - [x] 创建 DepartmentRepository
+  - [x] 实现 DepartmentService
+  - [x] 实现 DepartmentController
+  - [x] 实现部门树形结构API
+  - [x] 编写单元测试
+
+- [ ] Plan 2.2: 数据权限范围实现
+  - [ ] 实现数据范围过滤逻辑
+  - [ ] 集成到 Repository 层
+  - [ ] 支持 ALL/DEPT/SELF/CUSTOM 范围
+
+- [ ] Plan 2.3: 字段级权限控制
+  - [ ] 实现字段权限注解
+  - [ ] 实现字段过滤逻辑
+  - [ ] 集成到序列化层
+
+- [ ] Plan 2.4: OAuth2.0集成
+  - [ ] 配置 OAuth2.0 客户端
+  - [ ] 实现第三方登录
+  - [ ] 实现账号绑定
+
+- [ ] Plan 2.5: 批量导入导出
+  - [ ] 实现 Excel 导入
+  - [ ] 实现 Excel 导出
+  - [ ] 添加导入导出API
+
+- [ ] Plan 2.6: 前端部门管理界面
+  - [ ] 实现部门树形组件
+  - [ ] 实现部门管理页面
 
 ---
 

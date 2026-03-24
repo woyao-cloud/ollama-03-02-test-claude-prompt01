@@ -90,4 +90,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
      */
     @Query("SELECT u FROM User u JOIN u.userRoles ur WHERE ur.role.id = :roleId AND u.deletedAt IS NULL")
     Page<User> findByRoleId(@Param("roleId") UUID roleId, Pageable pageable);
+
+    /**
+     * 统计部门下的用户数量
+     *
+     * @param departmentId 部门ID
+     * @return 用户数量
+     */
+    @Query("SELECT COUNT(u) FROM User u WHERE u.department.id = :departmentId AND u.deletedAt IS NULL")
+    long countByDepartmentId(@Param("departmentId") UUID departmentId);
 }
