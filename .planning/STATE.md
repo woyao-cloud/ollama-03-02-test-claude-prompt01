@@ -7,7 +7,7 @@
 | **Name** | 全栈用户角色权限管理系统 |
 | **ID** | usermanagement |
 | **Current Phase** | Phase 1: Foundation |
-| **Current Plan** | Plan 1.4 - Role Permission Module |
+| **Current Plan** | Plan 1.5 - Audit Log Framework |
 | **Status** | In Progress |
 
 ---
@@ -25,7 +25,7 @@ Task:  None
 
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
-| Phase 1: Foundation | In Progress | 65% | 2026-04-15 |
+| Phase 1: Foundation | In Progress | 85% | 2026-04-15 |
 | Phase 2: Department & Advanced | Not started | 0% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
