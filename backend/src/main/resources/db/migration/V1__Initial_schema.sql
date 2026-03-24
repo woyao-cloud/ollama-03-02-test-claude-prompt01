@@ -19,7 +19,7 @@ CREATE TABLE departments (
     name VARCHAR(100) NOT NULL,
     code VARCHAR(50) NOT NULL,
     parent_id UUID REFERENCES departments(id),
-    manager_id UUID REFERENCES users(id) DEFERRABLE INITIALLY DEFERRED,
+    manager_id UUID,  -- 部门负责人ID，应用层维护，避免循环依赖
     level INT NOT NULL CHECK (level BETWEEN 1 AND 5),
     path VARCHAR(500) NOT NULL,
     sort_order INT NOT NULL DEFAULT 0,
@@ -163,6 +163,7 @@ CREATE TABLE permissions (
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE,  -- 软删除字段
     version INT NOT NULL DEFAULT 0,
 
     CONSTRAINT uq_permissions_code UNIQUE (code),
@@ -178,14 +179,16 @@ COMMENT ON COLUMN permissions.resource IS '资源类型，如 user';
 COMMENT ON COLUMN permissions.action IS '操作类型，如 create/read/update/delete';
 COMMENT ON COLUMN permissions.parent_id IS '父权限ID（用于菜单层级）';
 COMMENT ON COLUMN permissions.route IS '前端路由（仅MENU类型）';
+COMMENT ON COLUMN permissions.deleted_at IS '删除时间（软删除）';
 
 -- 权限表索引
-CREATE UNIQUE INDEX idx_permissions_code ON permissions(code);
+CREATE UNIQUE INDEX idx_permissions_code ON permissions(code) WHERE deleted_at IS NULL;
 CREATE INDEX idx_permissions_type ON permissions(type);
 CREATE INDEX idx_permissions_resource ON permissions(resource);
 CREATE INDEX idx_permissions_type_resource ON permissions(type, resource);
 CREATE INDEX idx_permissions_parent ON permissions(parent_id);
-CREATE INDEX idx_permissions_status ON permissions(status);
+CREATE INDEX idx_permissions_status ON permissions(status) WHERE deleted_at IS NULL;
+CREATE INDEX idx_permissions_deleted ON permissions(deleted_at) WHERE deleted_at IS NOT NULL;
 
 -- =============================================
 -- 5. role_permissions 角色权限关联表
@@ -227,8 +230,8 @@ CREATE INDEX idx_user_roles_role ON user_roles(role_id);
 CREATE TABLE user_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    access_token VARCHAR(500) NOT NULL,
-    refresh_token VARCHAR(500) NOT NULL,
+    access_token VARCHAR(2048) NOT NULL,
+    refresh_token VARCHAR(2048) NOT NULL,
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
     refresh_expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
     client_ip VARCHAR(45),
@@ -236,7 +239,10 @@ CREATE TABLE user_sessions (
     device_info VARCHAR(200),
     is_valid BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_accessed_at TIMESTAMP WITH TIME ZONE,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    version INT NOT NULL DEFAULT 0,
 
     CONSTRAINT uq_sessions_access_token UNIQUE (access_token),
     CONSTRAINT uq_sessions_refresh_token UNIQUE (refresh_token)
@@ -248,6 +254,9 @@ COMMENT ON COLUMN user_sessions.access_token IS 'Access Token';
 COMMENT ON COLUMN user_sessions.refresh_token IS 'Refresh Token';
 COMMENT ON COLUMN user_sessions.expires_at IS 'Access Token过期时间';
 COMMENT ON COLUMN user_sessions.is_valid IS '是否有效（登出时设为FALSE）';
+COMMENT ON COLUMN user_sessions.updated_at IS '更新时间';
+COMMENT ON COLUMN user_sessions.deleted_at IS '删除时间（软删除）';
+COMMENT ON COLUMN user_sessions.version IS '乐观锁版本号';
 
 -- 会话表索引
 CREATE UNIQUE INDEX idx_sessions_access_token ON user_sessions(access_token);
@@ -256,6 +265,12 @@ CREATE INDEX idx_sessions_user ON user_sessions(user_id);
 CREATE INDEX idx_sessions_expires ON user_sessions(expires_at);
 CREATE INDEX idx_sessions_user_valid ON user_sessions(user_id, is_valid) WHERE is_valid = TRUE;
 CREATE INDEX idx_sessions_created ON user_sessions(created_at);
+
+-- 用户会话表触发器
+CREATE TRIGGER update_user_sessions_updated_at
+    BEFORE UPDATE ON user_sessions
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
 
 -- =============================================
 -- 8. audit_logs 审计日志表（分区表）
@@ -482,5 +497,63 @@ SELECT '00000000-0000-0000-0000-000000000001', id FROM permissions;
 -- 为系统管理员分配除系统管理外的权限
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT '00000000-0000-0000-0000-000000000002', id FROM permissions;
+
+-- =============================================
+-- 13. pg_cron扩展和自动化任务
+-- =============================================
+
+-- 启用pg_cron扩展（用于定时任务）
+CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+-- 创建每月自动创建审计日志分区的定时任务
+-- 每月1号凌晨2点自动创建下月分区
+SELECT cron.schedule(
+    'create-next-month-audit-partition',
+    '0 2 1 * *',
+    $$SELECT create_audit_log_partition(
+        EXTRACT(YEAR FROM CURRENT_DATE + INTERVAL '1 month')::INT,
+        EXTRACT(MONTH FROM CURRENT_DATE + INTERVAL '1 month')::INT
+    )$$
+);
+
+-- 创建归档旧分区任务（可选，保留最近12个月）
+-- 每月1号凌晨3点归档超过12个月的分区
+SELECT cron.schedule(
+    'archive-old-audit-partitions',
+    '0 3 1 * *',
+    $$SELECT detach_audit_log_partition(
+        EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '13 months')::INT,
+        EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '13 months')::INT
+    )$$
+);
+
+-- 创建归档分区函数（分离旧分区到归档表空间）
+CREATE OR REPLACE FUNCTION detach_audit_log_partition(year_num INT, month_num INT)
+RETURNS VOID AS $$
+DECLARE
+    partition_name TEXT;
+    start_date DATE;
+    end_date DATE;
+BEGIN
+    partition_name := 'audit_logs_' || year_num || '_' || LPAD(month_num::TEXT, 2, '0');
+
+    -- 检查分区是否存在
+    IF EXISTS (
+        SELECT 1 FROM pg_tables
+        WHERE schemaname = 'public'
+        AND tablename = partition_name
+    ) THEN
+        -- 分离分区
+        EXECUTE format('ALTER TABLE audit_logs DETACH PARTITION %I', partition_name);
+
+        -- 重命名为归档表
+        EXECUTE format('ALTER TABLE %I RENAME TO %I', partition_name, partition_name || '_archived');
+
+        RAISE NOTICE 'Partition % archived as %_archived', partition_name, partition_name;
+    ELSE
+        RAISE NOTICE 'Partition % does not exist', partition_name;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 
 COMMIT;

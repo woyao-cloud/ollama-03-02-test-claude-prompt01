@@ -1,9 +1,13 @@
 package com.usermanagement.domain.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -44,11 +48,13 @@ public class AuditLog {
     @Column(name = "resource_id")
     private UUID resourceId;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "old_value", columnDefinition = "jsonb")
-    private String oldValue;
+    private Map<String, Object> oldValue;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "new_value", columnDefinition = "jsonb")
-    private String newValue;
+    private Map<String, Object> newValue;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -155,19 +161,19 @@ public class AuditLog {
         this.resourceId = resourceId;
     }
 
-    public String getOldValue() {
+    public Map<String, Object> getOldValue() {
         return oldValue;
     }
 
-    public void setOldValue(String oldValue) {
+    public void setOldValue(Map<String, Object> oldValue) {
         this.oldValue = oldValue;
     }
 
-    public String getNewValue() {
+    public Map<String, Object> getNewValue() {
         return newValue;
     }
 
-    public void setNewValue(String newValue) {
+    public void setNewValue(Map<String, Object> newValue) {
         this.newValue = newValue;
     }
 

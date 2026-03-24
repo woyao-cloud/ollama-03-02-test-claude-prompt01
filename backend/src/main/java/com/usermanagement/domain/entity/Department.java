@@ -37,7 +37,7 @@ public class Department extends BaseEntity {
     private List<Department> children = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id", foreignKey = @ForeignKey(name = "fk_departments_manager"))
+    @JoinColumn(name = "manager_id")  // 无外键约束，应用层维护
     private User manager;
 
     @Column(name = "level", nullable = false)

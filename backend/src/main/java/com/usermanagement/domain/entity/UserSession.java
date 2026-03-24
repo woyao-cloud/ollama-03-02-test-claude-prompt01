@@ -2,6 +2,7 @@ package com.usermanagement.domain.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -30,10 +31,10 @@ public class UserSession {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_sessions_user"))
     private User user;
 
-    @Column(name = "access_token", nullable = false, unique = true, length = 500)
+    @Column(name = "access_token", nullable = false, unique = true, length = 2048)
     private String accessToken;
 
-    @Column(name = "refresh_token", nullable = false, unique = true, length = 500)
+    @Column(name = "refresh_token", nullable = false, unique = true, length = 2048)
     private String refreshToken;
 
     @Column(name = "expires_at", nullable = false)
@@ -58,8 +59,19 @@ public class UserSession {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
     @Column(name = "last_accessed_at")
     private Instant lastAccessedAt;
+
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Integer version = 0;
 
     // Getters and Setters
     public UUID getId() {
@@ -158,6 +170,30 @@ public class UserSession {
         this.lastAccessedAt = lastAccessedAt;
     }
 
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Instant getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Instant deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     // 业务方法
 
     /**
@@ -208,6 +244,22 @@ public class UserSession {
         }
         long remaining = expiresAt.getEpochSecond() - Instant.now().getEpochSecond();
         return Math.max(0, remaining);
+    }
+
+    /**
+     * 软删除会话
+     */
+    public void softDelete() {
+        this.deletedAt = Instant.now();
+        this.isValid = false;
+    }
+
+    /**
+     * 检查是否已软删除
+     */
+    @Transient
+    public boolean isDeleted() {
+        return deletedAt != null;
     }
 
     @Override
