@@ -1,4 +1,6 @@
 # 使用 springboot3.5 基于jdk21替换fastAPI 
+
+
 >作为架构师，计划使用java springboot3.5 基于jdk21替换fastAPI 作为后端，需要规划一下调整当前的提示器文件
 
 ● 我明白了，你需要将后端从 FastAPI 迁移到 Spring Boot 3.5 (JDK 21)。让我先探索当前项目结构，然后规划需要的调整。
@@ -974,4 +976,6 @@
   √ 更新部署指南
   √ 创建安全架构设计
   √ 创建架构决策记录 (ADR)
-   … +2 completed
+
+
+完成规划阶段工作分支
