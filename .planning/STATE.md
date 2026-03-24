@@ -7,7 +7,7 @@
 | **Name** | 全栈用户角色权限管理系统 |
 | **ID** | usermanagement |
 | **Current Phase** | Phase 1: Foundation |
-| **Current Plan** | Plan 1.3 - User Management Module |
+| **Current Plan** | Plan 1.4 - Role Permission Module |
 | **Status** | In Progress |
 
 ---
@@ -25,7 +25,7 @@ Task:  None
 
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
-| Phase 1: Foundation | In Progress | 50% | 2026-04-15 |
+| Phase 1: Foundation | In Progress | 65% | 2026-04-15 |
 | Phase 2: Department & Advanced | Not started | 0% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
@@ -127,8 +127,18 @@ Task:  None
   - UserController REST API
   - 单元测试 (UserServiceImplTest, UserControllerTest)
 
-**待开始**:
+**已完成**:
+- Plan 1.1: 数据库设计与Flyway迁移
+- Plan 1.2: JWT认证与安全框架
+- Plan 1.3: 用户管理模块
 - Plan 1.4: 角色权限模块
+  - Role实体和Permission实体
+  - RoleService和PermissionService
+  - RoleController和PermissionController
+  - 权限分配和管理
+  - 单元测试 (RoleServiceImplTest, PermissionServiceImplTest, RoleControllerTest, PermissionControllerTest)
+
+**待开始**:
 - Plan 1.5: 审计日志框架
 - Plan 1.6: 前端基础架构
 - Phase 2: Department & Advanced 开发
@@ -167,13 +177,13 @@ Task:  None
   - [x] 实现用户 CRUD API
   - [x] 编写单元测试
 
-- [ ] Plan 1.4: 角色权限模块
-  - [ ] 创建 Role 实体类
-  - [ ] 创建 Permission 实体类
-  - [ ] 实现角色 CRUD
-  - [ ] 实现权限分配
-  - [ ] 实现权限检查注解
-  - [ ] 配置 Redis 权限缓存
+- [x] Plan 1.4: 角色权限模块
+  - [x] 创建 Role 实体类
+  - [x] 创建 Permission 实体类
+  - [x] 实现角色 CRUD
+  - [x] 实现权限分配
+  - [x] 实现权限检查注解
+  - [x] 配置 Redis 权限缓存
 
 - [ ] Plan 1.5: 审计日志框架
   - [ ] 创建 AuditLog 实体
@@ -199,6 +209,7 @@ Task:  None
 | 2026-03-24 | 初始化 GSD 规划文件 | Create |
 | 2026-03-24 | 完成 Plan 1.2: JWT认证与安全框架 | Complete |
 | 2026-03-24 | 完成 Plan 1.3: 用户管理模块 | Complete |
+| 2026-03-24 | 完成 Plan 1.4: 角色权限模块 | Complete |
 
 ---
 
