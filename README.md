@@ -4410,3 +4410,356 @@
   5. 读写分离 - 查询走从库，写入走主库
 
   此非功能需求将作为后续架构设计和系统设计的输入。
+
+  ## 业务分析员工作
+
+   业务分析师增加部门管理子模块，每个用户都属于一个部门，部门下面可以有子部门，实现公司->部门->子部门的组织架构，开始分析并更新相关文档
+
+● 我将增加部门管理子模块，并更新相关文档以支持公司->部门->子部门的组织架构。
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 2 lines, removed 1 line
+      87  │   ├── UC-01.01 用户CRUD
+      88  │   ├── UC-01.02 批量导入导出
+      89  │   ├── UC-01.03 用户自助注册
+      90 -│   └── UC-01.04 用户状态管理
+      90 +│   ├── UC-01.04 用户状态管理
+      91 +│   └── UC-01.05 部门管理
+      92  ├── UC-02 角色权限模块
+      93  │   ├── UC-02.01 角色CRUD
+      94  │   ├── UC-02.02 权限定义与管理
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 2 lines
+      117  | UC-01.01 | 用户CRUD | 系统管理员 | P0 | 5 |
+      118  | UC-01.02 | 批量导入导出 | 系统管理员 | P1 | 8 |
+      119  | UC-01.03 | 用户自助注册 | 普通用户 | P1 | 8 |
+      120 +| UC-01.04 | 用户状态管理 | 系统管理员 | P1 | 3 |
+      121 +| UC-01.05 | 部门管理 | 系统管理员 | P0 | 8 |
+      122  | UC-02.01 | 角色CRUD | 系统管理员 | P0 | 5 |
+      123  | UC-02.02 | 权限定义与管理 | 系统管理员 | P0 | 13 |
+      124  | UC-02.03 | 用户角色分配 | 系统管理员 | P0 | 5 |
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 115 lines
+      201
+      202  ---
+      203
+      204 +### UC-01.05 部门管理
+      205 +
+      206 +**用例ID**: UC-01.05
+      207 +**用例名称**: 部门管理
+      208 +**参与者**: 系统管理员
+      209 +**前置条件**: 管理员已登录系统
+      210 +**后置条件**: 部门信息更新成功
+      211 +**触发事件**: 管理员需要管理组织架构
+      212 +
+      213 +#### 主流程
+      214 +
+      215 +**创建部门**:
+      216 +1. 管理员进入组织架构页面
+      217 +2. 点击"创建部门"按钮
+      218 +3. 填写部门信息：
+      219 +   - 部门名称（必填）
+      220 +   - 部门编码（必填，唯一）
+      221 +   - 上级部门（可选，树形选择）
+      222 +   - 部门负责人（可选，选择用户）
+      223 +   - 部门描述（可选）
+      224 +   - 排序号（可选，默认0）
+      225 +4. 点击"保存"
+      226 +5. 系统验证部门编码唯一性
+      227 +6. 系统验证上级部门存在且未形成循环依赖
+      228 +7. 系统创建部门记录
+      229 +8. 系统更新部门树缓存（Redis）
+      230 +9. 系统记录创建日志
+      231 +10. 系统显示创建成功
+      232 +
+      233 +**查询部门**:
+      234 +1. 管理员进入组织架构页面
+      235 +2. 系统以树形结构展示部门层级
+      236 +3. 支持展开/折叠子部门
+      237 +4. 点击部门显示部门详情和成员列表
+      238 +5. 支持按部门名称搜索
+      239 +
+      240 +**更新部门**:
+      241 +1. 管理员选择部门
+      242 +2. 点击"编辑"
+      243 +3. 修改部门信息
+      244 +4. 点击"保存"
+      245 +5. 系统验证（同创建）
+      246 +6. 系统更新部门信息
+      247 +7. 系统更新缓存
+      248 +8. 如果部门负责人变更，更新用户部门信息
+      249 +9. 系统记录更新日志
+      250 +
+      251 +**删除部门**:
+      252 +1. 管理员选择部门
+      253 +2. 点击"删除"
+      254 +3. 系统检查部门下是否有子部门
+      255 +4. 系统检查部门下是否有用户
+      256 +5. 如有子部门或用户，提示无法删除
+      257 +6. 如无关联数据，确认删除
+      258 +7. 系统标记部门为已删除（软删除）
+      259 +8. 系统更新缓存
+      260 +9. 系统记录删除日志
+      261 +
+      262 +**调整部门层级**:
+      263 +1. 管理员拖拽部门节点
+      264 +2. 或点击"调整上级"选择新上级部门
+      265 +3. 系统检查是否形成循环依赖（不能将自己或子部门设为上级）
+      266 +4. 系统更新parent_id
+      267 +5. 系统更新层级路径（path）
+      268 +6. 系统更新所有子部门的层级路径
+      269 +7. 系统更新缓存
+      270 +8. 系统记录变更日志
+      271 +
+      272 +#### 部门层级规则
+      273 +
+      274 +**三级组织架构模型**:
+      275 +```
+      276 +公司（根节点）
+      277 +├── 一级部门（中心/事业部）
+      278 +│   ├── 二级部门（部门）
+      279 +│   │   ├── 三级部门（组/科室）
+      280 +│   │   └── 三级部门
+      281 +│   └── 二级部门
+      282 +└── 一级部门
+      283 +```
+      284 +
+      285 +**约束**:
+      286 +- 最多支持 5 级部门层级
+      287 +- 部门编码全局唯一，建议格式：DEPT-001
+      288 +- 每个部门必须有上级（根节点除外）
+      289 +- 部门删除前必须清空子部门和用户
+      290 +
+      291 +#### 业务规则
+      292 +- BR-01.05.01: 部门编码必须全局唯一，建议使用前缀DEPT-
+      293 +- BR-01.05.02: 部门层级最多5级
+      294 +- BR-01.05.03: 删除部门前必须确保无子部门且无用户归属
+      295 +- BR-01.05.04: 调整部门层级时不能形成循环依赖
+      296 +- BR-01.05.05: 修改部门会影响该部门及子部门用户的数据权限
+      297 +- BR-01.05.06: 部门变更需记录审计日志
+      298 +- BR-01.05.07: 部门信息变更后需刷新Redis缓存
+      299 +
+      300 +#### 部门与用户关系
+      301 +- 每个用户必须属于一个部门（多对一）
+      302 +- 部门负责人必须是该部门或上级部门的用户（可选）
+      303 +- 用户调部门时，数据权限自动变更到新部门
+      304 +- 支持查看部门成员列表
+      305 +
+      306 +#### 输入字段
+      307 +
+      308 +| 字段 | 类型 | 必填 | 校验规则 |
+      309 +|------|------|------|----------|
+      310 +| 部门名称 | String | 是 | 2-100字符 |
+      311 +| 部门编码 | String | 是 | 唯一，英文数字下划线 |
+      312 +| 上级部门 | UUID | 否 | 引用department表 |
+      313 +| 部门负责人 | UUID | 否 | 引用user表 |
+      314 +| 部门描述 | String | 否 | 最大500字符 |
+      315 +| 排序号 | Int | 否 | 默认0，越大越靠前 |
+      316 +
+      317 +---
+      318 +
+      319  ### UC-02.02 权限定义与管理
+      320
+      321  **用例ID**: UC-02.02
+
+  Searching for 1 pattern, reading 1 file… (ctrl+o to expand)
+  ⎿  "## 7. 数据需求"
+
+✽ Zesting… (7m 42s · ↑ 1.8k tokens · thinking)
+  ⎿  Tip: Use /btw to ask a quick side question without interrupting Claude's current work
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+> 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏵⏵ bypass permissions on (shift+tab to cycle) · esc to interrupt
+ ▐▛███▜▌   Claude Code v2.1.81
+▝▜█████▛▘  kimi-k2.5 · API Usage Billing
+  ▘▘ ▝▝    D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01
+
+✻ Conversation compacted (ctrl+o for history)
+
+  ⎿  Referenced file docs\requirements\FUNCTIONAL_REQUIREMENTS.md
+  ⎿  Read docs\requirements\CONTEXT.md (333 lines)
+  ⎿  Read docs\requirements\NON_FUNCTIONAL_REQUIREMENTS.md (364 lines)
+  ⎿  Read docs\product\PRD.md (473 lines)
+  ⎿  Read AGENTS.md (97 lines)
+  ⎿  Plan file referenced (C:\Users\laido\.claude\plans\cheeky-hopping-hartmanis.md)
+
+  Read 1 file (ctrl+o to expand)
+
+● Now I'll add the Department entity to the data model section.
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 25 lines, removed 2 lines
+      563  | first_name | VARCHAR(100) | 名 | NOT NULL |
+      564  | last_name | VARCHAR(100) | 姓 | NOT NULL |
+      565  | phone | VARCHAR(20) | 手机号 | - |
+      566 -| department_id | UUID | 部门ID | FK |
+      566 +| department_id | UUID | 部门ID | FK → department.id |
+      567  | status | ENUM | 状态 | NOT NULL |
+      568  | email_verified | BOOLEAN | 邮箱是否验证 | NOT NULL, DEFAULT FALSE |
+      569  | failed_login_attempts | INT | 失败登录次数 | DEFAULT 0 |
+     ...
+      573  | updated_at | TIMESTAMP | 更新时间 | NOT NULL |
+      574  | deleted_at | TIMESTAMP | 删除时间（软删除） | - |
+      575
+      576 -### 7.2 角色实体
+      576 +### 7.2 部门实体
+      577
+      578  | 字段 | 类型 | 描述 | 约束 |
+      579  |------|------|------|------|
+      580  | id | UUID | 主键 | PK |
+      581 +| name | VARCHAR(100) | 部门名称 | NOT NULL |
+      582 +| code | VARCHAR(50) | 部门编码（如DEPT-001） | UK, NOT NULL |
+      583 +| parent_id | UUID | 父部门ID | FK → department.id, 根节点为NULL |
+      584 +| manager_id | UUID | 部门负责人ID | FK → user.id |
+      585 +| level | INT | 层级（1-5，1为公司） | NOT NULL, DEFAULT 1 |
+      586 +| path | VARCHAR(500) | 层级路径（如/1/2/5） | NOT NULL, 用于快速查询子树 |
+      587 +| sort_order | INT | 排序号 | DEFAULT 0 |
+      588 +| status | ENUM | 状态（ACTIVE/INACTIVE） | NOT NULL, DEFAULT ACTIVE |
+      589 +| created_at | TIMESTAMP | 创建时间 | NOT NULL |
+      590 +| updated_at | TIMESTAMP | 更新时间 | NOT NULL |
+      591 +| deleted_at | TIMESTAMP | 删除时间（软删除） | - |
+      592 +
+      593 +**部门实体说明**:
+      594 +- 自关联结构：parent_id 指向同一表的父部门，支持无限层级（业务限制最多5级）
+      595 +- path 字段：存储从根到当前节点的路径，便于快速查询所有子部门
+      596 +- level 字段：表示部门层级，1=公司，2=一级部门，3=二级部门...
+      597 +- 删除约束：存在子部门或归属用户时不可删除
+      598 +
+      599 +### 7.3 角色实体
+      600 +
+      601 +| 字段 | 类型 | 描述 | 约束 |
+      602 +|------|------|------|------|
+      603 +| id | UUID | 主键 | PK |
+      604  | name | VARCHAR(50) | 角色名 | UK, NOT NULL |
+      605  | code | VARCHAR(50) | 角色代码 | UK, NOT NULL |
+      606  | description | TEXT | 描述 | - |
+
+● Now let me update the remaining entity section numbers.
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Error editing file
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      608  | created_at | TIMESTAMP | 创建时间 | NOT NULL |
+      609  | updated_at | TIMESTAMP | 更新时间 | NOT NULL |
+      610
+      611 -### 7.3 权限实体
+      611 +### 7.4 权限实体
+      612
+      613  | 字段 | 类型 | 描述 | 约束 |
+      614  |------|------|------|------|
+
+● Now let me update the data scope description in section 6.1.4 to clarify the department hierarchy semantics.
+
+  Searched for 2 patterns, read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line
+      356  - 控制可见的数据范围
+      357  - 粒度: 数据行级别
+      358  - 范围: 全部/本部门/本人
+      359 +- **本部门范围说明**: 包含用户所属部门及其所有子部门的数据
+      360
+      361  #### 业务规则
+      362  - BR-02.02.01: 权限代码必须唯一，使用点号分隔（如：user:create）
+
+● Now let me add department management UI requirements to section 8.1.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 8 lines
+      635  - 批量导入对话框
+      636  - 操作确认对话框
+      637
+      638 +**部门管理页面**:
+      639 +- 部门树形结构展示（支持展开/折叠）
+      640 +- 部门详情面板
+      641 +- 创建/编辑部门表单
+      642 +- 拖拽调整部门排序
+      643 +- 部门用户列表查看
+      644 +- 删除确认（检查子部门和用户归属）
+      645 +
+      646  **角色权限页面**:
+      647  - 角色列表
+      648  - 权限树形结构展示
+
+● Now let me update the requirements traceability matrix to include department management.
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line
+      670  | FR-002 | US-002 | UC-01.03 | P1 | 待实现 |
+      671  | FR-003 | US-006 | UC-02.02 | P0 | 待实现 |
+      672  | FR-004 | US-007 | UC-04.03 | P0 | 待实现 |
+      673 +| FR-005 | - | UC-01.05 | P0 | 待实现 |
+      674
+      675  ### 9.2 变更记录
+      676
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line
+      676
+      677  | 版本 | 日期 | 修改人 | 修改内容 |
+      678  |------|------|--------|----------|
+      679 +| 1.1 | 2026-03-24 | 业务分析师 | 新增部门管理模块（UC-01.05），支持公司->部门->子部门的组织架构 |
+      680  | 1.0 | 2026-03-24 | 业务分析师 | 初始版本，基于PRD v1.0 |
+
+● Now let me update the table of contents to include the department management section.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      1  # 系统功能需求说明书 (FRD)
+      2  # 用户角色权限管理系统
+      3
+      4 -**文档版本**: 1.0
+      4 +**文档版本**: 1.1
+      5  **最后更新**: 2026-03-24
+      6  **编写人**: 业务分析师
+      7  **依据**: PRD v1.0、产品路线图 v1.0、用户画像 v1.0
+
+● Update(docs\requirements\FUNCTIONAL_REQUIREMENTS.md)
+  ⎿  Added 1 line, removed 1 line
+      14  本文档基于产品需求文档 (PRD)，将产品需求转化为详细的技术功能需求，为系统设计和开发提供明确的实现依据。
+      15
+      16  ### 1.2 文档范围
+      17 -涵盖用户管理、角色权限管理、审计日志、安全认证、系统配置五大功能模块的详细需求定义。
+      17 +涵盖用户管理、部门管理、角色权限管理、审计日志、安全认证、系统配置六大功能模块的详细需求定义。
+      18
+      19  ### 1.3 定义和缩略语
+      20
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● Let me also check if CONTEXT.md needs any department-related decisions.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● 部门管理子模块已完整添加到功能需求文档。已完成以下更新：
+
+  FUNCTIONAL_REQUIREMENTS.md (v1.1):
+
+  1. UC-01.05 部门管理用例 - 完整的CRUD操作、层级管理、树形结构展示
+  2. 业务规则 (BR-01.05.01~07) - 编码唯一性、5级层级限制、删除约束、循环依赖检查、审计日志等
+  3. 数据模型:
+    - 新增 7.2 部门实体 - 自关联结构支持公司->部门->子部门层级
+    - 更新 7.1 用户实体 - department_id 外键关联部门
+    - 重编号权限实体为 7.4
+  4. 数据权限说明 - 明确"本部门"范围包含用户所属部门及其所有子部门
+  5. UI需求 - 部门树形展示、拖拽排序、用户归属查看
+  6. 需求跟踪矩阵 - 新增 FR-005 部门管理条目
+  7. 变更记录 - 记录 v1.1 部门管理新增
+
+  文档已同步更新版本号至 1.1，涵盖六大功能模块（用户、部门、角色权限、审计日志、安全认证、系统配置）。
