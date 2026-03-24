@@ -46,6 +46,12 @@ E2E测试工程师（Playwright E2E测试）
 - `docs/requirements/USER_STORIES.md` - 用户故事列表
 - `docs/requirements/REQUIREMENTS_TRACEABILITY_MATRIX.md` - 需求跟踪矩阵
 
+### 数据库工程师输出
+- `backend/src/main/java/com/usermanagement/domain/*.java` - JPA 实体
+- `backend/src/main/resources/db/migration/V*__*.sql` - Flyway 迁移脚本
+- `DATABASE_SCHEMA.md` - 数据库设计文档
+- `docs/database/ER_DIAGRAM.md` - 实体关系图
+
 ### E2E测试工程师输出
 - `frontend/e2e/playwright.config.ts` - Playwright 配置
 - `frontend/e2e/pages/*.ts` - Page Object Model
