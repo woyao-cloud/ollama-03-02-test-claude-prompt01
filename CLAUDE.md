@@ -19,8 +19,10 @@
 - Zustand 状态管理
 
 ### 基础设施
-- Docker + Docker Compose
+- Docker + Docker Compose (本地/Team开发)
+- Kubernetes (SIT/UAT/生产)
 - GitHub Actions CI/CD
+- 5环境架构: 本地开发 → Team开发 → SIT → UAT → 生产
 
 ## 开发原则
 
@@ -56,9 +58,11 @@ usermanagement/
 - AUTHENTICATION_FLOW.md - 认证流程
 - BACKEND_ARCHITECTURE.md - 后端架构
 - FRONTEND_ARCHITECTURE.md - 前端架构
+- **ENVIRONMENT_ARCHITECTURE.md - 多环境部署架构** ⭐
 - TESTING_STRATEGY.md - 测试策略
 - DEPLOYMENT_GUIDE.md - 部署指南
 - DEVELOPMENT_WORKFLOW.md - 开发流程
+- .claude/plans/partitioned-enchanting-coral.md - 详细规划文档
 
 ## 质量指标
 
