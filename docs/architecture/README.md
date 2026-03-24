@@ -12,7 +12,7 @@
 | [../BACKEND_ARCHITECTURE.md](../BACKEND_ARCHITECTURE.md) | 后端详细架构 | Spring Boot 项目结构、技术栈 |
 | [DATA_FLOW_AND_API.md](./DATA_FLOW_AND_API.md) | 数据流与接口 | API 契约、数据流图、错误码 |
 | [SECURITY_ARCHITECTURE.md](./SECURITY_ARCHITECTURE.md) | 安全架构 | 认证授权、安全机制、数据保护 |
-| [adr/README.md](./adr/README.md) | 架构决策记录 | ADR-001 ~ ADR-010 |
+| [adr/README.md](./adr/README.md) | 架构决策记录 | ADR-001 ~ ADR-007 |
 
 ---
 
@@ -70,7 +70,7 @@
 |------|------|------|
 | 测试覆盖率 | ≥ 85% | JaCoCo 报告 |
 | API 响应时间 | P95 < 200ms | 数据库优化 + 缓存 |
-| 并发用户 | 1000+ | 虚拟线程 + 水平扩展 |
+| 并发用户 | 50,000 峰值 | 虚拟线程 + 水平扩展 |
 | 安全审计 | 100% 覆盖 | 所有敏感操作记录 |
 
 ---
@@ -149,7 +149,7 @@ docs/
 │   ├── DATA_FLOW_AND_API.md     # 数据流与接口设计
 │   ├── SECURITY_ARCHITECTURE.md # 安全架构设计
 │   └── adr/                     # 架构决策记录
-│       └── README.md            # ADR-001 ~ ADR-010
+│       └── README.md            # ADR-001 ~ ADR-007
 │
 ├── SYSTEM_ARCHITECTURE.md       # 系统整体架构
 ├── BACKEND_ARCHITECTURE.md      # 后端架构
