@@ -1,13 +1,89 @@
 # 部署指南
 
-## 环境配置
+## 环境架构总览
 
-| 环境 | 用途 | 访问 |
+### 5环境部署架构
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   本地开发    │ →  │  Team开发   │ →  │   SIT测试   │ →  │  UAT预发布  │ →  │   生产环境   │
+│  (Docker)   │    │  (Docker)   │    │    (K8s)    │    │    (K8s)    │    │    (K8s)    │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 环境对比
+
+| 环境 | 用途 | 部署方式 | PostgreSQL | Redis | 数据策略 |
+|------|------|----------|------------|-------|----------|
+| **本地开发** | 个人开发调试 | Docker Compose | 单容器 | 单容器 | 测试数据集 |
+| **Team开发** | 团队协作联调 | Docker Compose | 单容器 | 单容器 | 共享测试数据 |
+| **SIT测试** | 系统集成测试 | Kubernetes | 云RDS实例 | 云缓存 | 预发布数据 |
+| **UAT预发布** | 用户验收测试 | Kubernetes | 云RDS实例 | Redis集群 | 生产脱敏数据 |
+| **生产环境** | 正式业务运行 | Kubernetes | 云RDS集群 | Redis集群 | 生产数据 |
+
+## 快速启动
+
+### 本地开发环境
+```bash
+# 启动 PostgreSQL + Redis
+docker-compose -f docker-compose.local.yml up -d
+
+# 查看状态
+docker-compose -f docker-compose.local.yml ps
+```
+
+### Team开发环境
+```bash
+# 启动完整开发栈（含前后端）
+docker-compose -f docker-compose.team.yml up -d
+```
+
+## 环境配置详情
+
+### 1. 本地开发环境 (docker-compose.local.yml)
+
+| 服务 | 端口 | 说明 |
 |------|------|------|
-| 开发 | 本地开发 | 本地网络 |
-| 测试 | CI/CD 测试 | 内部网络 |
-| 预发布 | 生产验证 | 受限访问 |
-| 生产 | 正式运行 | 公共访问 |
+| PostgreSQL | 5432 | 开发数据库，命名卷持久化 |
+| Redis | 6379 | 开发缓存 |
+| pgAdmin (可选) | 5050 | 数据库管理界面 |
+
+### 2. Team开发环境 (docker-compose.team.yml)
+
+| 服务 | 端口 | 说明 |
+|------|------|------|
+| PostgreSQL | 5432 | 团队共享数据库 |
+| Redis | 6379 | 团队共享缓存 |
+| Backend | 8080 | Spring Boot 应用 |
+| Frontend | 3000 | Next.js 应用 |
+
+### 3. SIT/UAT/生产环境 (Kubernetes)
+
+使用外部托管服务：
+- **PostgreSQL**: 云RDS (阿里云RDS/AWS RDS/腾讯云CDB)
+- **Redis**: 云Redis服务或自建集群
+
+## 数据库与数据管理
+
+### Flyway迁移脚本位置
+```
+backend/src/main/resources/db/
+├── migration/              # 表结构迁移（所有环境）
+│   ├── V1__Initial_schema.sql
+│   ├── V2__Add_roles_permissions.sql
+│   └── V3__Add_audit_tables.sql
+├── data/
+│   ├── local/              # 本地开发数据种子
+│   ├── team/               # Team开发数据种子
+│   └── common/             # 通用基础数据
+└── test/                   # 测试专用数据
+```
+
+### 数据流向策略
+- 生产 → UAT: 脱敏导出（用于验收测试）
+- 生产 → SIT: 脱敏导出（用于问题复现）
+- Team → 本地: SQL导出（协作调试）
+- 禁止逆向数据流动
 
 ## 容器化部署
 
