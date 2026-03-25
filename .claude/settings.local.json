@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find backend:*)"
+      "Bash(find backend:*)",
+      "Bash(where gemini:*)",
+      "Bash(where claude:*)",
+      "Skill(gsd:execute-phase)",
+      "Bash(git -C D:claude-code-projectagentic-projectsollama-03-02-test-claude-prompt01 diff --stat HEAD)"
     ]
   }
 }
