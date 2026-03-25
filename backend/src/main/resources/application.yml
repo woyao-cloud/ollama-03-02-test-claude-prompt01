@@ -5,6 +5,25 @@ spring:
   profiles:
     active: dev
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: all
+      compression-type: snappy
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: audit-log-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.usermanagement.service.dto
+        spring.json.value.default.type: com.usermanagement.service.dto.AuditLogEvent
+
   jpa:
     open-in-view: false
     properties:
@@ -44,3 +63,14 @@ server:
   port: 8080
   servlet:
     context-path: /api
+
+# Application-specific Kafka settings
+app:
+  kafka:
+    enabled: true
+    topics:
+      audit-logs: audit-logs
+      audit-logs-retry: audit-logs-retry
+      audit-logs-dlt: audit-logs-dlt
+    partitions: 3
+    replication-factor: 1
