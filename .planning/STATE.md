@@ -26,7 +26,7 @@ Task:  None
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
 | Phase 1: Foundation | ✅ Complete | 100% | 2026-04-15 |
-| Phase 2: Department & Advanced | In Progress | 50% | 2026-04-25 |
+| Phase 2: Department & Advanced | In Progress | 66% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
 ---
@@ -107,7 +107,8 @@ Task:  None
 9. [x] 执行 Plan 2.1: 部门管理模块
 10. [x] 执行 Plan 2.2: 数据权限范围实现
 11. [x] 执行 Plan 2.3: 字段级权限控制
-12. [ ] 执行 Plan 2.4: OAuth2.0集成
+12. [x] 执行 Plan 2.4: OAuth2.0集成
+13. [ ] 执行 Plan 2.5: 批量导入导出
 
 ### Context Summary
 
@@ -228,10 +229,10 @@ Task:  None
   - [x] 实现字段过滤逻辑
   - [x] 集成到序列化层
 
-- [ ] Plan 2.4: OAuth2.0集成
-  - [ ] 配置 OAuth2.0 客户端
-  - [ ] 实现第三方登录
-  - [ ] 实现账号绑定
+- [x] Plan 2.4: OAuth2.0集成
+  - [x] 配置 OAuth2.0 客户端
+  - [x] 实现第三方登录
+  - [x] 实现账号绑定
 
 - [ ] Plan 2.5: 批量导入导出
   - [ ] 实现 Excel 导入
