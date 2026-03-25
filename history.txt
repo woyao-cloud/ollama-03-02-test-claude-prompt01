@@ -5579,3 +5579,40 @@ iterable
   - Plan 3.4: Monitoring & Alerting
   - Plan 3.5: Kubernetes Deployment
   - Plan 3.6: Stress Testing
+
+● Plan 3.1: Kafka Audit Log Integration has been created at:
+
+  .planning/phases/phase-03-production-ready/01-PLAN.md
+
+  The plan includes 10 tasks:
+
+  ┌──────┬───────────────────────────────────────────────────────────┐
+  │ Task │                        Description                        │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 1    │ Add Kafka dependencies to pom.xml                         │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 2    │ Create AuditLogEvent DTO for Kafka messages               │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 3    │ Configure Kafka properties in application.yml             │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 4    │ Create AuditLogKafkaProducer service                      │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 5    │ Create AsyncAuditLogService (marked @Primary)             │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 6    │ Create AuditLogKafkaConsumer with retry/DLT handling      │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 7    │ Configure KafkaConfig with topics and error handling      │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 8    │ Update Docker Compose with Kafka, Zookeeper, and Kafka UI │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 9    │ Add fallback mode for when Kafka is disabled              │
+  ├──────┼───────────────────────────────────────────────────────────┤
+  │ 10   │ Write unit and integration tests (@EmbeddedKafka)         │
+  └──────┴───────────────────────────────────────────────────────────┘
+
+  Key Design Decisions:
+  - Uses Spring Kafka with JSON serialization
+  - 3 retry attempts with 1s interval before DLT
+  - Configurable via app.kafka.enabled flag for graceful degradation
+  - Non-blocking producer - audit failures don't break main flow
+  - Topics: audit-logs, audit-logs-retry, audit-logs-dlt
