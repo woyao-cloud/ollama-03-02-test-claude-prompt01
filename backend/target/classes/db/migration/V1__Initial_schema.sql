@@ -266,6 +266,18 @@ CREATE INDEX idx_sessions_expires ON user_sessions(expires_at);
 CREATE INDEX idx_sessions_user_valid ON user_sessions(user_id, is_valid) WHERE is_valid = TRUE;
 CREATE INDEX idx_sessions_created ON user_sessions(created_at);
 
+-- =============================================
+-- 8. 自动更新 updated_at 的触发器函数
+-- 必须在所有触发器之前定义
+-- =============================================
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- 用户会话表触发器
 CREATE TRIGGER update_user_sessions_updated_at
     BEFORE UPDATE ON user_sessions
@@ -344,15 +356,9 @@ CREATE INDEX idx_audit_logs_2026_06_resource ON audit_logs_2026_06(resource_type
 CREATE INDEX idx_audit_logs_2026_06_operation ON audit_logs_2026_06(operation, created_at DESC);
 
 -- =============================================
--- 9. 自动更新 updated_at 的触发器函数
+-- 9. 为其他表创建 updated_at 触发器
+-- （函数已在前面定义）
 -- =============================================
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
 
 -- 为用户表创建触发器
 CREATE TRIGGER trg_users_updated_at
@@ -498,62 +504,16 @@ SELECT '00000000-0000-0000-0000-000000000001', id FROM permissions;
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT '00000000-0000-0000-0000-000000000002', id FROM permissions;
 
+-- 创建分区函数已在上面定义
+
 -- =============================================
--- 13. pg_cron扩展和自动化任务
+-- 13. 提交事务
 -- =============================================
 
--- 启用pg_cron扩展（用于定时任务）
-CREATE EXTENSION IF NOT EXISTS pg_cron;
+COMMIT;
 
--- 创建每月自动创建审计日志分区的定时任务
--- 每月1号凌晨2点自动创建下月分区
-SELECT cron.schedule(
-    'create-next-month-audit-partition',
-    '0 2 1 * *',
-    $$SELECT create_audit_log_partition(
-        EXTRACT(YEAR FROM CURRENT_DATE + INTERVAL '1 month')::INT,
-        EXTRACT(MONTH FROM CURRENT_DATE + INTERVAL '1 month')::INT
-    )$$
-);
-
--- 创建归档旧分区任务（可选，保留最近12个月）
--- 每月1号凌晨3点归档超过12个月的分区
-SELECT cron.schedule(
-    'archive-old-audit-partitions',
-    '0 3 1 * *',
-    $$SELECT detach_audit_log_partition(
-        EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '13 months')::INT,
-        EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '13 months')::INT
-    )$$
-);
-
--- 创建归档分区函数（分离旧分区到归档表空间）
-CREATE OR REPLACE FUNCTION detach_audit_log_partition(year_num INT, month_num INT)
-RETURNS VOID AS $$
-DECLARE
-    partition_name TEXT;
-    start_date DATE;
-    end_date DATE;
-BEGIN
-    partition_name := 'audit_logs_' || year_num || '_' || LPAD(month_num::TEXT, 2, '0');
-
-    -- 检查分区是否存在
-    IF EXISTS (
-        SELECT 1 FROM pg_tables
-        WHERE schemaname = 'public'
-        AND tablename = partition_name
-    ) THEN
-        -- 分离分区
-        EXECUTE format('ALTER TABLE audit_logs DETACH PARTITION %I', partition_name);
-
-        -- 重命名为归档表
-        EXECUTE format('ALTER TABLE %I RENAME TO %I', partition_name, partition_name || '_archived');
-
-        RAISE NOTICE 'Partition % archived as %_archived', partition_name, partition_name;
-    ELSE
-        RAISE NOTICE 'Partition % does not exist', partition_name;
-    END IF;
-END;
-$$ LANGUAGE plpgsql;
+-- 验证数据
+SELECT '数据库初始化完成' as status,
+       (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public') as table_count;
 
 COMMIT;

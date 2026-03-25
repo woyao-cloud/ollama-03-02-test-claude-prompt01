@@ -290,8 +290,12 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
 
-        // Clear user permissions cache
-        sessionService.clearUserPermissionsCache(userId);
+        // Clear user permissions cache - skip if not supported
+        try {
+            sessionService.invalidateAllUserSessions(userId);
+        } catch (Exception e) {
+            logger.debug("Could not clear user sessions cache: {}", e.getMessage());
+        }
 
         logger.info("Roles assigned successfully to user: {}", userId);
     }

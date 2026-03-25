@@ -139,6 +139,14 @@ public class RoleDTO {
         this.permissionCount = permissionCount;
     }
 
+    public List<String> getPermissionCodes() {
+        return permissionCodes;
+    }
+
+    public void setPermissionCodes(List<String> permissionCodes) {
+        this.permissionCodes = permissionCodes;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }

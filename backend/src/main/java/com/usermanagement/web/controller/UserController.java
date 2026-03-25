@@ -225,7 +225,8 @@ public class UserController {
      */
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDTO>> getCurrentUser() {
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId()
+                .orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.debug("Getting current user info: {}", currentUserId);
 
         UserDTO user = userService.getUserById(currentUserId);
@@ -238,7 +239,8 @@ public class UserController {
     @PutMapping("/me/profile")
     public ResponseEntity<ApiResponse<UserDTO>> updateMyProfile(
             @Valid @RequestBody UpdateProfileRequest request) {
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId()
+                .orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.info("Updating my profile: {}", currentUserId);
 
         UserDTO updatedProfile = userService.updateProfile(currentUserId, request);

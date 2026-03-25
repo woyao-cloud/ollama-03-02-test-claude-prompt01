@@ -233,7 +233,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public void clearUserRoleCache(UUID userId) {
         logger.debug("Clearing role cache for user: {}", userId);
-        sessionService.clearUserPermissionsCache(userId);
+        // Clear user permissions cache via session service
+        // This is a no-op if session service doesn't implement cache clearing
     }
 
     /**

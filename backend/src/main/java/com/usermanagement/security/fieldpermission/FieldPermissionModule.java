@@ -80,7 +80,11 @@ public class FieldPermissionModule extends SimpleModule {
         public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             // Check if field should be serialized
             if (shouldSerialize(value)) {
-                writer.serializeAsField(value, gen, serializers);
+                try {
+                    writer.serializeAsField(value, gen, serializers);
+                } catch (Exception e) {
+                    throw new IOException("Failed to serialize field", e);
+                }
             } else {
                 // Skip or mask based on configuration
                 if (annotation.mask() == FieldPermission.MaskType.HIDE) {

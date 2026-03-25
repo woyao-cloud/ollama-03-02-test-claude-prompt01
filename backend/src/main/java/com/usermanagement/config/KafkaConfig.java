@@ -178,7 +178,7 @@ public class KafkaConfig {
                 .maxAttempts(4) // Initial + 3 retries
                 .includeTopic(auditLogsTopic)
                 .retryTopicSuffix("-retry")
-                .dltTopicSuffix("-dlt")
+                .dltSuffix("-dlt")
                 .doNotAutoCreateRetryTopics()
                 .create(kafkaTemplate);
     }

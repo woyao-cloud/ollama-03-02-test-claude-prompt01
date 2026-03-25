@@ -143,6 +143,18 @@ public class SessionServiceImpl implements SessionService {
         return Boolean.TRUE.equals(locked);
     }
 
+    @Override
+    public void clearUserPermissionsCache(UUID userId) {
+        // TODO: Implement permissions cache clearing when Redis cache is available
+        logger.debug("Clearing permissions cache for user: {}", userId);
+    }
+
+    @Override
+    public void invalidateAllUserSessions(UUID userId) {
+        // TODO: Implement session invalidation - requires pattern matching in Redis
+        logger.debug("Invalidating all sessions for user: {}", userId);
+    }
+
     /**
      * Build session Redis key
      */

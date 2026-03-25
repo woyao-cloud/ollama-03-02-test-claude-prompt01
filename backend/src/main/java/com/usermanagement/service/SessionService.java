@@ -103,6 +103,20 @@ public interface SessionService {
     boolean isLocked(String email);
 
     /**
+     * Clear user permissions cache
+     *
+     * @param userId user ID
+     */
+    void clearUserPermissionsCache(UUID userId);
+
+    /**
+     * Invalidate all sessions for a user
+     *
+     * @param userId user ID
+     */
+    void invalidateAllUserSessions(UUID userId);
+
+    /**
      * Session data class
      */
     class SessionData {

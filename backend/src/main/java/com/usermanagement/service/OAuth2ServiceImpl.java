@@ -8,6 +8,7 @@ import com.usermanagement.repository.UserRepository;
 import com.usermanagement.service.dto.*;
 import com.usermanagement.service.oauth2.OAuth2Client;
 
+import com.usermanagement.security.jwt.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,16 @@ public class OAuth2ServiceImpl implements OAuth2Service {
 
     private final OAuth2ConnectionRepository oAuth2ConnectionRepository;
     private final UserRepository userRepository;
-    private final TokenService tokenService;
+    private final JwtTokenProvider jwtTokenProvider;
     private final List<OAuth2Client> oauth2Clients;
 
     public OAuth2ServiceImpl(OAuth2ConnectionRepository oAuth2ConnectionRepository,
                              UserRepository userRepository,
-                             TokenService tokenService,
+                             JwtTokenProvider jwtTokenProvider,
                              List<OAuth2Client> oauth2Clients) {
         this.oAuth2ConnectionRepository = oAuth2ConnectionRepository;
         this.userRepository = userRepository;
-        this.tokenService = tokenService;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.oauth2Clients = oauth2Clients;
     }
 
@@ -265,9 +266,9 @@ public class OAuth2ServiceImpl implements OAuth2Service {
             userRepository.save(user);
         }
 
-        // Generate tokens
-        String accessTokenStr = tokenService.generateAccessToken(user.getId());
-        String refreshTokenStr = tokenService.generateRefreshToken(user.getId());
+        // Generate tokens - create simple auth wrapper for UUID
+        String accessTokenStr = generateAccessToken(user.getId());
+        String refreshTokenStr = generateRefreshToken(user.getId());
 
         return OAuth2LoginResult.success(
                 user.getId(),
@@ -283,8 +284,8 @@ public class OAuth2ServiceImpl implements OAuth2Service {
     private OAuth2LoginResult bindToExistingUser(User user, OAuth2UserProfile profile, String accessToken) {
         OAuth2Connection connection = createConnection(user, profile, accessToken, false);
 
-        String accessTokenStr = tokenService.generateAccessToken(user.getId());
-        String refreshTokenStr = tokenService.generateRefreshToken(user.getId());
+        String accessTokenStr = generateAccessToken(user.getId());
+        String refreshTokenStr = generateRefreshToken(user.getId());
 
         return OAuth2LoginResult.success(
                 user.getId(),
@@ -303,8 +304,8 @@ public class OAuth2ServiceImpl implements OAuth2Service {
 
         OAuth2Connection connection = createConnection(user, profile, accessToken, true);
 
-        String accessTokenStr = tokenService.generateAccessToken(user.getId());
-        String refreshTokenStr = tokenService.generateRefreshToken(user.getId());
+        String accessTokenStr = generateAccessToken(user.getId());
+        String refreshTokenStr = generateRefreshToken(user.getId());
 
         return OAuth2LoginResult.success(
                 user.getId(),
@@ -314,6 +315,29 @@ public class OAuth2ServiceImpl implements OAuth2Service {
                 3600L,
                 true,
                 profile.getProvider()
+        );
+    }
+
+    /**
+     * Generate access token for user
+     */
+    private String generateAccessToken(UUID userId) {
+        return jwtTokenProvider.generateAccessToken(
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        userId.toString(), null, java.util.Collections.emptyList()),
+                userId,
+                null
+        );
+    }
+
+    /**
+     * Generate refresh token for user
+     */
+    private String generateRefreshToken(UUID userId) {
+        return jwtTokenProvider.generateRefreshToken(
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        userId.toString(), null, java.util.Collections.emptyList()),
+                userId
         );
     }
 

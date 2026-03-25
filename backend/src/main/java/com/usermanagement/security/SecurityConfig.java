@@ -1,5 +1,6 @@
 package com.usermanagement.security;
 
+import com.usermanagement.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

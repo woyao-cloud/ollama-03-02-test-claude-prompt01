@@ -77,7 +77,7 @@ public class AuditLogServiceImpl implements AuditLogService {
             AuditLog auditLog = new AuditLog();
 
             // Set user info
-            UUID currentUserId = securityUtils.getCurrentUserId();
+            UUID currentUserId = securityUtils.getCurrentUserId().orElse(null);
             if (currentUserId != null) {
                 User user = userRepository.findById(currentUserId).orElse(null);
                 auditLog.setUser(user);
