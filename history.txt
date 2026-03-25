@@ -5333,3 +5333,52 @@ iterable
   5. 完整单元测试 - 覆盖所有业务场景
 
   下一步是 Plan 2.2: 数据权限范围实现，是否继续？
+
+  ● Plan 2.2 (数据权限范围实现) 已完成！以下是交付的内容：
+
+  已创建的文件
+
+  数据权限核心组件:
+  - DataScopeService.java - 评估用户数据权限范围
+  - DataScopeResult.java - 封装权限结果
+  - DataScopeContext.java - ThreadLocal 上下文传递
+  - DataScope.java - 注解定义
+  - DataScopeAspect.java - AOP 切面
+  - DataScopeUtil.java - 工具类
+
+  Repository 集成:
+  - UserSpecification.java - 添加数据范围规范方法
+  - DataScopeUserRepository.java - 带数据范围过滤的仓库包装
+
+  单元测试:
+  - DataScopeServiceTest.java - 17个测试用例
+
+  支持的四种数据范围
+
+  ┌────────┬────────────────┬────────────┐
+  │  范围  │      说明      │  使用场景  │
+  ├────────┼────────────────┼────────────┤
+  │ ALL    │ 全部数据       │ 超级管理员 │
+  ├────────┼────────────────┼────────────┤
+  │ DEPT   │ 本部门及子部门 │ 部门经理   │
+  ├────────┼────────────────┼────────────┤
+  │ SELF   │ 仅本人数据     │ 普通用户   │
+  ├────────┼────────────────┼────────────┤
+  │ CUSTOM │ 自定义范围     │ 特殊角色   │
+  └────────┴────────────────┴────────────┘
+
+  使用示例
+
+  @DataScope(userIdField = "id", deptIdField = "department.id")
+  public Page<UserDTO> getUsers(UserQueryRequest query) {
+      return dataScopeUserRepository.findAllWithDataScope(
+          UserSpecification.withQuery(query), pageable
+      );
+  }
+
+  // 检查访问权限
+  if (!dataScopeService.canAccessUserData(userId)) {
+      throw new AccessDeniedException("Access denied");
+  }
+
+  进度已更新至 33%。下一步是 Plan 2.3: 字段级权限控制，是否继续？

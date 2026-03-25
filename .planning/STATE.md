@@ -26,7 +26,7 @@ Task:  None
 | Phase | Status | Progress | Target Date |
 |-------|--------|----------|-------------|
 | Phase 1: Foundation | ✅ Complete | 100% | 2026-04-15 |
-| Phase 2: Department & Advanced | In Progress | 16% | 2026-04-25 |
+| Phase 2: Department & Advanced | In Progress | 33% | 2026-04-25 |
 | Phase 3: Production Ready | Not started | 0% | 2026-04-30 |
 
 ---
@@ -105,7 +105,8 @@ Task:  None
 7. [x] 执行 Plan 1.5: 审计日志框架
 8. [x] 执行 Plan 1.6: 前端基础架构
 9. [x] 执行 Plan 2.1: 部门管理模块
-10. [ ] 执行 Plan 2.2: 数据权限范围实现
+10. [x] 执行 Plan 2.2: 数据权限范围实现
+11. [ ] 执行 Plan 2.3: 字段级权限控制
 
 ### Context Summary
 
@@ -216,10 +217,10 @@ Task:  None
   - [x] 实现部门树形结构API
   - [x] 编写单元测试
 
-- [ ] Plan 2.2: 数据权限范围实现
-  - [ ] 实现数据范围过滤逻辑
-  - [ ] 集成到 Repository 层
-  - [ ] 支持 ALL/DEPT/SELF/CUSTOM 范围
+- [x] Plan 2.2: 数据权限范围实现
+  - [x] 实现数据范围过滤逻辑
+  - [x] 集成到 Repository 层
+  - [x] 支持 ALL/DEPT/SELF/CUSTOM 范围
 
 - [ ] Plan 2.3: 字段级权限控制
   - [ ] 实现字段权限注解

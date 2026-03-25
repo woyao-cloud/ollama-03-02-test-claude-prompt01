@@ -169,4 +169,44 @@ public class UserSpecification {
             return cb.or(predicates.toArray(new Predicate[0]));
         };
     }
+
+    /**
+     * Specification for data scope filtering by user ID
+     * Used for SELF data scope
+     */
+    public static Specification<User> hasIdIn(java.util.Collection<java.util.UUID> userIds) {
+        return (root, query, cb) -> {
+            if (userIds == null || userIds.isEmpty()) {
+                return cb.disjunction(); // No access if no user IDs specified
+            }
+            return root.get("id").in(userIds);
+        };
+    }
+
+    /**
+     * Specification for data scope filtering by department ID
+     * Used for DEPT and CUSTOM data scopes
+     */
+    public static Specification<User> hasDepartmentIdIn(java.util.Collection<java.util.UUID> departmentIds) {
+        return (root, query, cb) -> {
+            if (departmentIds == null || departmentIds.isEmpty()) {
+                return cb.disjunction(); // No access if no department IDs specified
+            }
+            return root.get("department").get("id").in(departmentIds);
+        };
+    }
+
+    /**
+     * Specification that always returns true (for ALL data scope)
+     */
+    public static Specification<User> allowAll() {
+        return (root, query, cb) -> cb.conjunction();
+    }
+
+    /**
+     * Specification that always returns false (for no access)
+     */
+    public static Specification<User> denyAll() {
+        return (root, query, cb) -> cb.disjunction();
+    }
 }
