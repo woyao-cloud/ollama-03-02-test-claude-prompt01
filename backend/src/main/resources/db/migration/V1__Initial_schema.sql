@@ -377,9 +377,9 @@ CREATE INDEX idx_audit_logs_2026_06_resource ON audit_logs_2026_06(resource_type
 CREATE INDEX idx_audit_logs_2026_06_operation ON audit_logs_2026_06(operation, created_at DESC);
 
 -- =============================================
--- 12. system_config 系统配置表
+-- 12. ums_system_config 系统配置表
 -- =============================================
-CREATE TABLE system_config (
+CREATE TABLE ums_system_config (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     config_key VARCHAR(100) NOT NULL,
     config_value TEXT NOT NULL,
@@ -389,24 +389,24 @@ CREATE TABLE system_config (
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT uq_system_config_key UNIQUE (config_key),
-    CONSTRAINT chk_system_config_category CHECK (category IN ('GENERAL', 'SECURITY', 'PASSWORD', 'SESSION', 'EMAIL', 'AUDIT'))
+    CONSTRAINT uq_ums_system_config_key UNIQUE (config_key),
+    CONSTRAINT chk_ums_system_config_category CHECK (category IN ('GENERAL', 'SECURITY', 'PASSWORD', 'SESSION', 'EMAIL', 'AUDIT'))
 );
 
 -- 系统配置表注释
-COMMENT ON TABLE system_config IS '系统配置表 - 存储系统级配置参数';
-COMMENT ON COLUMN system_config.id IS '配置ID';
-COMMENT ON COLUMN system_config.config_key IS '配置键，全局唯一';
-COMMENT ON COLUMN system_config.config_value IS '配置值（TEXT格式）';
-COMMENT ON COLUMN system_config.description IS '配置描述';
-COMMENT ON COLUMN system_config.category IS '配置分类：GENERAL/SECURITY/PASSWORD/SESSION/EMAIL/AUDIT';
-COMMENT ON COLUMN system_config.is_system IS '是否为系统配置（不可删除）';
-COMMENT ON COLUMN system_config.created_at IS '创建时间';
-COMMENT ON COLUMN system_config.updated_at IS '更新时间';
+COMMENT ON TABLE ums_system_config IS '系统配置表 - 存储系统级配置参数';
+COMMENT ON COLUMN ums_system_config.id IS '配置ID';
+COMMENT ON COLUMN ums_system_config.config_key IS '配置键，全局唯一';
+COMMENT ON COLUMN ums_system_config.config_value IS '配置值（TEXT格式）';
+COMMENT ON COLUMN ums_system_config.description IS '配置描述';
+COMMENT ON COLUMN ums_system_config.category IS '配置分类：GENERAL/SECURITY/PASSWORD/SESSION/EMAIL/AUDIT';
+COMMENT ON COLUMN ums_system_config.is_system IS '是否为系统配置（不可删除）';
+COMMENT ON COLUMN ums_system_config.created_at IS '创建时间';
+COMMENT ON COLUMN ums_system_config.updated_at IS '更新时间';
 
 -- 系统配置表索引
-CREATE UNIQUE INDEX idx_system_config_key ON system_config(config_key);
-CREATE INDEX idx_system_config_category ON system_config(category);
+CREATE UNIQUE INDEX idx_system_config_key ON ums_system_config(config_key);
+CREATE INDEX idx_system_config_category ON ums_system_config(category);
 
 -- =============================================
 -- 13. 为其他表创建 updated_at 触发器
@@ -439,7 +439,7 @@ CREATE TRIGGER trg_permissions_updated_at
 
 -- 为系统配置表创建触发器
 CREATE TRIGGER trg_system_config_updated_at
-    BEFORE UPDATE ON system_config
+    BEFORE UPDATE ON ums_system_config
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
@@ -556,7 +556,7 @@ VALUES
     ('00000000-0000-0000-0000-000000000018', '部门删除', 'department:delete', 'ACTION', 'department', 'delete', 4, 'ACTIVE');
 
 -- 创建默认系统配置
-INSERT INTO system_config (id, config_key, config_value, description, category, is_system) VALUES
+INSERT INTO ums_system_config (id, config_key, config_value, description, category, is_system) VALUES
     ('00000000-0000-0000-0000-000000000030', 'system.name', 'User Management System', '系统名称', 'GENERAL', TRUE),
     ('00000000-0000-0000-0000-000000000031', 'system.version', '1.0.0', '系统版本', 'GENERAL', TRUE),
     ('00000000-0000-0000-0000-000000000032', 'password.min.length', '8', '密码最小长度', 'PASSWORD', TRUE),

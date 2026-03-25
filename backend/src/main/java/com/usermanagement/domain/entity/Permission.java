@@ -3,7 +3,9 @@ package com.usermanagement.domain.entity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 权限实体类
@@ -45,6 +47,9 @@ public class Permission extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("sortOrder ASC")
     private List<Permission> children = new ArrayList<>();
+
+    @OneToMany(mappedBy = "permission", fetch = FetchType.LAZY)
+    private Set<RolePermission> rolePermissions = new HashSet<>();
 
     @Column(name = "icon", length = 100)
     private String icon;
@@ -154,6 +159,14 @@ public class Permission extends BaseEntity {
 
     public void setChildren(List<Permission> children) {
         this.children = children;
+    }
+
+    public Set<RolePermission> getRolePermissions() {
+        return rolePermissions;
+    }
+
+    public void setRolePermissions(Set<RolePermission> rolePermissions) {
+        this.rolePermissions = rolePermissions;
     }
 
     public String getIcon() {

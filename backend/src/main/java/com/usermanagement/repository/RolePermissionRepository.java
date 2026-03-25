@@ -1,6 +1,7 @@
 package com.usermanagement.repository;
 
 import com.usermanagement.domain.entity.RolePermission;
+import com.usermanagement.domain.entity.RolePermissionId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * @since 1.0
  */
 @Repository
-public interface RolePermissionRepository extends JpaRepository<RolePermission, UUID> {
+public interface RolePermissionRepository extends JpaRepository<RolePermission, RolePermissionId> {
 
     /**
      * 根据角色ID查询角色权限关联

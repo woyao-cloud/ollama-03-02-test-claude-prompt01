@@ -13,9 +13,11 @@ D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backen
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\Permission.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\Role.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\RolePermission.java
+D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\RolePermissionId.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\SystemConfig.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\User.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\UserRole.java
+D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\UserRoleId.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\domain\entity\UserSession.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\repository\AuditLogRepository.java
 D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\main\java\com\usermanagement\repository\datascope\DataScopeUserRepository.java

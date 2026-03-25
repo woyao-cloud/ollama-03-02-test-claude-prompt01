@@ -3,6 +3,7 @@ package com.usermanagement.domain.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 /**
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Table(name = "role_permissions", indexes = {
     @Index(name = "idx_role_permissions_permission", columnList = "permission_id")
 })
+@IdClass(RolePermissionId.class)
 public class RolePermission {
 
     @Id

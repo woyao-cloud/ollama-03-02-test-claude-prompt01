@@ -1,6 +1,7 @@
 package com.usermanagement.repository;
 
 import com.usermanagement.domain.entity.UserRole;
+import com.usermanagement.domain.entity.UserRoleId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * @since 1.0
  */
 @Repository
-public interface UserRoleRepository extends JpaRepository<UserRole, UUID> {
+public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> {
 
     /**
      * 根据用户ID查询用户角色关联

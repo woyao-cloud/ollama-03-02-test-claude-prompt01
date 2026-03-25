@@ -16,6 +16,7 @@ import java.time.Instant;
 @Table(name = "user_roles", indexes = {
     @Index(name = "idx_user_roles_role", columnList = "role_id")
 })
+@IdClass(UserRoleId.class)
 public class UserRole {
 
     @Id

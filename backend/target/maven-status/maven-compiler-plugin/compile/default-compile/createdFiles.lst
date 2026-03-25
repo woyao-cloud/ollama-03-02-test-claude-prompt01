@@ -47,6 +47,7 @@ com\usermanagement\security\fieldpermission\FieldPermission$AccessLevel.class
 com\usermanagement\web\dto\UpdateDepartmentStatusRequest.class
 com\usermanagement\web\dto\AssignPermissionsRequest.class
 com\usermanagement\web\dto\PageResponse.class
+com\usermanagement\domain\entity\UserRoleId.class
 com\usermanagement\repository\RoleRepository.class
 com\usermanagement\security\fieldpermission\FieldPermission.class
 com\usermanagement\web\dto\LoginResponse.class
@@ -141,6 +142,7 @@ com\usermanagement\service\DepartmentServiceImpl.class
 com\usermanagement\service\dto\UserImportResult$ImportError.class
 com\usermanagement\service\AuditLogService.class
 com\usermanagement\config\KafkaConfig.class
+com\usermanagement\domain\entity\RolePermissionId.class
 com\usermanagement\service\PermissionService.class
 com\usermanagement\security\jwt\JwtTokenValidator.class
 com\usermanagement\security\fieldpermission\SecureFieldSerializer.class

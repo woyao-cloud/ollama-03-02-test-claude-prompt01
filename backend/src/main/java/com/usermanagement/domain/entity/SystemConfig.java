@@ -12,9 +12,9 @@ import java.util.UUID;
  * @since 1.0
  */
 @Entity
-@Table(name = "system_config", indexes = {
-    @Index(name = "idx_system_config_key", columnList = "config_key", unique = true),
-    @Index(name = "idx_system_config_category", columnList = "category")
+@Table(name = "ums_system_config", indexes = {
+    @Index(name = "idx_ums_system_config_key", columnList = "config_key", unique = true),
+    @Index(name = "idx_ums_system_config_category", columnList = "category")
 })
 public class SystemConfig {
 

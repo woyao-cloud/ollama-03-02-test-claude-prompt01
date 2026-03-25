@@ -377,7 +377,39 @@ CREATE INDEX idx_audit_logs_2026_06_resource ON audit_logs_2026_06(resource_type
 CREATE INDEX idx_audit_logs_2026_06_operation ON audit_logs_2026_06(operation, created_at DESC);
 
 -- =============================================
--- 12. 为其他表创建 updated_at 触发器
+-- 12. ums_system_config 系统配置表
+-- =============================================
+CREATE TABLE ums_system_config (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    config_key VARCHAR(100) NOT NULL,
+    config_value TEXT NOT NULL,
+    description TEXT,
+    category VARCHAR(50) NOT NULL DEFAULT 'GENERAL',
+    is_system BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_ums_system_config_key UNIQUE (config_key),
+    CONSTRAINT chk_ums_system_config_category CHECK (category IN ('GENERAL', 'SECURITY', 'PASSWORD', 'SESSION', 'EMAIL', 'AUDIT'))
+);
+
+-- 系统配置表注释
+COMMENT ON TABLE ums_system_config IS '系统配置表 - 存储系统级配置参数';
+COMMENT ON COLUMN ums_system_config.id IS '配置ID';
+COMMENT ON COLUMN ums_system_config.config_key IS '配置键，全局唯一';
+COMMENT ON COLUMN ums_system_config.config_value IS '配置值（TEXT格式）';
+COMMENT ON COLUMN ums_system_config.description IS '配置描述';
+COMMENT ON COLUMN ums_system_config.category IS '配置分类：GENERAL/SECURITY/PASSWORD/SESSION/EMAIL/AUDIT';
+COMMENT ON COLUMN ums_system_config.is_system IS '是否为系统配置（不可删除）';
+COMMENT ON COLUMN ums_system_config.created_at IS '创建时间';
+COMMENT ON COLUMN ums_system_config.updated_at IS '更新时间';
+
+-- 系统配置表索引
+CREATE UNIQUE INDEX idx_system_config_key ON ums_system_config(config_key);
+CREATE INDEX idx_system_config_category ON ums_system_config(category);
+
+-- =============================================
+-- 13. 为其他表创建 updated_at 触发器
 -- （函数已在前面定义）
 -- =============================================
 
@@ -405,8 +437,14 @@ CREATE TRIGGER trg_permissions_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
+-- 为系统配置表创建触发器
+CREATE TRIGGER trg_system_config_updated_at
+    BEFORE UPDATE ON ums_system_config
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
 -- =============================================
--- 13. 创建分区管理函数
+-- 14. 创建分区管理函数
 -- =============================================
 CREATE OR REPLACE FUNCTION create_audit_log_partition(
     p_year INT,
@@ -462,7 +500,7 @@ $$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION create_audit_log_partition IS '创建审计日志分区表';
 
 -- =============================================
--- 14. 插入默认数据
+-- 15. 插入默认数据
 -- =============================================
 
 -- 创建根部门（公司）
@@ -517,6 +555,22 @@ VALUES
     ('00000000-0000-0000-0000-000000000017', '部门更新', 'department:update', 'ACTION', 'department', 'update', 3, 'ACTIVE'),
     ('00000000-0000-0000-0000-000000000018', '部门删除', 'department:delete', 'ACTION', 'department', 'delete', 4, 'ACTIVE');
 
+-- 创建默认系统配置
+INSERT INTO ums_system_config (id, config_key, config_value, description, category, is_system) VALUES
+    ('00000000-0000-0000-0000-000000000030', 'system.name', 'User Management System', '系统名称', 'GENERAL', TRUE),
+    ('00000000-0000-0000-0000-000000000031', 'system.version', '1.0.0', '系统版本', 'GENERAL', TRUE),
+    ('00000000-0000-0000-0000-000000000032', 'password.min.length', '8', '密码最小长度', 'PASSWORD', TRUE),
+    ('00000000-0000-0000-0000-000000000033', 'password.require.uppercase', 'true', '密码必须包含大写字母', 'PASSWORD', TRUE),
+    ('00000000-0000-0000-0000-000000000034', 'password.require.lowercase', 'true', '密码必须包含小写字母', 'PASSWORD', TRUE),
+    ('00000000-0000-0000-0000-000000000035', 'password.require.number', 'true', '密码必须包含数字', 'PASSWORD', TRUE),
+    ('00000000-0000-0000-0000-000000000036', 'password.require.special', 'true', '密码必须包含特殊字符', 'PASSWORD', TRUE),
+    ('00000000-0000-0000-0000-000000000037', 'session.timeout.minutes', '30', '会话超时时间（分钟）', 'SESSION', TRUE),
+    ('00000000-0000-0000-0000-000000000038', 'session.max.concurrent', '5', '最大并发会话数', 'SESSION', TRUE),
+    ('00000000-0000-0000-0000-000000000039', 'login.max.attempts', '5', '最大登录尝试次数', 'SECURITY', TRUE),
+    ('00000000-0000-0000-0000-000000000040', 'login.lockout.minutes', '15', '登录锁定时间（分钟）', 'SECURITY', TRUE),
+    ('00000000-0000-0000-0000-000000000041', 'audit.retention.days', '90', '审计日志保留天数', 'AUDIT', TRUE),
+    ('00000000-0000-0000-0000-000000000042', 'email.smtp.enabled', 'false', 'SMTP邮件服务是否启用', 'EMAIL', TRUE);
+
 -- 为超级管理员分配所有权限
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT '00000000-0000-0000-0000-000000000001', id FROM permissions;
@@ -528,7 +582,7 @@ SELECT '00000000-0000-0000-0000-000000000002', id FROM permissions;
 -- 创建分区函数已在上面定义
 
 -- =============================================
--- 16. 提交事务
+-- 17. 提交事务
 -- =============================================
 
 COMMIT;
