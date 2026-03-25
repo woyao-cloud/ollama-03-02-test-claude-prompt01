@@ -1,0 +1,37 @@
+# =============================================
+# Backend Dockerfile - 开发环境
+# Spring Boot + JDK 21 + Maven
+# 支持热重载和远程调试
+# =============================================
+
+FROM eclipse-temurin:21-jdk-alpine AS development
+
+# 安装必要的工具
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git \
+    maven \
+    && rm -rf /var/cache/apk/*
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制 Maven 配置
+COPY pom.xml .
+
+# 下载依赖（利用 Docker 缓存层）
+RUN mvn dependency:go-offline -B
+
+# 复制源代码
+COPY src ./src
+
+# 编译应用（但不打包，使用 spring-boot:run 启动）
+RUN mvn compile -DskipTests -q
+
+# 暴露端口
+EXPOSE 8080 5005
+
+# 启动命令（支持热重载和远程调试）
+CMD ["mvn", "spring-boot:run", \
+     "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
