@@ -81,6 +81,8 @@ usermanagement/
 | `prometheus.yml` | Prometheus | 监控指标配置 |
 | `grafana/*` | Grafana | 数据源和仪表板配置 |
 | `wait-for-db.sh` | 辅助脚本 | 等待数据库就绪 |
+| `init-scripts/01-init-extensions.sql` | PostgreSQL | 扩展初始化 |
+| `init-scripts/02-init-database.sh` | PostgreSQL | 自动建表和数据初始化 |
 
 ### 测试数据脚本
 
@@ -101,7 +103,9 @@ usermanagement/
 # 启动基础服务
 docker-compose up -d postgres redis zookeeper kafka
 
-# 初始化测试数据
+# 初始化数据库（自动执行建表脚本 + 测试数据）
+# 建表脚本: backend/src/main/resources/db/migration/V*.sql
+# 测试数据: scripts/test-data/*.sql
 docker-compose --profile seed run --rm db-seed
 
 # 启动前后端

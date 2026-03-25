@@ -121,6 +121,9 @@ services:
       postgres:
         condition: service_healthy
     volumes:
+      # 建表脚本（Flyway 迁移脚本）- 必须先执行
+      - ./backend/src/main/resources/db/migration:/migrations:ro
+      # 测试数据脚本
       - ./scripts/test-data:/scripts:ro
       - ./scripts/docker/wait-for-db.sh:/wait-for-db.sh:ro
     environment:
@@ -132,14 +135,28 @@ services:
       sh -c "
         echo '等待数据库就绪...' &&
         /wait-for-db.sh postgres 5432 devuser devpassword &&
-        echo '开始执行测试数据脚本...' &&
-        for f in /scripts/01-*.sql /scripts/02-*.sql /scripts/03-*.sql /scripts/04-*.sql /scripts/05-*.sql /scripts/06-*.sql; do
-          if [ -f \"$$f\" ]; then
-            echo \"执行: $$(basename $$f)\" &&
-            psql -h postgres -U devuser -d user_management -f \"$$f\" || echo \"警告: $$f 执行失败\";
+        echo '============================================' &&
+        echo '第一步: 创建数据库表结构' &&
+        echo '============================================' &&
+        for f in /migrations/V*.sql; do
+          if [ -f \"\$$f\" ]; then
+            echo \"执行建表脚本: \$$(basename \$$f)\" &&
+            psql -h postgres -U devuser -d user_management -f \"\$$f\" || { echo \"错误: \$$f 执行失败\"; exit 1; };
           fi
         done &&
-        echo '测试数据初始化完成'
+        echo '表结构创建完成' &&
+        echo '============================================' &&
+        echo '第二步: 插入测试数据' &&
+        echo '============================================' &&
+        for f in /scripts/01-*.sql /scripts/02-*.sql /scripts/03-*.sql /scripts/04-*.sql /scripts/05-*.sql /scripts/06-*.sql; do
+          if [ -f \"\$$f\" ]; then
+            echo \"执行测试数据: \$$(basename \$$f)\" &&
+            psql -h postgres -U devuser -d user_management -f \"\$$f\" || echo \"警告: \$$f 执行失败\";
+          fi
+        done &&
+        echo '============================================' &&
+        echo '数据库初始化完成!' &&
+        echo '============================================'
       "
     networks:
       - ums-dev-network

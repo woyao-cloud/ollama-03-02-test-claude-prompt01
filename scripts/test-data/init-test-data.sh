@@ -62,7 +62,38 @@ echo ""
 # 脚本目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "开始执行测试数据脚本..."
+# 建表脚本目录（相对于项目根目录）
+MIGRATION_DIR="$(cd "$SCRIPT_DIR/../../backend/src/main/resources/db/migration" && pwd)"
+
+echo "开始执行数据库初始化脚本..."
+echo ""
+
+echo "============================================"
+echo "第一步: 创建数据库表结构"
+echo "============================================"
+echo ""
+
+# 按顺序执行建表脚本
+for script in "$MIGRATION_DIR"/V*.sql; do
+    if [ -f "$script" ]; then
+        script_name=$(basename "$script")
+        echo "执行建表脚本: $script_name ..."
+        if psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$script" 2>&1; then
+            echo "✓ $script_name 执行成功"
+        else
+            echo "✗ $script_name 执行失败"
+            exit 1
+        fi
+        echo ""
+    fi
+done
+
+echo "表结构创建完成!"
+echo ""
+
+echo "============================================"
+echo "第二步: 插入测试数据"
+echo "============================================"
 echo ""
 
 # 按顺序执行 SQL 脚本

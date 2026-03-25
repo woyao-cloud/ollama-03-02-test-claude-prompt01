@@ -22,6 +22,10 @@ services:
       - postgres_team_data:/var/lib/postgresql/data
       # 挂载初始化脚本
       - ./scripts/docker/init-scripts:/docker-entrypoint-initdb.d:ro
+      # 挂载建表脚本 (Flyway 迁移脚本)
+      - ./backend/src/main/resources/db/migration:/docker-entrypoint-initdb.d/migrations:ro
+      # 挂载测试数据脚本
+      - ./scripts/test-data:/docker-entrypoint-initdb.d/test-data:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U teamuser -d user_management"]
       interval: 10s
@@ -156,6 +160,57 @@ services:
     networks:
       - ums-team-network
     restart: unless-stopped
+
+  # 数据库初始化服务 (Team 环境手动初始化)
+  db-seed:
+    image: postgres:15-alpine
+    container_name: ums-db-seed-team
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # 建表脚本 (Flyway 迁移脚本)
+      - ./backend/src/main/resources/db/migration:/migrations:ro
+      # 测试数据脚本
+      - ./scripts/test-data:/scripts:ro
+      - ./scripts/docker/wait-for-db.sh:/wait-for-db.sh:ro
+    environment:
+      PGPASSWORD: teampassword123
+      PGHOST: postgres
+      PGUSER: teamuser
+      PGDATABASE: user_management
+    command: >
+      sh -c "
+        echo '等待数据库就绪...' &&
+        /wait-for-db.sh postgres 5432 teamuser teampassword123 &&
+        echo '============================================' &&
+        echo '第一步: 创建数据库表结构' &&
+        echo '============================================' &&
+        for f in /migrations/V*.sql; do
+          if [ -f \"\$$f\" ]; then
+            echo \"执行建表脚本: \$$(basename \$$f)\" &&
+            psql -h postgres -U teamuser -d user_management -f \"\$$f\" || { echo \"错误: \$$f 执行失败\"; exit 1; };
+          fi
+        done &&
+        echo '表结构创建完成' &&
+        echo '============================================' &&
+        echo '第二步: 插入测试数据' &&
+        echo '============================================' &&
+        for f in /scripts/01-*.sql /scripts/02-*.sql /scripts/03-*.sql /scripts/04-*.sql /scripts/05-*.sql /scripts/06-*.sql; do
+          if [ -f \"\$$f\" ]; then
+            echo \"执行测试数据: \$$(basename \$$f)\" &&
+            psql -h postgres -U teamuser -d user_management -f \"\$$f\" || echo \"警告: \$$f 执行失败\";
+          fi
+        done &&
+        echo '============================================' &&
+        echo '数据库初始化完成!' &&
+        echo '============================================'
+      "
+    networks:
+      - ums-team-network
+    profiles:
+      - seed
+    restart: "no"
 
   # Spring Boot 后端 (Team 环境 - 使用预构建镜像)
   backend:

@@ -64,7 +64,36 @@ echo.
 REM 获取脚本目录
 set "SCRIPT_DIR=%~dp0"
 
-echo 开始执行测试数据脚本...
+REM 获取建表脚本目录（项目根目录下的 backend/src/main/resources/db/migration）
+set "MIGRATION_DIR=%SCRIPT_DIR%..\..\backend\src\main\resources\db\migration"
+
+echo 开始执行数据库初始化脚本...
+echo.
+
+echo ============================================
+echo 第一步: 创建数据库表结构
+echo ============================================
+echo.
+
+REM 执行建表脚本
+for %%F in ("%MIGRATION_DIR%\V*.sql") do (
+    echo 执行建表脚本: %%~nxF ...
+    psql -h %DB_HOST% -p %DB_PORT% -U %DB_USER% -d %DB_NAME% -f "%%F"
+    if !errorlevel! equ 0 (
+        echo [OK] %%~nxF 执行成功
+    ) else (
+        echo [错误] %%~nxF 执行失败
+        exit /b 1
+    )
+    echo.
+)
+
+echo 表结构创建完成!
+echo.
+
+echo ============================================
+echo 第二步: 插入测试数据
+echo ============================================
 echo.
 
 REM 按顺序执行 SQL 脚本

@@ -36,7 +36,10 @@ docker-compose up -d postgres redis zookeeper kafka
 # 2. 等待数据库就绪
 docker-compose exec postgres pg_isready -U devuser -d user_management
 
-# 3. 初始化测试数据（可选）
+# 3. 初始化数据库（先建表，后插入测试数据）
+# 此步骤会自动执行:
+#   - backend/src/main/resources/db/migration/V*.sql (建表脚本)
+#   - scripts/test-data/01-*.sql ~ 06-*.sql (测试数据)
 docker-compose --profile seed run --rm db-seed
 
 # 4. 启动后端服务（开发模式，热重载）
@@ -59,14 +62,29 @@ docker-compose up -d frontend
 # 1. 构建镜像
 docker-compose -f docker-compose.team.yml build
 
-# 2. 启动所有服务
-docker-compose -f docker-compose.team.yml up -d
+# 2. 启动基础设施服务（数据库、缓存、消息队列）
+docker-compose -f docker-compose.team.yml up -d postgres redis zookeeper kafka
 
-# 3. 查看服务状态
+# 3. 初始化数据库（首次部署或数据重置时使用）
+# 方式 A: 自动初始化（PostgreSQL 首次启动时自动执行）
+# 数据卷为空时，PostgreSQL 会自动执行 /docker-entrypoint-initdb.d/ 中的脚本
+
+# 方式 B: 手动初始化（使用 db-seed 服务）
+docker-compose -f docker-compose.team.yml --profile seed run --rm db-seed
+
+# 4. 启动应用服务
+docker-compose -f docker-compose.team.yml up -d backend frontend nginx
+
+# 5. 查看服务状态
 docker-compose -f docker-compose.team.yml ps
 
-# 4. 访问服务
+# 6. 访问服务
 # 统一入口: http://localhost (Nginx 反向代理)
+# pgAdmin: http://localhost:5050
+# Kafka UI: http://localhost:8081
+# Grafana: http://localhost:3001
+# Prometheus: http://localhost:9090
+```
 # pgAdmin: http://localhost:5050
 # Kafka UI: http://localhost:8081
 # Grafana: http://localhost:3001
@@ -173,31 +191,34 @@ backend/src/main/resources/db/
 
 ```bash
 # 本地开发环境
+# 会自动执行:
+#   1. backend/src/main/resources/db/migration/V*.sql (建表)
+#   2. scripts/test-data/*.sql (测试数据)
 docker-compose --profile seed run --rm db-seed
 
-# Team 环境 (需先挂载测试数据卷)
-docker-compose -f docker-compose.team.yml exec postgres psql -U teamuser -d user_management -f /scripts/01-departments.sql
+# Team 环境 - 自动初始化（PostgreSQL 首次启动时）
+docker-compose -f docker-compose.team.yml up -d postgres
+
+# Team 环境 - 手动初始化（数据重置时使用）
+docker-compose -f docker-compose.team.yml --profile seed run --rm db-seed
 ```
 
-**方式 2: 使用 Shell 脚本**
+**手动执行 SQL 顺序**
+
+如果手动执行，请严格按照以下顺序：
 
 ```bash
-cd scripts/test-data
+# 1. 先执行建表脚本（Flyway 迁移）
+psql -h localhost -U devuser -d user_management -f backend/src/main/resources/db/migration/V1__Initial_schema.sql
+psql -h localhost -U devuser -d user_management -f backend/src/main/resources/db/migration/V2__add_oauth2_support.sql
 
-# Linux/macOS
-./init-test-data.sh
-
-# Windows
-init-test-data.bat
-```
-
-**方式 3: 手动执行**
-
-```bash
-# 使用 psql 直接执行
+# 2. 再执行测试数据脚本
 psql -h localhost -U devuser -d user_management -f scripts/test-data/01-departments.sql
 psql -h localhost -U devuser -d user_management -f scripts/test-data/02-roles.sql
-# ... 依次执行其他脚本
+psql -h localhost -U devuser -d user_management -f scripts/test-data/03-permissions.sql
+psql -h localhost -U devuser -d user_management -f scripts/test-data/04-role-permissions.sql
+psql -h localhost -U devuser -d user_management -f scripts/test-data/05-users.sql
+psql -h localhost -U devuser -d user_management -f scripts/test-data/06-user-roles.sql
 ```
 
 ### 测试账号
