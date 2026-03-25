@@ -10,6 +10,7 @@ import com.usermanagement.service.kafka.AuditLogKafkaProducer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,12 +30,14 @@ import java.util.stream.Collectors;
  * Asynchronous Audit Log Service using Kafka
  * Replaces direct DB writes with Kafka message production
  * Marked as @Primary to be used instead of AuditLogServiceImpl
+ * Only active when app.kafka.enabled=true (default)
  *
  * @author Service Team
  * @since 1.0
  */
 @Service
 @Primary
+@ConditionalOnProperty(name = "app.kafka.enabled", havingValue = "true", matchIfMissing = true)
 @Transactional(readOnly = true)
 public class AsyncAuditLogService implements AuditLogService {
 
