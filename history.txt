@@ -5680,3 +5680,69 @@ iterable
   /gsd:plan-phase 3.2 — Create execution plan for 2FA
 
   /clear first → fresh context window
+
+
+  
+  /clear first → fresh context window
+
+  ---
+  Also available:
+  - /gsd:execute-phase 3 — Continue executing Phase 3
+  - /gsd:verify-work 3.1 — User acceptance test for Kafka audit log
+
+
+
+● Write(docs\DEVELOPMENT_SETUP.md)
+  ⎿  Wrote 395 lines to docs\DEVELOPMENT_SETUP.md
+     # 开发环境启动指南
+
+     本文档介绍如何启动用户管理系统的完整开发环境，包括 Docker 基础设施、后端服务和前端开发服务器。
+
+     ---
+
+     ## 环境要求
+
+     | 工具 | 版本要求 | 用途 |
+     |------|---------|------|
+     … +385 lines (ctrl+o to expand)
+
+● 已生成开发环境启动文档：docs/DEVELOPMENT_SETUP.md
+
+  文档概要
+
+  1️⃣ 启动 Docker 基础设施
+
+  # 启动 PostgreSQL + Redis + Kafka + 管理界面
+  docker-compose -f docker-compose.dev.yml up -d postgres redis zookeeper kafka kafka-ui pgadmin
+
+  2️⃣ 启动后端服务（Spring Boot）
+
+  cd backend
+  ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+  # 或 Windows: mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+
+  3️⃣ 启动前端开发服务器
+
+  cd frontend
+  npm install
+  npm run dev
+
+  服务地址
+
+  ┌──────────┬───────────────────────┐
+  │   服务   │          URL          │
+  ├──────────┼───────────────────────┤
+  │ 前端     │ http://localhost:3000 │
+  ├──────────┼───────────────────────┤
+  │ 后端     │ http://localhost:8080 │
+  ├──────────┼───────────────────────┤
+  │ Kafka UI │ http://localhost:8081 │
+  ├──────────┼───────────────────────┤
+  │ pgAdmin  │ http://localhost:5050 │
+  └──────────┴───────────────────────┘
+
+  文档还包含：
+  - 一键启动脚本（Linux/Mac/Windows）
+  - 故障排查指南
+  - 常用操作命令
+  - 默认登录账号

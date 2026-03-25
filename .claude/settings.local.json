@@ -12,7 +12,9 @@
       "Bash(mvn test:*)",
       "Bash(mvn compile:*)",
       "Skill(gsd:progress)",
-      "Skill(gsd:plan-phase)"
+      "Skill(gsd:plan-phase)",
+      "WebSearch",
+      "Bash(node:*)"
     ]
   }
 }
