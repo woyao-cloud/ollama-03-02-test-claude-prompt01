@@ -11,6 +11,7 @@ import com.usermanagement.service.dto.UpdatePermissionRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -29,7 +30,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -203,7 +203,7 @@ class PermissionControllerTest {
 
         PermissionDTO createdPermission = createTestPermissionDTO(UUID.randomUUID(), "new:permission", "New Permission");
 
-        when(permissionService.createPermission(any(CreatePermissionRequest.class))).thenReturn(createdPermission);
+        when(permissionService.createPermission(Mockito.any(CreatePermissionRequest.class))).thenReturn(createdPermission);
 
         // When & Then
         mockMvc.perform(post("/api/v1/permissions")
@@ -225,7 +225,7 @@ class PermissionControllerTest {
 
         PermissionDTO updatedPermission = createTestPermissionDTO(testPermissionId, "user:create", "Updated Permission");
 
-        when(permissionService.updatePermission(eq(testPermissionId), any(UpdatePermissionRequest.class)))
+        when(permissionService.updatePermission(eq(testPermissionId), Mockito.any(UpdatePermissionRequest.class)))
                 .thenReturn(updatedPermission);
 
         // When & Then

@@ -1,17 +1,22 @@
 package com.usermanagement.security.datascope;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import com.usermanagement.domain.entity.Role;
 import com.usermanagement.domain.entity.User;
 import com.usermanagement.repository.DepartmentRepository;
 import com.usermanagement.repository.UserRepository;
 import com.usermanagement.security.SecurityUtilsComponent;
 import com.usermanagement.service.DepartmentService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 /**
  * Data Scope Service
@@ -46,7 +51,7 @@ public class DataScopeService {
      * @return DataScopeResult containing scope type and applicable IDs
      */
     public DataScopeResult getCurrentUserDataScope() {
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId().orElseThrow(() -> new IllegalStateException("Not authenticated"));
         return getUserDataScope(currentUserId);
     }
 

@@ -2,6 +2,7 @@ package com.usermanagement.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermanagement.domain.entity.Role;
+import com.usermanagement.domain.entity.Permission;
 import com.usermanagement.security.SecurityConfig;
 import com.usermanagement.service.RoleService;
 import com.usermanagement.service.dto.*;
@@ -12,6 +13,7 @@ import com.usermanagement.web.dto.UpdateDataScopeRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -29,7 +31,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,7 +74,7 @@ class RoleControllerTest {
         );
         Page<RoleDTO> rolePage = new PageImpl<>(roles);
 
-        when(roleService.getRoles(any(RoleQueryRequest.class))).thenReturn(rolePage);
+        when(roleService.getRoles(Mockito.any(RoleQueryRequest.class))).thenReturn(rolePage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/roles")
@@ -91,7 +92,7 @@ class RoleControllerTest {
         // Given
         Page<RoleDTO> rolePage = new PageImpl<>(Collections.singletonList(testRoleDTO));
 
-        when(roleService.getRoles(any(RoleQueryRequest.class))).thenReturn(rolePage);
+        when(roleService.getRoles(Mockito.any(RoleQueryRequest.class))).thenReturn(rolePage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/roles")
@@ -159,7 +160,7 @@ class RoleControllerTest {
 
         RoleDTO createdRole = createTestRoleDTO(UUID.randomUUID(), "New Role", "ROLE_NEW");
 
-        when(roleService.createRole(any(CreateRoleRequest.class))).thenReturn(createdRole);
+        when(roleService.createRole(Mockito.any(CreateRoleRequest.class))).thenReturn(createdRole);
 
         // When & Then
         mockMvc.perform(post("/api/v1/roles")
@@ -181,7 +182,7 @@ class RoleControllerTest {
 
         RoleDTO updatedRole = createTestRoleDTO(testRoleId, "Updated Role", "ROLE_TEST");
 
-        when(roleService.updateRole(eq(testRoleId), any(UpdateRoleRequest.class))).thenReturn(updatedRole);
+        when(roleService.updateRole(eq(testRoleId), Mockito.any(UpdateRoleRequest.class))).thenReturn(updatedRole);
 
         // When & Then
         mockMvc.perform(put("/api/v1/roles/{id}", testRoleId)
@@ -341,7 +342,7 @@ class RoleControllerTest {
     @WithMockUser(authorities = "ADMIN")
     void shouldHandleServiceException() throws Exception {
         // Given
-        when(roleService.getRoleByIdWithPermissions(any())).thenThrow(new IllegalArgumentException("Role not found"));
+        when(roleService.getRoleByIdWithPermissions(Mockito.any())).thenThrow(new IllegalArgumentException("Role not found"));
 
         // When & Then
         mockMvc.perform(get("/api/v1/roles/{id}", UUID.randomUUID()))

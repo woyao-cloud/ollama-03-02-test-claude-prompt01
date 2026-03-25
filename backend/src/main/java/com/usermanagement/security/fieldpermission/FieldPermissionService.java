@@ -1,14 +1,21 @@
 package com.usermanagement.security.fieldpermission;
 
-import com.usermanagement.security.SecurityUtilsComponent;
-import com.usermanagement.service.PermissionCacheService;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import com.usermanagement.security.SecurityUtilsComponent;
+import com.usermanagement.service.PermissionCacheService;
 
 /**
  * Field Permission Service
@@ -71,8 +78,8 @@ public class FieldPermissionService {
         // Check ownership first if enabled
         if (annotation.checkOwnership() && targetUserId != null) {
             try {
-                UUID currentUserId = securityUtils.getCurrentUserId();
-                if (currentUserId.equals(targetUserId)) {
+                UUID currentUserId = securityUtils.getCurrentUserId().orElse(null);
+                if (currentUserId != null && currentUserId.equals(targetUserId)) {
                     return true; // Owner can access their own data
                 }
             } catch (Exception e) {
@@ -167,7 +174,10 @@ public class FieldPermissionService {
      */
     private boolean hasFieldPermission(String permissionCode) {
         try {
-            UUID currentUserId = securityUtils.getCurrentUserId();
+            UUID currentUserId = securityUtils.getCurrentUserId().orElse(null);
+            if (currentUserId == null) {
+                return false;
+            }
             return permissionCacheService.hasPermission(currentUserId, permissionCode);
         } catch (Exception e) {
             logger.debug("Permission check failed for {}: {}", permissionCode, e.getMessage());

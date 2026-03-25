@@ -46,17 +46,17 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     private final AuditLogRepository auditLogRepository;
     private final UserRepository userRepository;
-    private final SecurityUtils securityUtils;
+    //private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
 
     public AuditLogServiceImpl(
             AuditLogRepository auditLogRepository,
             UserRepository userRepository,
-            SecurityUtils securityUtils,
+            //SecurityUtils securityUtils,
             ObjectMapper objectMapper) {
         this.auditLogRepository = auditLogRepository;
         this.userRepository = userRepository;
-        this.securityUtils = securityUtils;
+        //this.securityUtils = securityUtils;
         this.objectMapper = objectMapper;
     }
 
@@ -77,7 +77,7 @@ public class AuditLogServiceImpl implements AuditLogService {
             AuditLog auditLog = new AuditLog();
 
             // Set user info
-            UUID currentUserId = securityUtils.getCurrentUserId().orElse(null);
+            UUID currentUserId = SecurityUtils.getCurrentUserId().orElse(null);
             if (currentUserId != null) {
                 User user = userRepository.findById(currentUserId).orElse(null);
                 auditLog.setUser(user);

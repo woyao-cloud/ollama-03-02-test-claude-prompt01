@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -176,7 +177,7 @@ class UserServiceImplTest {
 
         // Then
         verify(userRoleRepository).deleteByUserId(userId);
-        verify(sessionService).clearUserPermissionsCache(userId);
+        verify(sessionService).invalidateAllUserSessions(userId);
     }
 
     @Test
@@ -401,7 +402,7 @@ class UserServiceImplTest {
         List<UUID> roleIds = Arrays.asList(roleId1, roleId2);
 
         User user = createTestUser(userId, "test@example.com", "John", "Doe");
-        user.setUserRoles(new ArrayList<>());
+        user.setUserRoles(new HashSet<>());
 
         Role role1 = new Role();
         role1.setId(roleId1);
@@ -423,7 +424,7 @@ class UserServiceImplTest {
 
         // Then
         verify(userRoleRepository).deleteByUserId(userId);
-        verify(sessionService).clearUserPermissionsCache(userId);
+        verify(sessionService).invalidateAllUserSessions(userId);
         assertEquals(2, user.getUserRoles().size());
     }
 
@@ -449,13 +450,13 @@ class UserServiceImplTest {
         UUID roleId = UUID.randomUUID();
 
         User user = createTestUser(userId, "test@example.com", "John", "Doe");
-        user.setUserRoles(new ArrayList<>());
+        user.setUserRoles(new HashSet<>());
 
         Role role = new Role();
         role.setId(roleId);
         role.setName("DELETED_ROLE");
         role.setCode("ROLE_DELETED");
-        role.setDeleted(true);
+        role.softDelete();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(roleRepository.findById(roleId)).thenReturn(Optional.of(role));
@@ -513,7 +514,6 @@ class UserServiceImplTest {
         user.setPasswordHash("oldEncodedPassword");
 
         UpdateProfileRequest request = new UpdateProfileRequest();
-        request.setPasswordChange(true);
         request.setCurrentPassword("oldPassword");
         request.setNewPassword("newPassword123");
 
@@ -537,7 +537,6 @@ class UserServiceImplTest {
         User user = createTestUser(userId, "test@example.com", "John", "Doe");
 
         UpdateProfileRequest request = new UpdateProfileRequest();
-        request.setPasswordChange(true);
         request.setCurrentPassword(null);
         request.setNewPassword("newPassword123");
 
@@ -557,7 +556,6 @@ class UserServiceImplTest {
         user.setPasswordHash("encodedPassword");
 
         UpdateProfileRequest request = new UpdateProfileRequest();
-        request.setPasswordChange(true);
         request.setCurrentPassword("wrongPassword");
         request.setNewPassword("newPassword123");
 

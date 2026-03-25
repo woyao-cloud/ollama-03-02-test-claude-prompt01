@@ -1,11 +1,12 @@
 package com.usermanagement.security;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 /**
  * Security Utils Component
@@ -20,24 +21,24 @@ public class SecurityUtilsComponent {
     /**
      * Get current user ID from authentication
      */
-    public UUID getCurrentUserId() {
+    public Optional<UUID> getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() == null) {
-            throw new IllegalStateException("No authenticated user found");
+            return Optional.empty();
         }
 
         Object principal = auth.getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
             try {
-                return UUID.fromString(username);
+                return Optional.of(UUID.fromString(username));
             } catch (IllegalArgumentException e) {
-                // Username is not a UUID (might be email), return a default or throw
-                throw new IllegalStateException("User ID not found in authentication");
+                // Username is not a UUID (might be email) - return empty
+                return Optional.empty();
             }
         }
 
-        throw new IllegalStateException("Unexpected principal type: " + principal.getClass());
+        return Optional.empty();
     }
 
     /**
@@ -45,12 +46,7 @@ public class SecurityUtilsComponent {
      * Used in SpEL: @securityUtils.isCurrentUser(#id)
      */
     public boolean isCurrentUser(UUID userId) {
-        try {
-            UUID currentUserId = getCurrentUserId();
-            return currentUserId.equals(userId);
-        } catch (IllegalStateException e) {
-            return false;
-        }
+        return getCurrentUserId().map(currentUserId -> currentUserId.equals(userId)).orElse(false);
     }
 
     /**

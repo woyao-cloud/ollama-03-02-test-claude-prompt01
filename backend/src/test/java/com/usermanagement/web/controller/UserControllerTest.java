@@ -1,16 +1,18 @@
 package com.usermanagement.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermanagement.domain.entity.User;
-import com.usermanagement.security.SecurityConfig;
-import com.usermanagement.security.SecurityUtils;
-import com.usermanagement.service.UserService;
-import com.usermanagement.service.dto.*;
-import com.usermanagement.web.dto.AssignRolesRequest;
-import com.usermanagement.web.dto.UpdateUserStatusRequest;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -18,21 +20,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermanagement.domain.entity.User;
+import com.usermanagement.security.SecurityConfig;
+import com.usermanagement.security.SecurityUtilsComponent;
+import com.usermanagement.service.UserService;
+import com.usermanagement.service.dto.CreateUserRequest;
+import com.usermanagement.service.dto.UpdateProfileRequest;
+import com.usermanagement.service.dto.UpdateUserRequest;
+import com.usermanagement.service.dto.UserDTO;
+import com.usermanagement.service.dto.UserQueryRequest;
+import com.usermanagement.web.dto.AssignRolesRequest;
+import com.usermanagement.web.dto.UpdateUserStatusRequest;
 
 /**
  * User Controller Test
@@ -54,7 +64,7 @@ class UserControllerTest {
     private UserService userService;
 
     @MockitoBean
-    private SecurityUtils securityUtils;
+    private SecurityUtilsComponent securityUtils;
 
     private UUID testUserId;
     private UserDTO testUserDTO;
@@ -75,7 +85,7 @@ class UserControllerTest {
         );
         Page<UserDTO> userPage = new PageImpl<>(users);
 
-        when(userService.getUsers(any(UserQueryRequest.class))).thenReturn(userPage);
+        when(userService.getUsers(org.mockito.ArgumentMatchers.any(UserQueryRequest.class))).thenReturn(userPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/users")
@@ -92,7 +102,7 @@ class UserControllerTest {
     void shouldGetUsersWithFilters() throws Exception {
         // Given
         Page<UserDTO> userPage = new PageImpl<>(Collections.singletonList(testUserDTO));
-        when(userService.getUsers(any(UserQueryRequest.class))).thenReturn(userPage);
+        when(userService.getUsers(org.mockito.ArgumentMatchers.any(UserQueryRequest.class))).thenReturn(userPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/users")
@@ -129,7 +139,7 @@ class UserControllerTest {
 
         UserDTO createdUser = createTestUserDTO(UUID.randomUUID(), "new@example.com", "New", "User");
 
-        when(userService.createUser(any(CreateUserRequest.class))).thenReturn(createdUser);
+        when(userService.createUser(Mockito.any(CreateUserRequest.class))).thenReturn(createdUser);
 
         // When & Then
         mockMvc.perform(post("/api/v1/users")
@@ -166,7 +176,7 @@ class UserControllerTest {
 
         UserDTO updatedUser = createTestUserDTO(testUserId, "test@example.com", "Updated", "Name");
 
-        when(userService.updateUser(eq(testUserId), any(UpdateUserRequest.class))).thenReturn(updatedUser);
+        when(userService.updateUser(eq(testUserId), Mockito.any(UpdateUserRequest.class))).thenReturn(updatedUser);
 
         // When & Then
         mockMvc.perform(put("/api/v1/users/{id}", testUserId)
@@ -253,7 +263,7 @@ class UserControllerTest {
 
         UserDTO updatedUser = createTestUserDTO(testUserId, "test@example.com", "Updated", "Name");
 
-        when(userService.updateProfile(eq(testUserId), any(UpdateProfileRequest.class))).thenReturn(updatedUser);
+        when(userService.updateProfile(eq(testUserId), Mockito.any(UpdateProfileRequest.class))).thenReturn(updatedUser);
         when(securityUtils.isCurrentUser(testUserId)).thenReturn(false);
 
         // When & Then
@@ -309,7 +319,7 @@ class UserControllerTest {
     void shouldGetCurrentUser() throws Exception {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(userService.getUserById(currentUserId)).thenReturn(testUserDTO);
 
         // When & Then
@@ -329,8 +339,8 @@ class UserControllerTest {
 
         UserDTO updatedUser = createTestUserDTO(testUserId, "test@example.com", "Updated", "Doe");
 
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
-        when(userService.updateProfile(eq(currentUserId), any(UpdateProfileRequest.class))).thenReturn(updatedUser);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
+        when(userService.updateProfile(eq(currentUserId), Mockito.any(UpdateProfileRequest.class))).thenReturn(updatedUser);
 
         // When & Then
         mockMvc.perform(put("/api/v1/users/me/profile")
@@ -368,7 +378,7 @@ class UserControllerTest {
     @WithMockUser(authorities = "ADMIN")
     void shouldHandleServiceException() throws Exception {
         // Given
-        when(userService.getUserById(any())).thenThrow(new IllegalArgumentException("User not found"));
+        when(userService.getUserById(Mockito.any(UUID.class))).thenThrow(new IllegalArgumentException("User not found"));
 
         // When & Then
         mockMvc.perform(get("/api/v1/users/{id}", UUID.randomUUID()))
@@ -382,7 +392,7 @@ class UserControllerTest {
         UUID roleId = UUID.randomUUID();
         Page<UserDTO> userPage = new PageImpl<>(Collections.singletonList(testUserDTO));
 
-        when(userService.getUsers(any(UserQueryRequest.class))).thenReturn(userPage);
+        when(userService.getUsers(Mockito.any(UserQueryRequest.class))).thenReturn(userPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/users")
@@ -398,7 +408,7 @@ class UserControllerTest {
         UUID departmentId = UUID.randomUUID();
         Page<UserDTO> userPage = new PageImpl<>(Collections.singletonList(testUserDTO));
 
-        when(userService.getUsers(any(UserQueryRequest.class))).thenReturn(userPage);
+        when(userService.getUsers(Mockito.any(UserQueryRequest.class))).thenReturn(userPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/users")

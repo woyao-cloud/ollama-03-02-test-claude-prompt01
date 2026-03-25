@@ -1,5 +1,24 @@
 package com.usermanagement.web.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.usermanagement.domain.entity.OAuth2Provider;
 import com.usermanagement.security.SecurityUtilsComponent;
 import com.usermanagement.service.OAuth2Service;
@@ -7,18 +26,9 @@ import com.usermanagement.service.dto.OAuth2ConnectionDTO;
 import com.usermanagement.service.dto.OAuth2LoginResult;
 import com.usermanagement.service.dto.OAuth2ProviderInfoDTO;
 import com.usermanagement.web.dto.ApiResponse;
+
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * OAuth2 Controller
@@ -121,7 +131,7 @@ public class OAuth2Controller {
     @GetMapping("/connections")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<OAuth2ConnectionDTO>>> getUserConnections() {
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId().orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.debug("Getting OAuth2 connections for user: {}", currentUserId);
 
         List<OAuth2ConnectionDTO> connections = oauth2Service.getUserConnections(currentUserId);
@@ -137,7 +147,7 @@ public class OAuth2Controller {
             @PathVariable String provider,
             @Valid @RequestBody Map<String, String> request) {
 
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId().orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.info("Binding OAuth2 account for user: {}, provider: {}", currentUserId, provider);
 
         String code = request.get("code");
@@ -161,7 +171,7 @@ public class OAuth2Controller {
     @DeleteMapping("/connections/{provider}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> unbindAccount(@PathVariable String provider) {
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId().orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.info("Unbinding OAuth2 account for user: {}, provider: {}", currentUserId, provider);
 
         OAuth2Provider oauth2Provider = OAuth2Provider.fromProviderId(provider);
@@ -178,7 +188,7 @@ public class OAuth2Controller {
     public ResponseEntity<ApiResponse<Void>> setPrimaryConnection(
             @PathVariable UUID connectionId) {
 
-        UUID currentUserId = securityUtils.getCurrentUserId();
+        UUID currentUserId = securityUtils.getCurrentUserId().orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.info("Setting primary OAuth2 connection: {} for user: {}", connectionId, currentUserId);
 
         oauth2Service.setPrimaryConnection(currentUserId, connectionId);

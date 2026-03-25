@@ -184,7 +184,7 @@ public class ExcelController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(content);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error reading export stream", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -220,7 +220,7 @@ public class ExcelController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(content);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error reading export stream", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -249,7 +249,7 @@ public class ExcelController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(content);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error reading template stream", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

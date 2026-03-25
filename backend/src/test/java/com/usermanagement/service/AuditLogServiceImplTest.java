@@ -5,7 +5,7 @@ import com.usermanagement.domain.entity.AuditLog;
 import com.usermanagement.domain.entity.User;
 import com.usermanagement.repository.AuditLogRepository;
 import com.usermanagement.repository.UserRepository;
-import com.usermanagement.security.SecurityUtils;
+import com.usermanagement.security.SecurityUtilsComponent;
 import com.usermanagement.service.dto.AuditLogDTO;
 import com.usermanagement.service.dto.AuditLogQueryRequest;
 
@@ -38,20 +38,20 @@ class AuditLogServiceImplTest {
     private AuditLogServiceImpl auditLogService;
     private AuditLogRepository auditLogRepository;
     private UserRepository userRepository;
-    private SecurityUtils securityUtils;
+    private SecurityUtilsComponent securityUtils;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
         auditLogRepository = mock(AuditLogRepository.class);
         userRepository = mock(UserRepository.class);
-        securityUtils = mock(SecurityUtils.class);
+        //securityUtils = mock(SecurityUtilsComponent.class);
         objectMapper = new ObjectMapper();
 
         auditLogService = new AuditLogServiceImpl(
                 auditLogRepository,
                 userRepository,
-                securityUtils,
+                //securityUtils,
                 objectMapper
         );
     }
@@ -64,7 +64,7 @@ class AuditLogServiceImplTest {
         user.setId(currentUserId);
         user.setEmail("test@example.com");
 
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(userRepository.findById(currentUserId)).thenReturn(Optional.of(user));
 
         Map<String, Object> newValue = new HashMap<>();
@@ -86,7 +86,7 @@ class AuditLogServiceImplTest {
     @Test
     void shouldLogFailureOperation() {
         // Given
-        when(securityUtils.getCurrentUserId()).thenReturn(null);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.empty());
 
         // When
         auditLogService.logFailure(

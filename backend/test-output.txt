@@ -1,0 +1,222 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------< com.usermanagement:user-management-system >--------------
+[INFO] Building User Management System 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ user-management-system ---
+[INFO] Copying 6 resources from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ user-management-system ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ user-management-system ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ user-management-system ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 21 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/kafka/AuditLogKafkaProducerTest.java: D:\claude-code-project\agentic-projects\ollama-03-02-test-claude-prompt01\backend\src\test\java\com\usermanagement\service\kafka\AuditLogKafkaProducerTest.java使用了未经检查或不安全的操作。
+[INFO] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/kafka/AuditLogKafkaProducerTest.java: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+[INFO] 某些消息已经过简化; 请使用 -Xdiags:verbose 重新编译以获得完整输出
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/AuditLogServiceImplTest.java:[67,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[517,16] 找不到符号
+  符号:   方法 setPasswordChange(boolean)
+  位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[541,16] 找不到符号
+  符号:   方法 setPasswordChange(boolean)
+  位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[561,16] 找不到符号
+  符号:   方法 setPasswordChange(boolean)
+  位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[76,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[76,43] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[110,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[110,59] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[127,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[127,85] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与java.time.Instant一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,64] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,44] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[184,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[184,46] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[206,31] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreatePermissionRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[206,49] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[228,31] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdatePermissionRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[228,71] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[76,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.RoleQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[76,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[94,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.RoleQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[94,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[162,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreateRoleRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[162,37] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[184,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateRoleRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[184,53] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[369,31] 程序包Permission不存在
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[78,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[78,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[95,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[95,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[132,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreateUserRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[132,37] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[169,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateUserRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[169,53] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[237,27] 找不到符号
+  符号:   方法 isCurrentUser(java.util.UUID)
+  位置: 类型为com.usermanagement.security.SecurityUtils的变量 securityUtils
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[256,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateProfileRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[256,56] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[257,27] 找不到符号
+  符号:   方法 isCurrentUser(java.util.UUID)
+  位置: 类型为com.usermanagement.security.SecurityUtils的变量 securityUtils
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[312,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[332,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+    方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+      (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[333,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateProfileRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[333,59] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[385,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[385,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[401,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[401,35] 对any的引用不明确
+  org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[INFO] 48 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.435 s
+[INFO] Finished at: 2026-03-25T20:08:19+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.0:testCompile (default-testCompile) on project user-management-system: Compilation failure: Compilation failure: 
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/AuditLogServiceImplTest.java:[67,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[517,16] 找不到符号
+[ERROR]   符号:   方法 setPasswordChange(boolean)
+[ERROR]   位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[541,16] 找不到符号
+[ERROR]   符号:   方法 setPasswordChange(boolean)
+[ERROR]   位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/service/UserServiceImplTest.java:[561,16] 找不到符号
+[ERROR]   符号:   方法 setPasswordChange(boolean)
+[ERROR]   位置: 类型为com.usermanagement.service.dto.UpdateProfileRequest的变量 request
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[76,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[76,43] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[110,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[110,59] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[127,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[127,85] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与java.time.Instant一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,64] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[166,44] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[184,29] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.AuditLogQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/AuditLogControllerTest.java:[184,46] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[206,31] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreatePermissionRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[206,49] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[228,31] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdatePermissionRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/PermissionControllerTest.java:[228,71] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[76,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.RoleQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[76,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[94,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.RoleQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[94,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[162,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreateRoleRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[162,37] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[184,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateRoleRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[184,53] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/RoleControllerTest.java:[369,31] 程序包Permission不存在
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[78,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[78,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[95,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[95,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[132,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.CreateUserRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[132,37] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[169,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateUserRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[169,53] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[237,27] 找不到符号
+[ERROR]   符号:   方法 isCurrentUser(java.util.UUID)
+[ERROR]   位置: 类型为com.usermanagement.security.SecurityUtils的变量 securityUtils
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[256,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateProfileRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[256,56] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[257,27] 找不到符号
+[ERROR]   符号:   方法 isCurrentUser(java.util.UUID)
+[ERROR]   位置: 类型为com.usermanagement.security.SecurityUtils的变量 securityUtils
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[312,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[332,47] 对于thenReturn(java.util.UUID), 找不到合适的方法
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR]     方法 org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<java.util.UUID>,java.util.Optional<java.util.UUID>...)不适用
+[ERROR]       (参数不匹配; java.util.UUID无法转换为java.util.Optional<java.util.UUID>)
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[333,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UpdateProfileRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[333,59] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[385,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[385,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[401,25] 不兼容的类型: 不存在类型变量T的实例, 以使org.hamcrest.Matcher<T>与com.usermanagement.service.dto.UserQueryRequest一致
+[ERROR] /D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/backend/src/test/java/com/usermanagement/web/controller/UserControllerTest.java:[401,35] 对any的引用不明确
+[ERROR]   org.hamcrest.Matchers 中的方法 <T>any(java.lang.Class<T>) 和 org.mockito.Mockito 中的方法 <T>any(java.lang.Class<T>) 都匹配
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -23,9 +23,10 @@ public class FallbackAuditLogService extends AuditLogServiceImpl {
     public FallbackAuditLogService(
             com.usermanagement.repository.AuditLogRepository auditLogRepository,
             com.usermanagement.repository.UserRepository userRepository,
-            com.usermanagement.security.SecurityUtils securityUtils,
+           // com.usermanagement.security.SecurityUtils securityUtils,
             com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
-        super(auditLogRepository, userRepository, securityUtils, objectMapper);
+        super(auditLogRepository, userRepository, //securityUtils,
+                objectMapper);
     }
 
     // All methods are inherited from AuditLogServiceImpl

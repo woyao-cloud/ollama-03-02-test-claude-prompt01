@@ -55,7 +55,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("ADMIN", Role.DataScope.ALL);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -76,7 +76,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("USER", Role.DataScope.SELF);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -105,7 +105,7 @@ class DataScopeServiceTest {
 
         List<UUID> descendants = Arrays.asList(deptId, childDeptId);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(departmentService.getDescendantIds(deptId)).thenReturn(descendants);
 
@@ -131,7 +131,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("DEPT_ADMIN", Role.DataScope.DEPT);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -155,7 +155,7 @@ class DataScopeServiceTest {
         user.addRole(selfRole);
         user.addRole(allRole);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -173,7 +173,7 @@ class DataScopeServiceTest {
         User user = createTestUser(userId, "user@example.com", "User", "Test");
         // No roles
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -193,7 +193,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("USER", Role.DataScope.SELF);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -212,7 +212,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("USER", Role.DataScope.SELF);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -231,7 +231,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("ADMIN", Role.DataScope.ALL);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -258,7 +258,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("DEPT_ADMIN", Role.DataScope.DEPT);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(userRepository.findById(otherUserId)).thenReturn(Optional.of(otherUser));
         when(departmentService.getDescendantIds(deptId)).thenReturn(Arrays.asList(deptId));
@@ -290,7 +290,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("DEPT_ADMIN", Role.DataScope.DEPT);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(userRepository.findById(otherUserId)).thenReturn(Optional.of(otherUser));
         when(departmentService.getDescendantIds(deptId)).thenReturn(Arrays.asList(deptId));
@@ -311,7 +311,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("ADMIN", Role.DataScope.ALL);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When
@@ -330,7 +330,7 @@ class DataScopeServiceTest {
         Role role = createTestRole("USER", Role.DataScope.SELF);
         user.addRole(role);
 
-        when(securityUtils.getCurrentUserId()).thenReturn(userId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(userId));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // When

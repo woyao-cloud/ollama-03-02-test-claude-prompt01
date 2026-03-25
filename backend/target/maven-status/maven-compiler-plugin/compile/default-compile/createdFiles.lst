@@ -13,6 +13,7 @@ com\usermanagement\service\dto\UpdateUserRequest.class
 com\usermanagement\service\SessionService$SessionData.class
 com\usermanagement\security\jwt\JwtTokenProvider.class
 com\usermanagement\service\dto\DepartmentQueryRequest.class
+com\usermanagement\web\controller\ExcelController.class
 com\usermanagement\domain\entity\User$UserStatus.class
 com\usermanagement\security\SecurityUtilsComponent.class
 com\usermanagement\domain\entity\SystemConfig$ConfigCategory.class
@@ -21,6 +22,7 @@ com\usermanagement\security\jwt\JwtAuthenticationFilter.class
 com\usermanagement\service\ExcelService.class
 com\usermanagement\web\controller\AuditLogController.class
 com\usermanagement\service\PermissionCacheServiceImpl.class
+com\usermanagement\web\controller\PermissionController.class
 com\usermanagement\domain\entity\BaseEntity.class
 com\usermanagement\domain\entity\RolePermission.class
 com\usermanagement\repository\spec\UserSpecification.class
@@ -37,10 +39,13 @@ com\usermanagement\web\controller\AuthController.class
 com\usermanagement\config\JwtKeyConfig.class
 com\usermanagement\domain\entity\User.class
 com\usermanagement\service\dto\CreateUserRequest.class
+com\usermanagement\web\controller\UserController.class
 com\usermanagement\repository\PasswordHistoryRepository.class
+com\usermanagement\web\controller\RoleController.class
 com\usermanagement\domain\entity\SystemConfig.class
 com\usermanagement\security\fieldpermission\FieldPermission$AccessLevel.class
 com\usermanagement\web\dto\UpdateDepartmentStatusRequest.class
+com\usermanagement\web\dto\AssignPermissionsRequest.class
 com\usermanagement\web\dto\PageResponse.class
 com\usermanagement\repository\RoleRepository.class
 com\usermanagement\security\fieldpermission\FieldPermission.class
@@ -57,6 +62,7 @@ com\usermanagement\service\dto\UserDTO.class
 com\usermanagement\web\dto\AssignManagerRequest.class
 com\usermanagement\service\dto\UserDTO$RoleInfo.class
 com\usermanagement\web\dto\ApiResponse.class
+com\usermanagement\web\dto\UpdateDataScopeRequest.class
 com\usermanagement\service\AuthService.class
 com\usermanagement\repository\OAuth2ConnectionRepository.class
 com\usermanagement\config\RedisConfig.class
@@ -65,6 +71,7 @@ com\usermanagement\security\fieldpermission\FieldPermissionModule$1.class
 com\usermanagement\service\PermissionServiceImpl.class
 com\usermanagement\repository\DepartmentRepository.class
 com\usermanagement\security\fieldpermission\FieldPermissionModule$PermissionAwareSerializer.class
+com\usermanagement\web\controller\OAuth2Controller.class
 com\usermanagement\service\dto\RoleQueryRequest.class
 com\usermanagement\repository\datascope\DataScopeUserRepository$1.class
 com\usermanagement\repository\datascope\DataScopeUserRepository.class
@@ -94,9 +101,11 @@ com\usermanagement\service\kafka\AuditLogKafkaConsumer$AuditLogProcessingExcepti
 com\usermanagement\service\dto\CreateDepartmentRequest.class
 com\usermanagement\service\dto\UpdateDepartmentRequest.class
 com\usermanagement\security\datascope\DataScopeService.class
+com\usermanagement\web\dto\AssignRolesRequest.class
 com\usermanagement\service\DepartmentService.class
 com\usermanagement\security\fieldpermission\FieldPermission$MaskType.class
 com\usermanagement\Application.class
+com\usermanagement\web\exception\GlobalExceptionHandler.class
 com\usermanagement\service\OAuth2ServiceImpl.class
 com\usermanagement\repository\SystemConfigRepository.class
 com\usermanagement\service\ExcelServiceImpl$1.class
@@ -123,6 +132,7 @@ com\usermanagement\service\dto\UserImportResult.class
 com\usermanagement\service\OAuth2Service.class
 com\usermanagement\service\dto\CreateRoleRequest.class
 com\usermanagement\service\dto\UserImportResult$ImportRow.class
+com\usermanagement\web\dto\UpdateUserStatusRequest.class
 com\usermanagement\web\dto\LoginRequest.class
 com\usermanagement\security\datascope\DataScope.class
 com\usermanagement\service\dto\AuditLogEvent$Builder.class

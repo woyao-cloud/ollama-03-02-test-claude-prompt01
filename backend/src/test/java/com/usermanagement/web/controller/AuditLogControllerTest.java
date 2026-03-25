@@ -9,6 +9,7 @@ import com.usermanagement.service.dto.AuditLogQueryRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -29,7 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,7 +73,7 @@ class AuditLogControllerTest {
         );
         Page<AuditLogDTO> logPage = new PageImpl<>(logs);
 
-        when(auditLogService.getAuditLogs(any(AuditLogQueryRequest.class))).thenReturn(logPage);
+        when(auditLogService.getAuditLogs(Mockito.any(AuditLogQueryRequest.class))).thenReturn(logPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/audit-logs")
@@ -107,7 +107,7 @@ class AuditLogControllerTest {
         UUID userId = UUID.randomUUID();
         Page<AuditLogDTO> logPage = new PageImpl<>(Collections.singletonList(testAuditLogDTO));
 
-        when(auditLogService.getUserAuditLogs(eq(userId), any(AuditLogQueryRequest.class))).thenReturn(logPage);
+        when(auditLogService.getUserAuditLogs(eq(userId), Mockito.any(AuditLogQueryRequest.class))).thenReturn(logPage);
 
         // When & Then
         mockMvc.perform(get("/api/v1/audit-logs/user/{userId}", userId))
@@ -124,7 +124,7 @@ class AuditLogControllerTest {
         String resourceType = "USER";
         Page<AuditLogDTO> logPage = new PageImpl<>(Collections.singletonList(testAuditLogDTO));
 
-        when(auditLogService.getResourceAuditLogs(eq(resourceType), eq(resourceId), any(AuditLogQueryRequest.class)))
+        when(auditLogService.getResourceAuditLogs(eq(resourceType), eq(resourceId), Mockito.any(AuditLogQueryRequest.class)))
                 .thenReturn(logPage);
 
         // When & Then
@@ -163,7 +163,7 @@ class AuditLogControllerTest {
         stats.put("failureCount", 5L);
         stats.put("successRate", 95.0);
 
-        when(auditLogService.getStatistics(any(Instant.class), any(Instant.class))).thenReturn(stats);
+        when(auditLogService.getStatistics(Mockito.any(Instant.class), Mockito.any(Instant.class))).thenReturn(stats);
 
         // When & Then
         mockMvc.perform(get("/api/v1/audit-logs/statistics"))
@@ -181,7 +181,7 @@ class AuditLogControllerTest {
         request.setOperation(AuditLog.OperationType.CREATE);
 
         String exportPath = "/tmp/audit-logs-2024-01-01.csv";
-        when(auditLogService.exportAuditLogs(any(AuditLogQueryRequest.class), eq("csv")))
+        when(auditLogService.exportAuditLogs(Mockito.any(AuditLogQueryRequest.class), eq("csv")))
                 .thenReturn(exportPath);
 
         // When & Then
@@ -244,7 +244,7 @@ class AuditLogControllerTest {
     @WithMockUser(authorities = "AUDIT_READ")
     void shouldHandleServiceException() throws Exception {
         // Given
-        when(auditLogService.getAuditLogById(any())).thenThrow(new IllegalArgumentException("Audit log not found"));
+        when(auditLogService.getAuditLogById(Mockito.any())).thenThrow(new IllegalArgumentException("Audit log not found"));
 
         // When & Then
         mockMvc.perform(get("/api/v1/audit-logs/{id}", UUID.randomUUID()))

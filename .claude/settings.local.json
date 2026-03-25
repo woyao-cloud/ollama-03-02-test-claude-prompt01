@@ -14,7 +14,10 @@
       "Skill(gsd:progress)",
       "Skill(gsd:plan-phase)",
       "WebSearch",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(mvn clean:*)",
+      "Bash(mvn --version)",
+      "Bash(tee test-output.txt)"
     ]
   }
 }

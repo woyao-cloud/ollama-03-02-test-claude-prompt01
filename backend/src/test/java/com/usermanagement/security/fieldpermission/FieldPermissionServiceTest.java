@@ -38,7 +38,7 @@ class FieldPermissionServiceTest {
     void shouldAllowAccessWhenUserHasPermission() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_SALARY_READ"))
                 .thenReturn(true);
 
@@ -53,7 +53,7 @@ class FieldPermissionServiceTest {
     void shouldDenyAccessWhenUserDoesNotHavePermission() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_SALARY_READ"))
                 .thenReturn(false);
 
@@ -68,7 +68,7 @@ class FieldPermissionServiceTest {
     void shouldAllowWriteAccessWhenUserHasWritePermission() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_SALARY_WRITE"))
                 .thenReturn(true);
 
@@ -83,7 +83,7 @@ class FieldPermissionServiceTest {
     void shouldAllowOwnerToAccessTheirOwnData() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         // No permission granted, but owner should be allowed
 
         FieldPermission annotation = createFieldPermission("user", "phone", true, "id");
@@ -100,7 +100,7 @@ class FieldPermissionServiceTest {
         // Given
         UUID currentUserId = UUID.randomUUID();
         UUID otherUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(any(), any())).thenReturn(false);
 
         FieldPermission annotation = createFieldPermission("user", "phone", true, "id");
@@ -116,7 +116,7 @@ class FieldPermissionServiceTest {
     void shouldFilterFieldsOnObject() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_PASSWORD_READ"))
                 .thenReturn(false);
 
@@ -137,7 +137,7 @@ class FieldPermissionServiceTest {
     void shouldApplyAsteriskMask() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_PHONE_READ"))
                 .thenReturn(false);
 
@@ -156,7 +156,7 @@ class FieldPermissionServiceTest {
     void shouldApplyPartialMaskToEmail() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_EMAIL_READ"))
                 .thenReturn(false);
 
@@ -176,7 +176,7 @@ class FieldPermissionServiceTest {
     void shouldFilterListOfObjects() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(currentUserId, "USER_FIELD_SALARY_READ"))
                 .thenReturn(false);
 
@@ -219,7 +219,7 @@ class FieldPermissionServiceTest {
     void shouldHandleObjectWithoutIdField() {
         // Given
         UUID currentUserId = UUID.randomUUID();
-        when(securityUtils.getCurrentUserId()).thenReturn(currentUserId);
+        when(securityUtils.getCurrentUserId()).thenReturn(Optional.of(currentUserId));
         when(permissionCacheService.hasPermission(any(), any())).thenReturn(false);
 
         Object simpleObj = new Object();
