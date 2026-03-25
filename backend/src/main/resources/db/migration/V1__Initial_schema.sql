@@ -267,7 +267,28 @@ CREATE INDEX idx_sessions_user_valid ON user_sessions(user_id, is_valid) WHERE i
 CREATE INDEX idx_sessions_created ON user_sessions(created_at);
 
 -- =============================================
--- 8. 自动更新 updated_at 的触发器函数
+-- 9. password_history 密码历史表
+-- =============================================
+CREATE TABLE password_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 密码历史表注释
+COMMENT ON TABLE password_history IS '密码历史表 - 存储用户历史密码，防止密码重复使用';
+COMMENT ON COLUMN password_history.id IS '密码历史记录ID';
+COMMENT ON COLUMN password_history.user_id IS '用户ID';
+COMMENT ON COLUMN password_history.password_hash IS '密码哈希值';
+COMMENT ON COLUMN password_history.created_at IS '密码创建时间';
+
+-- 密码历史表索引
+CREATE INDEX idx_password_history_user ON password_history(user_id);
+CREATE INDEX idx_password_history_created ON password_history(created_at DESC);
+
+-- =============================================
+-- 10. 自动更新 updated_at 的触发器函数
 -- 必须在所有触发器之前定义
 -- =============================================
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -285,7 +306,7 @@ CREATE TRIGGER update_user_sessions_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 
 -- =============================================
--- 8. audit_logs 审计日志表（分区表）
+-- 11. audit_logs 审计日志表（分区表）
 -- =============================================
 
 -- 创建主表（模板表）
@@ -356,7 +377,7 @@ CREATE INDEX idx_audit_logs_2026_06_resource ON audit_logs_2026_06(resource_type
 CREATE INDEX idx_audit_logs_2026_06_operation ON audit_logs_2026_06(operation, created_at DESC);
 
 -- =============================================
--- 9. 为其他表创建 updated_at 触发器
+-- 12. 为其他表创建 updated_at 触发器
 -- （函数已在前面定义）
 -- =============================================
 
@@ -385,7 +406,7 @@ CREATE TRIGGER trg_permissions_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 
 -- =============================================
--- 10. 创建分区管理函数
+-- 13. 创建分区管理函数
 -- =============================================
 CREATE OR REPLACE FUNCTION create_audit_log_partition(
     p_year INT,
@@ -441,7 +462,7 @@ $$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION create_audit_log_partition IS '创建审计日志分区表';
 
 -- =============================================
--- 11. 插入默认数据
+-- 14. 插入默认数据
 -- =============================================
 
 -- 创建根部门（公司）
@@ -507,7 +528,7 @@ SELECT '00000000-0000-0000-0000-000000000002', id FROM permissions;
 -- 创建分区函数已在上面定义
 
 -- =============================================
--- 13. 提交事务
+-- 16. 提交事务
 -- =============================================
 
 COMMIT;
