@@ -1,6 +1,7 @@
 package com.usermanagement.service.dto;
 
 import com.usermanagement.domain.entity.User;
+import com.usermanagement.security.fieldpermission.FieldPermission;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,15 +21,23 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String fullName;
+
+    @FieldPermission(resource = "user", field = "phone", mask = FieldPermission.MaskType.PARTIAL)
     private String phone;
+
     private String avatarUrl;
     private UUID departmentId;
     private String departmentName;
     private User.UserStatus status;
     private Boolean emailVerified;
+
+    @FieldPermission(resource = "user", field = "lastLoginAt", mask = FieldPermission.MaskType.NULL)
     private Instant lastLoginAt;
+
     private Instant createdAt;
     private Instant updatedAt;
+
+    @FieldPermission(resource = "user", field = "roles", mask = FieldPermission.MaskType.EMPTY)
     private List<RoleInfo> roles;
 
     // Inner class for role information

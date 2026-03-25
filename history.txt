@@ -5382,3 +5382,61 @@ iterable
   }
 
   进度已更新至 33%。下一步是 Plan 2.3: 字段级权限控制，是否继续？
+
+  ● Plan 2.3 (字段级权限控制) 已完成！以下是交付的内容：
+
+  已创建的文件
+
+  核心组件:
+  - FieldPermission.java - 字段权限注解
+  - FieldPermissionService.java - 权限评估服务
+  - FieldPermissionAspect.java - AOP 切面
+  - FieldFilterContext.java - ThreadLocal 上下文
+  - FieldPermissionModule.java - Jackson 模块
+  - SecureFieldSerializer.java - 安全序列化器
+
+  单元测试:
+  - FieldPermissionServiceTest.java - 13个测试用例
+
+  支持的掩码类型
+
+  ┌──────────┬──────────────┬─────────────────┐
+  │   类型   │     说明     │      示例       │
+  ├──────────┼──────────────┼─────────────────┤
+  │ NULL     │ 设为 null    │ null            │
+  ├──────────┼──────────────┼─────────────────┤
+  │ EMPTY    │ 设为空字符串 │ ""              │
+  ├──────────┼──────────────┼─────────────────┤
+  │ ASTERISK │ 星号掩码     │ ****            │
+  ├──────────┼──────────────┼─────────────────┤
+  │ PARTIAL  │ 部分掩码     │ ***@example.com │
+  ├──────────┼──────────────┼─────────────────┤
+  │ CUSTOM   │ 自定义模式   │ [REDACTED]      │
+  ├──────────┼──────────────┼─────────────────┤
+  │ HIDE     │ 完全隐藏     │ (字段移除)      │
+  └──────────┴──────────────┴─────────────────┘
+
+  使用示例
+
+  public class UserDTO {
+      private String name;
+
+      @FieldPermission(
+          resource = "user",
+          field = "phone",
+          mask = MaskType.PARTIAL
+      )
+      private String phone;
+
+      @FieldPermission(
+          resource = "user",
+          field = "salary",
+          mask = MaskType.NULL,
+          checkOwnership = true
+      )
+      private Double salary;
+  }
+
+  权限码格式: USER_FIELD_PHONE_READ
+
+  进度已更新至 50%。下一步是 Plan 2.4: OAuth2.0集成，是否继续？
