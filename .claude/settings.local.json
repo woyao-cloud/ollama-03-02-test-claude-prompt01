@@ -17,7 +17,16 @@
       "Bash(node:*)",
       "Bash(mvn clean:*)",
       "Bash(mvn --version)",
-      "Bash(tee test-output.txt)"
+      "Bash(tee test-output.txt)",
+      "Bash(mvn:*)",
+      "Read(//d D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/**)",
+      "Bash(dir /s /b *.tsx *.ts *.js *.json)",
+      "Bash(dir:*)",
+      "Bash(npm --version)",
+      "Bash(npm install:*)",
+      "Bash(npm list:*)",
+      "Bash(npm view:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

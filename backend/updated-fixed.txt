@@ -1,0 +1,17 @@
+ 后端工程师disable flyway 加载V1__Initial_schema.sql因为其他地方已经加载
+
+● Update(backend\src\main\resources\application-local.yml)
+  ⎿  Error editing file
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(backend\src\main\resources\application-local.yml)
+  ⎿  Added 2 lines, removed 2 lines
+      39          order_updates: true
+      40          jdbc.lob.non_contextual_creation: true
+      41
+      42 -  # Flyway 配置
+      42 +  # Flyway 配置 - 在 Docker 环境中禁用，因为迁移已通过 db-seed 服务执行
+      43    flyway:
+      44 -    enabled: true
+      44 +    enabled: false

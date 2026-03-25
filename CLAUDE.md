@@ -16,7 +16,7 @@
 - Spring Security + JWT + OAuth2 认证
 
 ### 前端
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript 5+
 - shadcn/ui + Tailwind CSS
 - Zustand 状态管理

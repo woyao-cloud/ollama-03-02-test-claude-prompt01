@@ -37,9 +37,9 @@ spring:
         order_updates: true
         jdbc.lob.non_contextual_creation: true
 
-  # Flyway 配置
+  # Flyway 配置 - 在 Docker 环境中禁用，因为迁移已通过 db-seed 服务执行
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
     baseline-on-migrate: true
     validate-on-migrate: true

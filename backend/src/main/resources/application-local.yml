@@ -5,11 +5,11 @@
 spring:
   config:
     activate:
-      on-profile: team
+      on-profile: local
 
   # 数据源配置
   datasource:
-    url: jdbc:postgresql://postgres:5432/user_management
+    url: jdbc:postgresql://localhost:5432/user_management
     username: devuser
     # teamuser
     password: devpassword
@@ -39,9 +39,9 @@ spring:
         order_updates: true
         jdbc.lob.non_contextual_creation: true
 
-  # Flyway 配置
+  # Flyway 配置 - 在 Docker 环境中禁用，因为迁移已通过 db-seed 服务执行
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
     baseline-on-migrate: true
     validate-on-migrate: true

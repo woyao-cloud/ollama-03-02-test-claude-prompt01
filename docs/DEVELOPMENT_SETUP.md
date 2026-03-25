@@ -88,6 +88,9 @@ cd backend
 #### 步骤 2：使用 H2 内存数据库（快速开发）
 
 ```bash
+#本地
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+
 # 使用开发配置（默认使用 H2 内存数据库，无需 Docker）
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
