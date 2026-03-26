@@ -355,7 +355,7 @@
   ⎿  Wrote 43 lines to frontend\Dockerfile.dev
      # =============================================
      # Frontend Dockerfile - 开发环境
-     # Next.js 14 + Node.js 18
+     # Next.js 16 + Node.js 18
      # 支持热重载
      # =============================================
 
@@ -369,7 +369,7 @@
   ⎿  Wrote 77 lines to frontend\Dockerfile
      # =============================================
      # Frontend Dockerfile - 生产环境
-     # Next.js 14 + Node.js 18
+     # Next.js 16 + Node.js 18
      # 多阶段构建，优化镜像大小
      # =============================================
 

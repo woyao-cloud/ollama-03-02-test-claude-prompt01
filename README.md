@@ -1,4 +1,6 @@
-# 使用 springboot3.5 基于jdk21替换fastAPI 
+# 本文档为claude操作历史记录日志信息
+
+## 使用 springboot3.5 基于jdk21替换fastAPI 
 
  git clone https://github.com/woyao-cloud/ollama-03-02-test-claude-prompt01.git
 ![alt text](image.png)
@@ -823,7 +825,7 @@
   - pytest → JUnit 5 + Testcontainers
   - Uvicorn → 嵌入式 Tomcat
 
-  前端: 保持不变 (Next.js 14)
+  前端: 保持不变 (Next.js 16)
 
   现在可以继续实施 Spring Boot 后端开发了。是否需要我开始创建项目脚手架？
 
@@ -3800,7 +3802,7 @@
 
   1. 项目已指定 E2E 测试框架：TESTING_STRATEGY.md 明确使用 Playwright 进行 E2E 测试
   2. 关键用户流程需要覆盖：项目测试金字塔中 E2E 占 10%，用于验证完整用户流程
-  3. 前端技术栈需要：Next.js 14 前端需要专门的 E2E 测试支持
+  3. 前端技术栈需要：Next.js 6 前端需要专门的 E2E 测试支持
   4. 与现有 agents 协作：与 tdd-guide（单元/集成测试）形成互补
 
   建议的 e2e-runner 职责

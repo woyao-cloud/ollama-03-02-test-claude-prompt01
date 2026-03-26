@@ -60,7 +60,7 @@ Task:  None
 | Date | Decision | Rationale | Status |
 |------|----------|-----------|--------|
 | 2026-03-24 | Spring Boot 3.5 + JDK 21 | 企业级标准，虚拟线程支持 | Approved |
-| 2026-03-24 | Next.js 14 + TypeScript 5 | SSR支持，类型安全 | Approved |
+| 2026-03-24 | Next.js 16 + TypeScript 5 | SSR支持，类型安全 | Approved |
 | 2026-03-24 | PostgreSQL 15 | JSONB支持，性能优秀 | Approved |
 | 2026-03-24 | Redis 7 | 分布式缓存，会话存储 | Approved |
 | 2026-03-24 | JWT + RSA256 | 无状态，安全性高 | Approved |

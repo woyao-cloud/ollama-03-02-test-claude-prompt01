@@ -183,7 +183,7 @@ public class OpenApiConfig {
 
 ## 4. 前端技术
 
-### 4.1 Next.js 14 App Router
+### 4.1 Next.js 16 App Router
 
 **关键特性:**
 - Server Components (默认)
@@ -377,7 +377,7 @@ public class CreateUserRequest {
 - [Spring Boot 3.5 Reference](https://docs.spring.io/spring-boot/docs/3.5.x/reference/html/)
 - [Spring Security Reference](https://docs.spring.io/spring-security/reference/)
 - [JJWT Documentation](https://github.com/jwtk/jjwt#readme)
-- [Next.js 14 Documentation](https://nextjs.org/docs)
+- [Next.js 16 Documentation](https://nextjs.org/docs)
 - [shadcn/ui Documentation](https://ui.shadcn.com/docs)
 - [Zustand Documentation](https://docs.pmnd.rs/zustand)
 

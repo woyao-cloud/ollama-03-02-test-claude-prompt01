@@ -10,7 +10,7 @@
 
 ### Project Setup
 
-**Next.js 14** (`frontend/`)
+**Next.js 16** (`frontend/`)
 - App Router architecture
 - TypeScript 5.4+ strict mode
 - Custom path aliases (`@/*`, `@/components/*`, etc.)

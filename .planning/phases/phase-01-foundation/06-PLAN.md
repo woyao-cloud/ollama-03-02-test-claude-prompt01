@@ -12,12 +12,12 @@ autonomous: false
 
 ## Objective
 
-搭建Next.js 14前端基础架构，包括项目初始化、shadcn/ui配置、Zustand状态管理、axios HTTP客户端配置、登录页面，以及整体布局组件。
+搭建Next.js 16前端基础架构，包括项目初始化、shadcn/ui配置、Zustand状态管理、axios HTTP客户端配置、登录页面，以及整体布局组件。
 
 **Purpose:** 前端基础架构是用户与系统交互的入口，需要统一的技术栈和良好的用户体验设计。
 
 **Output:**
-- Next.js 14 项目初始化 (App Router)
+- Next.js 16 项目初始化 (App Router)
 - shadcn/ui 组件库配置
 - Zustand 状态管理 (用户、认证)
 - axios HTTP 客户端 (拦截器、错误处理)
@@ -31,7 +31,7 @@ autonomous: false
 ### 前端技术栈
 | 类别 | 技术 | 版本 |
 |------|------|------|
-| 框架 | Next.js | 14.x |
+| 框架 | Next.js | 16.x |
 | 语言 | TypeScript | 5+ |
 | 样式 | Tailwind CSS | 3.x |
 | UI组件 | shadcn/ui | latest |
@@ -86,7 +86,7 @@ frontend/
 
 ### Task 1: 初始化 Next.js 项目并配置 shadcn/ui
 
-**描述:** 创建Next.js 14项目，配置TypeScript、Tailwind CSS、shadcn/ui
+**描述:** 创建Next.js 16项目，配置TypeScript、Tailwind CSS、shadcn/ui
 
 **文件:**
 - `frontend/package.json`
@@ -486,7 +486,7 @@ npm run lint
 ## must_haves
 
 ### truths
-- Next.js 14项目初始化完成，使用App Router
+- Next.js 16项目初始化完成，使用App Router
 - shadcn/ui组件库配置完成
 - Zustand管理认证状态和用户信息
 - axios配置Token自动附加和刷新

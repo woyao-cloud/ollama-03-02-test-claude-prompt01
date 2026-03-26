@@ -27,7 +27,7 @@
 │                                                             │
 │  前端层                                                      │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │ Next.js 14 + TypeScript + Tailwind CSS + shadcn/ui  │   │
+│  │ Next.js 16 + TypeScript + Tailwind CSS + shadcn/ui  │   │
 │  └─────────────────────────────────────────────────────┘   │
 │                         │                                   │
 │                         ▼ HTTPS/JSON                        │

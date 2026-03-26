@@ -38,7 +38,7 @@ Create frontend department management interface including:
 - `POST /api/v1/departments/{id}/manager` - Assign manager
 
 **Frontend Stack**:
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript 5+
 - shadcn/ui components
 - Tailwind CSS

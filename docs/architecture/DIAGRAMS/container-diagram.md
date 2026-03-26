@@ -10,7 +10,7 @@ C4Container
     Person(user, "用户", "终端用户/管理员/审计员")
 
     Container_Boundary(browser, "客户端") {
-        Container(spa, "单页应用", "Next.js 14<br/>TypeScript<br/>shadcn/ui", "提供用户界面")
+        Container(spa, "单页应用", "Next.js 16<br/>TypeScript<br/>shadcn/ui", "提供用户界面")
     }
 
     Container_Boundary(api, "API层") {
@@ -79,7 +79,7 @@ C4Container
 
 | 容器 | 技术 | 主要职责 |
 |------|------|----------|
-| 单页应用 | Next.js 14 | 用户界面，与后端API交互 |
+| 单页应用 | Next.js 16 | 用户界面，与后端API交互 |
 | API网关 | Nginx/Ingress | 路由、负载均衡、限流、SSL终止 |
 | 认证服务 | Spring Boot | JWT认证、OAuth2集成、会话管理 |
 | 用户服务 | Spring Boot | 用户CRUD、批量导入导出、用户状态管理 |

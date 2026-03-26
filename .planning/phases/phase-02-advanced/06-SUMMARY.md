@@ -151,7 +151,7 @@
 
 ## Technical Stack
 
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript 5+
 - React Hook Form + Zod
 - Zustand (state management)

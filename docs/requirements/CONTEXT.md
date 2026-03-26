@@ -26,10 +26,10 @@
 决策是强制性的，必须严格遵循。
 
 #### D-01: 技术栈选择 - Spring Boot + Next.js
-- **决策**: 后端采用 Spring Boot 3.5 + JDK 21，前端采用 Next.js 14
+- **决策**: 后端采用 Spring Boot 3.5 + JDK 21，前端采用 Next.js 16
 - **原因**:
   - 团队熟悉 Java 和 Spring 生态
-  - Next.js 14 支持 Server Components，性能好
+  - Next.js 16 支持 Server Components，性能好
   - 类型安全（Java + TypeScript）
 - **影响**:
   - 需要 JDK 21 环境

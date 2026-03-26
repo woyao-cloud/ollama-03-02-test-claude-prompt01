@@ -45,7 +45,7 @@
 
 ### Technical Constraints
 - **后端**: Spring Boot 3.5 + JDK 21
-- **前端**: Next.js 14 + TypeScript 5+
+- **前端**: Next.js 16 + TypeScript 5+
 - **数据库**: PostgreSQL 15+ (生产) / H2 (开发测试)
 - **缓存**: Redis 7+ (必需，用于会话和高并发)
 - **消息队列**: Kafka 3+ (推荐，用于审计日志)
@@ -126,7 +126,7 @@
 | ADR | 标题 | 状态 | 路径 |
 |-----|------|------|------|
 | ADR-001 | 后端框架选择 Spring Boot 3.5 | 已批准 | docs/architecture/adr/ADR-001-spring-boot-framework.md |
-| ADR-002 | 前端框架选择 Next.js 14 | 已批准 | docs/architecture/adr/ADR-002-nextjs-frontend.md |
+| ADR-002 | 前端框架选择 Next.js 16 | 已批准 | docs/architecture/adr/ADR-002-nextjs-frontend.md |
 | ADR-003 | 数据库选择 PostgreSQL 15 | 已批准 | docs/architecture/adr/ADR-003-postgresql-database.md |
 | ADR-004 | 缓存选择 Redis 7 | 已批准 | docs/architecture/adr/ADR-004-redis-cache.md |
 | ADR-005 | 认证方案 JWT + RSA256 | 已批准 | docs/architecture/adr/ADR-005-jwt-authentication.md |
