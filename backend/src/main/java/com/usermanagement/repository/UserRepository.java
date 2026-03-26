@@ -1,17 +1,17 @@
 package com.usermanagement.repository;
 
-import com.usermanagement.domain.entity.User;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.usermanagement.domain.entity.User;
 
 /**
  * 用户仓库接口
@@ -90,8 +90,10 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
      * @param pageable 分页参数
      * @return 用户分页结果
      */
-    @Query("SELECT u FROM User u JOIN u.userRoles ur JOIN ur.role r WHERE r.id = :roleId AND u.deletedAt IS NULL")
-    Page<User> findByRoleId(@Param("roleId") UUID roleId, Pageable pageable);
+        @Query(value = "SELECT u.* FROM users u JOIN user_roles ur ON ur.user_id = u.id WHERE ur.role_id = :roleId AND u.deleted_at IS NULL",
+            countQuery = "SELECT COUNT(*) FROM users u JOIN user_roles ur ON ur.user_id = u.id WHERE ur.role_id = :roleId AND u.deleted_at IS NULL",
+            nativeQuery = true)
+        Page<User> findByRoleId(@Param("roleId") UUID roleId, Pageable pageable);
 
     /**
      * 统计部门下的用户数量

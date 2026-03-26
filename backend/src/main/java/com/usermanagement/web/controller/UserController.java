@@ -38,11 +38,10 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
-    private final SecurityUtils securityUtils;
 
-    public UserController(UserService userService, SecurityUtils securityUtils) {
+
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.securityUtils = securityUtils;
     }
 
     /**
@@ -225,7 +224,7 @@ public class UserController {
      */
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDTO>> getCurrentUser() {
-        UUID currentUserId = securityUtils.getCurrentUserId()
+        UUID currentUserId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.debug("Getting current user info: {}", currentUserId);
 
@@ -239,7 +238,7 @@ public class UserController {
     @PutMapping("/me/profile")
     public ResponseEntity<ApiResponse<UserDTO>> updateMyProfile(
             @Valid @RequestBody UpdateProfileRequest request) {
-        UUID currentUserId = securityUtils.getCurrentUserId()
+        UUID currentUserId = SecurityUtils.getCurrentUserId()
                 .orElseThrow(() -> new IllegalStateException("Not authenticated"));
         logger.info("Updating my profile: {}", currentUserId);
 

@@ -1,6 +1,7 @@
 package com.usermanagement.config;
 
-import com.usermanagement.service.dto.AuditLogEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -9,6 +10,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +28,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.util.backoff.FixedBackOff;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.usermanagement.service.dto.AuditLogEvent;
 
 /**
  * Kafka Configuration
@@ -38,6 +39,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableKafka
+@ConditionalOnProperty(name = "app.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConfig.class);
