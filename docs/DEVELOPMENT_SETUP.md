@@ -34,6 +34,7 @@ Docker Compose 配置包含以下服务：
 在项目根目录执行：
 
 ```bash
+docker-compose -f docker-compose.yml up -d postgres redis zookeeper kafka kafka-ui pgadmin
 # 启动所有基础设施服务
 docker-compose -f docker-compose.dev.yml up -d postgres redis zookeeper kafka kafka-ui pgadmin
 

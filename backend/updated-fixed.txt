@@ -33,3 +33,20 @@ org.hibernate.query.sqm.UnknownPathException: Could not interpret attribute 'id'
         at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:116)
         ... 156 common frames omitted
 Caused by: java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownPathException: Terminal path 'role' has no attribute 'id' [SELECT p FROM Permission p JOIN p.rolePermissions rp JOIN rp.role r WHERE r.id = :roleId AND p.deletedAt IS NULL]
+
+
+已修复 UserRoleRepository、RolePermissionRepository、PermissionRepository、RoleRepository 和 UserRepository
+  中的原生查询问题，将所有 nativeQuery = true 的查询改为 JPQL 查询，使用正确的实体关联路径（如 ur.role.id 替代
+  role_id），避免 Hibernate 将 UUID 值错误映射到实体字段。
+
+  具体修改：
+  - UserRoleRepository: findByUserId、findByRoleId、existsByUserIdAndRoleId、countByUserId、countByRoleId、deleteByUserI
+  d、deleteByRoleId、deleteByUserIdAndRoleId
+  - RolePermissionRepository: findByRoleId、findByPermissionId、existsByRoleIdAndPermissionId、countByRoleId、countByPer
+  missionId、deleteByRoleId、deleteByPermissionId、deleteByRoleIdAndPermissionId、findRoleIdsByPermissionId
+  - PermissionRepository: findByRoleId
+  - RoleRepository: findByUserId
+  - UserRepository: findByRoleId
+
+  修复后应解决 "Could not set value of type [java.util.UUID]: 'com.usermanagement.domain.entity.UserRole.role' (setter)"
+   错误。

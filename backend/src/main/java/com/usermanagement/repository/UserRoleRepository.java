@@ -28,7 +28,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param userId 用户ID
      * @return 用户角色关联列表
      */
-    @Query(value = "SELECT ur.* FROM user_roles ur WHERE ur.user_id = :userId", nativeQuery = true)
+    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE ur.user.id = :userId")
     List<UserRole> findByUserId(@Param("userId") UUID userId);
 
     /**
@@ -37,7 +37,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 用户角色关联列表
      */
-    @Query(value = "SELECT ur.* FROM user_roles ur WHERE ur.role_id = :roleId", nativeQuery = true)
+    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE ur.role.id = :roleId")
     List<UserRole> findByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -46,7 +46,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param userId 用户ID
      */
     @Modifying
-    @Query(value = "DELETE FROM user_roles WHERE user_id = :userId", nativeQuery = true)
+    @Query("DELETE FROM UserRole ur WHERE ur.user.id = :userId")
     void deleteByUserId(@Param("userId") UUID userId);
 
     /**
@@ -55,7 +55,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      */
     @Modifying
-    @Query(value = "DELETE FROM user_roles WHERE role_id = :roleId", nativeQuery = true)
+    @Query("DELETE FROM UserRole ur WHERE ur.role.id = :roleId")
     void deleteByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -65,7 +65,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 是否存在
      */
-    @Query(value = "SELECT EXISTS (SELECT 1 FROM user_roles WHERE user_id = :userId AND role_id = :roleId)", nativeQuery = true)
+    @Query("SELECT COUNT(ur) > 0 FROM UserRole ur WHERE ur.user.id = :userId AND ur.role.id = :roleId")
     boolean existsByUserIdAndRoleId(@Param("userId") UUID userId, @Param("roleId") UUID roleId);
 
     /**
@@ -74,7 +74,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param userId 用户ID
      * @return 角色数量
      */
-    @Query(value = "SELECT COUNT(*) FROM user_roles WHERE user_id = :userId", nativeQuery = true)
+    @Query("SELECT COUNT(ur) FROM UserRole ur WHERE ur.user.id = :userId")
     long countByUserId(@Param("userId") UUID userId);
 
     /**
@@ -83,7 +83,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 用户数量
      */
-    @Query(value = "SELECT COUNT(*) FROM user_roles WHERE role_id = :roleId", nativeQuery = true)
+    @Query("SELECT COUNT(ur) FROM UserRole ur WHERE ur.role.id = :roleId")
     long countByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -93,6 +93,6 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      */
     @Modifying
-    @Query(value = "DELETE FROM user_roles WHERE user_id = :userId AND role_id = :roleId", nativeQuery = true)
+    @Query("DELETE FROM UserRole ur WHERE ur.user.id = :userId AND ur.role.id = :roleId")
     void deleteByUserIdAndRoleId(@Param("userId") UUID userId, @Param("roleId") UUID roleId);
 }

@@ -94,7 +94,7 @@ public interface PermissionRepository extends JpaRepository<Permission, UUID> {
      * @param roleId 角色ID
      * @return 权限列表
      */
-    @Query(value = "SELECT p.* FROM permissions p JOIN role_permissions rp ON rp.permission_id = p.id WHERE rp.role_id = :roleId AND p.deleted_at IS NULL", nativeQuery = true)
+    @Query("SELECT DISTINCT p FROM Permission p JOIN p.rolePermissions rp WHERE rp.role.id = :roleId AND p.deletedAt IS NULL")
     List<Permission> findByRoleId(@Param("roleId") UUID roleId);
 
     /**

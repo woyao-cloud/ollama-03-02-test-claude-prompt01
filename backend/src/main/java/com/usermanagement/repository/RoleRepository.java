@@ -103,6 +103,6 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
      * @param userId 用户ID
      * @return 角色列表
      */
-    @Query(value = "SELECT r.* FROM roles r JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = :userId AND r.deleted_at IS NULL", nativeQuery = true)
+    @Query("SELECT DISTINCT r FROM Role r JOIN r.userRoles ur WHERE ur.user.id = :userId AND r.deletedAt IS NULL")
     List<Role> findByUserId(@Param("userId") UUID userId);
 }
