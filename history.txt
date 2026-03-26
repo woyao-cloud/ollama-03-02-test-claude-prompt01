@@ -5785,7 +5785,10 @@ iterable
   - Playwright + TypeScript配置
   - 跨浏览器、视觉回归、性能测试方案
   - 测试数据管理和CI/CD集成
-
+##
+ >业务分析员根据需求 @.planning/REQUIREMENTS.md 规划前端任务，因为很多需求没有对应的前端页面比如没有角色管理页面
+  
+    Read .planning\REQUIREMENTS.md (200 lines)
    已完成 FUNCTIONAL_REQUIREMENTS.md 的补齐工作。以下是两个文件的作用说明和更新摘要：
 
   两个文件的主要作用
@@ -5850,3 +5853,6 @@ iterable
   - 安全需求（8项）
 
   文档现在提供了从高层次需求到具体实现指导的完整链路。
+
+  业务分析员对照需求文档@.planning/REQUIREMENTS.md FUNCTIONAL_REQUIREMENTS.md NON_FUNCTIONAL_REQUIREMENTS.md ，
+  检查已完成后端开发补齐后端开发任务清单
