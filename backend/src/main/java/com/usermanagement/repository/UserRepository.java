@@ -90,8 +90,8 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
      * @param pageable 分页参数
      * @return 用户分页结果
      */
-        @Query(value = "SELECT DISTINCT u FROM User u JOIN u.userRoles ur WHERE ur.role.id = :roleId AND u.deletedAt IS NULL",
-            countQuery = "SELECT COUNT(DISTINCT u) FROM User u JOIN u.userRoles ur WHERE ur.role.id = :roleId AND u.deletedAt IS NULL")
+        @Query(value = "SELECT DISTINCT u FROM User u JOIN u.userRoles ur JOIN ur.role r WHERE r.id = :roleId AND u.deletedAt IS NULL",
+            countQuery = "SELECT COUNT(DISTINCT u) FROM User u JOIN u.userRoles ur JOIN ur.role r WHERE r.id = :roleId AND u.deletedAt IS NULL")
         Page<User> findByRoleId(@Param("roleId") UUID roleId, Pageable pageable);
 
     /**

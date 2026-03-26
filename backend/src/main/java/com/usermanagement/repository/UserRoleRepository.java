@@ -28,7 +28,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param userId 用户ID
      * @return 用户角色关联列表
      */
-    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE ur.user.id = :userId")
+    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE u.id = :userId")
     List<UserRole> findByUserId(@Param("userId") UUID userId);
 
     /**
@@ -37,7 +37,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 用户角色关联列表
      */
-    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE ur.role.id = :roleId")
+    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role r JOIN FETCH ur.user u WHERE r.id = :roleId")
     List<UserRole> findByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -65,7 +65,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 是否存在
      */
-    @Query("SELECT COUNT(ur) > 0 FROM UserRole ur WHERE ur.user.id = :userId AND ur.role.id = :roleId")
+    @Query("SELECT COUNT(ur) > 0 FROM UserRole ur JOIN ur.user u JOIN ur.role r WHERE u.id = :userId AND r.id = :roleId")
     boolean existsByUserIdAndRoleId(@Param("userId") UUID userId, @Param("roleId") UUID roleId);
 
     /**
@@ -74,7 +74,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param userId 用户ID
      * @return 角色数量
      */
-    @Query("SELECT COUNT(ur) FROM UserRole ur WHERE ur.user.id = :userId")
+    @Query("SELECT COUNT(ur) FROM UserRole ur JOIN ur.user u WHERE u.id = :userId")
     long countByUserId(@Param("userId") UUID userId);
 
     /**
@@ -83,7 +83,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
      * @param roleId 角色ID
      * @return 用户数量
      */
-    @Query("SELECT COUNT(ur) FROM UserRole ur WHERE ur.role.id = :roleId")
+    @Query("SELECT COUNT(ur) FROM UserRole ur JOIN ur.role r WHERE r.id = :roleId")
     long countByRoleId(@Param("roleId") UUID roleId);
 
     /**
