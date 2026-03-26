@@ -1,10 +1,5 @@
 package com.usermanagement.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +7,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 /**
  * Permission Cache Service Implementation
@@ -44,7 +45,7 @@ public class PermissionCacheServiceImpl implements PermissionCacheService {
     private final RoleService roleService;
 
     public PermissionCacheServiceImpl(RedisTemplate<String, Object> redisTemplate,
-                                      RoleService roleService) {
+                                      @Lazy RoleService roleService) {
         this.redisTemplate = redisTemplate;
         this.roleService = roleService;
     }

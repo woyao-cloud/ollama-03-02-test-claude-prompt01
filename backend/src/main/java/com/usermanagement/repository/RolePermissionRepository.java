@@ -1,15 +1,16 @@
 package com.usermanagement.repository;
 
-import com.usermanagement.domain.entity.RolePermission;
-import com.usermanagement.domain.entity.RolePermissionId;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.UUID;
+import com.usermanagement.domain.entity.RolePermission;
+import com.usermanagement.domain.entity.RolePermissionId;
 
 /**
  * 角色权限关联仓库接口
@@ -27,7 +28,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      * @return 角色权限关联列表
      */
-    @Query("SELECT rp FROM RolePermission rp WHERE rp.role.id = :roleId")
+    @Query(value = "SELECT rp.* FROM role_permissions rp WHERE rp.role_id = :roleId", nativeQuery = true)
     List<RolePermission> findByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -36,7 +37,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色权限关联列表
      */
-    @Query("SELECT rp FROM RolePermission rp WHERE rp.permission.id = :permissionId")
+    @Query(value = "SELECT rp.* FROM role_permissions rp WHERE rp.permission_id = :permissionId", nativeQuery = true)
     List<RolePermission> findByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -45,7 +46,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.role.id = :roleId")
+    @Query(value = "DELETE FROM role_permissions WHERE role_id = :roleId", nativeQuery = true)
     void deleteByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -54,7 +55,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.permission.id = :permissionId")
+    @Query(value = "DELETE FROM role_permissions WHERE permission_id = :permissionId", nativeQuery = true)
     void deleteByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -64,7 +65,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 是否存在
      */
-    @Query("SELECT COUNT(rp) > 0 FROM RolePermission rp WHERE rp.role.id = :roleId AND rp.permission.id = :permissionId")
+    @Query(value = "SELECT EXISTS (SELECT 1 FROM role_permissions WHERE role_id = :roleId AND permission_id = :permissionId)", nativeQuery = true)
     boolean existsByRoleIdAndPermissionId(@Param("roleId") UUID roleId, @Param("permissionId") UUID permissionId);
 
     /**
@@ -73,7 +74,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      * @return 权限数量
      */
-    @Query("SELECT COUNT(rp) FROM RolePermission rp WHERE rp.role.id = :roleId")
+    @Query(value = "SELECT COUNT(*) FROM role_permissions WHERE role_id = :roleId", nativeQuery = true)
     long countByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -82,7 +83,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色数量
      */
-    @Query("SELECT COUNT(rp) FROM RolePermission rp WHERE rp.permission.id = :permissionId")
+    @Query(value = "SELECT COUNT(*) FROM role_permissions WHERE permission_id = :permissionId", nativeQuery = true)
     long countByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -92,7 +93,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.role.id = :roleId AND rp.permission.id = :permissionId")
+    @Query(value = "DELETE FROM role_permissions WHERE role_id = :roleId AND permission_id = :permissionId", nativeQuery = true)
     void deleteByRoleIdAndPermissionId(@Param("roleId") UUID roleId, @Param("permissionId") UUID permissionId);
 
     /**
@@ -101,6 +102,6 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色ID列表
      */
-    @Query("SELECT rp.role.id FROM RolePermission rp WHERE rp.permission.id = :permissionId")
+    @Query(value = "SELECT rp.role_id FROM role_permissions rp WHERE rp.permission_id = :permissionId", nativeQuery = true)
     List<UUID> findRoleIdsByPermissionId(@Param("permissionId") UUID permissionId);
 }
