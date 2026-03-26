@@ -83,3 +83,20 @@ Caused by: org.hibernate.query.sqm.TerminalPathException: Terminal path 'role' h
   5. AuditLogKafkaConsumer：添加相同条件注解
 
   现在Kafka相关组件不会加载，审计日志将直接写入数据库（使用 FallbackAuditLogService）。
+
+登录失败
+  - Authentication failed: Could not set value of type [java.util.UUID]: 'com.usermanagement.domain.entity.UserRole.role' (setter)
+
+  修复认证错误：无法将UUID值设置到UserRole.role属性
+
+  ● 已修复认证错误。主要更改：
+
+  1. UserRepository：添加 findActiveByEmailWithRoles() 方法，使用 JOIN FETCH 加载用户角色和权限关联
+  2. UserDetailsServiceImpl：改用新方法确保关联数据正确加载
+  3. UserRole/RolePermission 实体：从 @IdClass 迁移到 @EmbeddedId 模式，避免 Hibernate 类型映射冲突
+    - 使用 @EmbeddedId 代替 @IdClass
+    - 添加 @MapsId 注解关联字段
+    - 在 setter 中同步 ID 值
+    - 添加 @PrePersist 回调确保 ID 一致性
+
+  所有查询中的 ur.id.role、rp.id.role 等路径保持不变，仍指向嵌入 ID 的 UUID 属性。

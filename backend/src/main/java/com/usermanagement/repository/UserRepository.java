@@ -76,6 +76,15 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
     Optional<User> findActiveByEmail(@Param("email") String email);
 
     /**
+     * 根据邮箱查找未删除的用户并加载角色和权限
+     *
+     * @param email 邮箱地址
+     * @return 用户对象
+     */
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.userRoles ur LEFT JOIN FETCH ur.role WHERE u.email = :email AND u.deletedAt IS NULL")
+    Optional<User> findActiveByEmailWithRoles(@Param("email") String email);
+
+    /**
      * 统计活跃用户数量
      *
      * @return 用户数量

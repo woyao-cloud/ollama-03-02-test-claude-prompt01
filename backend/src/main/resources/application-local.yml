@@ -101,7 +101,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.usermanagement: INFO
+    com.usermanagement: DEBUG
     org.springframework.security: WARN
     org.springframework.web: WARN
     org.hibernate.SQL: WARN
@@ -124,17 +124,15 @@ management:
       show-details: when_authorized
       probes:
         enabled: true
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
+
   metrics:
-    export:
-      prometheus:
-        enabled: true
     tags:
       application: ${spring.application.name}
       environment: team
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 # 应用自定义配置
 app:

@@ -3,7 +3,6 @@ package com.usermanagement.domain.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 /**
@@ -17,16 +16,18 @@ import java.time.Instant;
 @Table(name = "role_permissions", indexes = {
     @Index(name = "idx_role_permissions_permission", columnList = "permission_id")
 })
-@IdClass(RolePermissionId.class)
 public class RolePermission {
 
-    @Id
+    @EmbeddedId
+    private RolePermissionId id = new RolePermissionId();
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("role")
     @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "fk_role_permissions_role"))
     private Role role;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("permission")
     @JoinColumn(name = "permission_id", nullable = false, foreignKey = @ForeignKey(name = "fk_role_permissions_permission"))
     private Permission permission;
 
@@ -35,12 +36,23 @@ public class RolePermission {
     private Instant createdAt;
 
     // Getters and Setters
+    public RolePermissionId getId() {
+        return id;
+    }
+
+    public void setId(RolePermissionId id) {
+        this.id = id;
+    }
+
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+        if (role != null) {
+            this.id.setRole(role.getId());
+        }
     }
 
     public Permission getPermission() {
@@ -49,6 +61,9 @@ public class RolePermission {
 
     public void setPermission(Permission permission) {
         this.permission = permission;
+        if (permission != null) {
+            this.id.setPermission(permission.getId());
+        }
     }
 
     public Instant getCreatedAt() {
@@ -64,15 +79,21 @@ public class RolePermission {
         if (this == o) return true;
         if (!(o instanceof RolePermission)) return false;
         RolePermission that = (RolePermission) o;
-        return role != null && permission != null &&
-                role.equals(that.role) && permission.equals(that.permission);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (permission != null ? permission.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @PrePersist
+    private void ensureId() {
+        if (role != null && id.getRole() == null) {
+            id.setRole(role.getId());
+        }
+        if (permission != null && id.getPermission() == null) {
+            id.setPermission(permission.getId());
+        }
     }
 }

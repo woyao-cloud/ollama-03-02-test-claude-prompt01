@@ -16,16 +16,18 @@ import java.time.Instant;
 @Table(name = "user_roles", indexes = {
     @Index(name = "idx_user_roles_role", columnList = "role_id")
 })
-@IdClass(UserRoleId.class)
 public class UserRole {
 
-    @Id
+    @EmbeddedId
+    private UserRoleId id = new UserRoleId();
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("user")
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_user_roles_user"))
     private User user;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("role")
     @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "fk_user_roles_role"))
     private Role role;
 
@@ -34,12 +36,23 @@ public class UserRole {
     private Instant createdAt;
 
     // Getters and Setters
+    public UserRoleId getId() {
+        return id;
+    }
+
+    public void setId(UserRoleId id) {
+        this.id = id;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+        if (user != null) {
+            this.id.setUser(user.getId());
+        }
     }
 
     public Role getRole() {
@@ -48,6 +61,9 @@ public class UserRole {
 
     public void setRole(Role role) {
         this.role = role;
+        if (role != null) {
+            this.id.setRole(role.getId());
+        }
     }
 
     public Instant getCreatedAt() {
@@ -63,15 +79,21 @@ public class UserRole {
         if (this == o) return true;
         if (!(o instanceof UserRole)) return false;
         UserRole that = (UserRole) o;
-        return user != null && role != null &&
-                user.equals(that.user) && role.equals(that.role);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @PrePersist
+    private void ensureId() {
+        if (user != null && id.getUser() == null) {
+            id.setUser(user.getId());
+        }
+        if (role != null && id.getRole() == null) {
+            id.setRole(role.getId());
+        }
     }
 }

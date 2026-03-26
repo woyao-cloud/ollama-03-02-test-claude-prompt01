@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         logger.debug("Loading user by email: {}", email);
 
-        User user = userRepository.findActiveByEmail(email)
+        User user = userRepository.findActiveByEmailWithRoles(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         // Build authorities from roles and permissions
