@@ -30,7 +30,8 @@ public class SecureFieldSerializer extends JsonSerializer<Object> {
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         // Check if field should be hidden
         if (fieldPermission != null && fieldPermission.mask() == FieldPermission.MaskType.HIDE) {
-            // Skip serialization entirely
+            // Write explicit null for hidden fields to keep generator state valid
+            gen.writeNull();
             return;
         }
 

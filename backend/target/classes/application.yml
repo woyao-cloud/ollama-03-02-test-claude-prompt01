@@ -7,6 +7,7 @@ spring:
     active: dev
 
   kafka:
+    enabled: false
     bootstrap-servers: localhost:29092
     # ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:

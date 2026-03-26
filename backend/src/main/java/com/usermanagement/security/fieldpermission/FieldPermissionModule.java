@@ -78,24 +78,38 @@ public class FieldPermissionModule extends SimpleModule {
 
         @Override
         public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            // Check if field should be serialized
+            // Check if field should be serialized. Note: BeanPropertyWriter writes the
+            // field name before calling this serializer, so this method must only
+            // write the field value (not the name).
             if (shouldSerialize(value)) {
-                try {
-                    writer.serializeAsField(value, gen, serializers);
-                } catch (Exception e) {
-                    throw new IOException("Failed to serialize field", e);
+                if (value == null) {
+                    gen.writeNull();
+                } else {
+                    serializers.defaultSerializeValue(value, gen);
                 }
             } else {
-                // Skip or mask based on configuration
-                if (annotation.mask() == FieldPermission.MaskType.HIDE) {
-                    // Don't write anything
-                    return;
-                }
-
-                // Write masked value
-                Object maskedValue = createMaskedValue(value);
-                if (maskedValue != null) {
-                    gen.writeObjectField(writer.getName(), maskedValue);
+                // Mask or hide the value. We must still write a valid JSON value
+                // because the field name has already been emitted by the property
+                // writer.
+                switch (annotation.mask()) {
+                    case HIDE:
+                        gen.writeNull();
+                        break;
+                    case NULL:
+                        gen.writeNull();
+                        break;
+                    case EMPTY:
+                        gen.writeString("");
+                        break;
+                    case ASTERISK:
+                        gen.writeString("****");
+                        break;
+                    case CUSTOM:
+                        gen.writeString(annotation.maskPattern());
+                        break;
+                    default:
+                        gen.writeNull();
+                        break;
                 }
             }
         }

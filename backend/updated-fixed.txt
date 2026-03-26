@@ -100,3 +100,5 @@ Caused by: org.hibernate.query.sqm.TerminalPathException: Terminal path 'role' h
     - 添加 @PrePersist 回调确保 ID 一致性
 
   所有查询中的 ur.id.role、rp.id.role 等路径保持不变，仍指向嵌入 ID 的 UUID 属性。
+
+  Caused by: com.fasterxml.jackson.databind.JsonMappingException: Can not write a field name, expecting a value (through reference chain: com.usermanagement.web.dto.ApiResponse["data"]->com.usermanagement.service.dto.UserDTO["avatarUrl"])
