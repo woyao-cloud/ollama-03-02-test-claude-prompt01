@@ -15,3 +15,21 @@
       43    flyway:
       44 -    enabled: true
       44 +    enabled: false
+
+
+
+```
+## Fix  Bugs
+1,
+org.hibernate.query.sqm.UnknownPathException: Could not interpret attribute 'id' of basic-valued path 'com.usermanagement.domain.entity.UserRole(ur).user'   QueryCreationException: Could not create query for public abstract java.util.List com.usermanagement.repository.RoleRepository.findByUserId(java.util.UUID); Reason: Validation failed for query for method public abstract java.util.List com.usermanagement.repository.RoleRepository.findByUserId(java.util.UUID)
+2,
+      Caused by: java.lang.IllegalArgumentException: Validation failed for query for method public abstract java.util.List com.usermanagement.repository.PermissionRepository.findByRoleId(java.util.UUID)
+        at org.springframework.data.jpa.repository.query.SimpleJpaQuery.validateQuery(SimpleJpaQuery.java:97)
+        at org.springframework.data.jpa.repository.query.SimpleJpaQuery.<init>(SimpleJpaQuery.java:67)
+        at org.springframework.data.jpa.repository.query.JpaQueryFactory.fromMethodWithQueryString(JpaQueryFactory.java:49)
+        at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$DeclaredQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:174)
+        at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:254)
+        at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:99)
+        at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:116)
+        ... 156 common frames omitted
+Caused by: java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownPathException: Terminal path 'role' has no attribute 'id' [SELECT p FROM Permission p JOIN p.rolePermissions rp JOIN rp.role r WHERE r.id = :roleId AND p.deletedAt IS NULL]

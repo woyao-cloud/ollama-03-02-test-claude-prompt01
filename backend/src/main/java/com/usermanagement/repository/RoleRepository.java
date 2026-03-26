@@ -1,6 +1,9 @@
 package com.usermanagement.repository;
 
-import com.usermanagement.domain.entity.Role;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.usermanagement.domain.entity.Role;
 
 /**
  * 角色仓库接口
@@ -102,6 +103,6 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
      * @param userId 用户ID
      * @return 角色列表
      */
-    @Query("SELECT r FROM Role r JOIN r.userRoles ur JOIN ur.user u WHERE u.id = :userId AND r.deletedAt IS NULL")
+    @Query(value = "SELECT r.* FROM roles r JOIN user_roles ur ON ur.role_id = r.id WHERE ur.user_id = :userId AND r.deleted_at IS NULL", nativeQuery = true)
     List<Role> findByUserId(@Param("userId") UUID userId);
 }

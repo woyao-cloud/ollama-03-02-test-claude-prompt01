@@ -1,6 +1,9 @@
 package com.usermanagement.repository;
 
-import com.usermanagement.domain.entity.Permission;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.usermanagement.domain.entity.Permission;
 
 /**
  * 权限仓库接口
@@ -93,7 +94,7 @@ public interface PermissionRepository extends JpaRepository<Permission, UUID> {
      * @param roleId 角色ID
      * @return 权限列表
      */
-    @Query("SELECT p FROM Permission p JOIN p.rolePermissions rp JOIN rp.role r WHERE r.id = :roleId AND p.deletedAt IS NULL")
+    @Query(value = "SELECT p.* FROM permissions p JOIN role_permissions rp ON rp.permission_id = p.id WHERE rp.role_id = :roleId AND p.deleted_at IS NULL", nativeQuery = true)
     List<Permission> findByRoleId(@Param("roleId") UUID roleId);
 
     /**
