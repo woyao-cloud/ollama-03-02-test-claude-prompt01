@@ -18,36 +18,36 @@ import java.util.UUID;
 public class RolePermissionId implements Serializable {
 
     @Column(name = "role_id", nullable = false)
-    private UUID roleId;
+    private UUID role;
 
     @Column(name = "permission_id", nullable = false)
-    private UUID permissionId;
+    private UUID permission;
 
     // 默认构造函数（JPA要求）
     public RolePermissionId() {
     }
 
     // 带参数的构造函数
-    public RolePermissionId(UUID roleId, UUID permissionId) {
-        this.roleId = roleId;
-        this.permissionId = permissionId;
+    public RolePermissionId(UUID role, UUID permission) {
+        this.role = role;
+        this.permission = permission;
     }
 
     // Getters and Setters
-    public UUID getRoleId() {
-        return roleId;
+    public UUID getRole() {
+        return role;
     }
 
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
+    public void setRole(UUID role) {
+        this.role = role;
     }
 
-    public UUID getPermissionId() {
-        return permissionId;
+    public UUID getPermission() {
+        return permission;
     }
 
-    public void setPermissionId(UUID permissionId) {
-        this.permissionId = permissionId;
+    public void setPermission(UUID permission) {
+        this.permission = permission;
     }
 
     @Override
@@ -55,20 +55,20 @@ public class RolePermissionId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof RolePermissionId)) return false;
         RolePermissionId that = (RolePermissionId) o;
-        return Objects.equals(roleId, that.roleId) &&
-                Objects.equals(permissionId, that.permissionId);
+        return Objects.equals(role, that.role) &&
+                Objects.equals(permission, that.permission);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleId, permissionId);
+        return Objects.hash(role, permission);
     }
 
     @Override
     public String toString() {
         return "RolePermissionId{" +
-                "roleId=" + roleId +
-                ", permissionId=" + permissionId +
+                "role=" + role +
+                ", permission=" + permission +
                 '}';
     }
 }

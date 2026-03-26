@@ -18,36 +18,36 @@ import java.util.UUID;
 public class UserRoleId implements Serializable {
 
     @Column(name = "user_id", nullable = false)
-    private UUID userId;
+    private UUID user;
 
     @Column(name = "role_id", nullable = false)
-    private UUID roleId;
+    private UUID role;
 
     // 默认构造函数（JPA要求）
     public UserRoleId() {
     }
 
     // 带参数的构造函数
-    public UserRoleId(UUID userId, UUID roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
+    public UserRoleId(UUID user, UUID role) {
+        this.user = user;
+        this.role = role;
     }
 
     // Getters and Setters
-    public UUID getUserId() {
-        return userId;
+    public UUID getUser() {
+        return user;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setUser(UUID user) {
+        this.user = user;
     }
 
-    public UUID getRoleId() {
-        return roleId;
+    public UUID getRole() {
+        return role;
     }
 
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
+    public void setRole(UUID role) {
+        this.role = role;
     }
 
     @Override
@@ -55,20 +55,20 @@ public class UserRoleId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof UserRoleId)) return false;
         UserRoleId that = (UserRoleId) o;
-        return Objects.equals(userId, that.userId) &&
-                Objects.equals(roleId, that.roleId);
+        return Objects.equals(user, that.user) &&
+                Objects.equals(role, that.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, roleId);
+        return Objects.hash(user, role);
     }
 
     @Override
     public String toString() {
         return "UserRoleId{" +
-                "userId=" + userId +
-                ", roleId=" + roleId +
+                "userId=" + user +
+                ", roleId=" + role +
                 '}';
     }
 }
