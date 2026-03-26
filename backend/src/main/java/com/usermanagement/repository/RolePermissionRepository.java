@@ -28,7 +28,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      * @return 角色权限关联列表
      */
-    @Query("SELECT rp FROM RolePermission rp JOIN FETCH rp.role r JOIN FETCH rp.permission p WHERE r.id = :roleId")
+    @Query("SELECT rp FROM RolePermission rp JOIN FETCH rp.role r JOIN FETCH rp.permission p WHERE rp.id.role = :roleId")
     List<RolePermission> findByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -37,7 +37,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色权限关联列表
      */
-    @Query("SELECT rp FROM RolePermission rp JOIN FETCH rp.role r JOIN FETCH rp.permission p WHERE p.id = :permissionId")
+    @Query("SELECT rp FROM RolePermission rp JOIN FETCH rp.role r JOIN FETCH rp.permission p WHERE rp.id.permission = :permissionId")
     List<RolePermission> findByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -46,7 +46,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.role.id = :roleId")
+    @Query("DELETE FROM RolePermission rp WHERE rp.id.role = :roleId")
     void deleteByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -55,7 +55,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.permission.id = :permissionId")
+    @Query("DELETE FROM RolePermission rp WHERE rp.id.permission = :permissionId")
     void deleteByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -65,7 +65,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 是否存在
      */
-    @Query("SELECT COUNT(rp) > 0 FROM RolePermission rp JOIN rp.role r JOIN rp.permission p WHERE r.id = :roleId AND p.id = :permissionId")
+    @Query("SELECT COUNT(rp) > 0 FROM RolePermission rp WHERE rp.id.role = :roleId AND rp.id.permission = :permissionId")
     boolean existsByRoleIdAndPermissionId(@Param("roleId") UUID roleId, @Param("permissionId") UUID permissionId);
 
     /**
@@ -74,7 +74,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param roleId 角色ID
      * @return 权限数量
      */
-    @Query("SELECT COUNT(rp) FROM RolePermission rp JOIN rp.role r WHERE r.id = :roleId")
+    @Query("SELECT COUNT(rp) FROM RolePermission rp WHERE rp.id.role = :roleId")
     long countByRoleId(@Param("roleId") UUID roleId);
 
     /**
@@ -83,7 +83,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色数量
      */
-    @Query("SELECT COUNT(rp) FROM RolePermission rp JOIN rp.permission p WHERE p.id = :permissionId")
+    @Query("SELECT COUNT(rp) FROM RolePermission rp WHERE rp.id.permission = :permissionId")
     long countByPermissionId(@Param("permissionId") UUID permissionId);
 
     /**
@@ -93,7 +93,7 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      */
     @Modifying
-    @Query("DELETE FROM RolePermission rp WHERE rp.role.id = :roleId AND rp.permission.id = :permissionId")
+    @Query("DELETE FROM RolePermission rp WHERE rp.id.role = :roleId AND rp.id.permission = :permissionId")
     void deleteByRoleIdAndPermissionId(@Param("roleId") UUID roleId, @Param("permissionId") UUID permissionId);
 
     /**
@@ -102,6 +102,6 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
      * @param permissionId 权限ID
      * @return 角色ID列表
      */
-    @Query("SELECT r.id FROM RolePermission rp JOIN rp.role r JOIN rp.permission p WHERE p.id = :permissionId")
+    @Query("SELECT rp.id.role FROM RolePermission rp WHERE rp.id.permission = :permissionId")
     List<UUID> findRoleIdsByPermissionId(@Param("permissionId") UUID permissionId);
 }

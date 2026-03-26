@@ -63,6 +63,7 @@ spring:
 
   # Kafka 配置
   kafka:
+    enabled: false
     bootstrap-servers: localhost:29092
     producer:
       acks: all
@@ -142,3 +143,5 @@ app:
   audit:
     enabled: true
     kafka-topic: audit-logs
+  kafka:
+    enabled: false

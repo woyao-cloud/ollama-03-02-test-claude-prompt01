@@ -50,3 +50,36 @@ Caused by: java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownPa
 
   修复后应解决 "Could not set value of type [java.util.UUID]: 'com.usermanagement.domain.entity.UserRole.role' (setter)"
    错误。
+
+
+
+    java.lang.IllegalArgumentException: Validation failed for query for method public abstract java.util.List com.usermanagement.repository.RoleRepository.findByUserId(java.util.UUID)
+     org.hibernate.query.sqm.UnknownPathException: Could not interpret attribute 'id' of basic-valued path 'com.usermanagement.domain.entity.Role(r).userRoles(ur).{element}.user'
+
+     
+> .UnknownPathException: Could not interpret attribute 'id' of basic-valued path'com.usermanagement.domain.entity.User(u).userRoles(ur).{element}.role'
+
+Caused by: org.hibernate.query.sqm.TerminalPathException: Terminal path 'role' has no attribute 'id'
+
+
+  1. RoleRepository.java:106 - ur.user.id → ur.id.user
+  2. PermissionRepository.java:97 - JOIN rp.role r WHERE r.id → WHERE rp.id.role
+  3. RolePermissionRepository.java - 所有查询统一使用 rp.id.role/rp.id.permission，移除不必要的 JOIN
+
+  根本原因： UserRole 和 RolePermission 使用 @IdClass，其 @Id @ManyToOne 字段在 JPQL 中解析为 UUID
+  值而非实体引用。必须通过复合主键路径（ur.id.user、rp.id.role）访问 ID 值。
+
+  现在所有涉及多对多关联的 JPQL 查询使用一致的复合主键路径语法。
+
+怎样暂时不启动kafka 相关代码运行
+
+   已修改配置禁用Kafka：
+
+  1. application.yml：添加 spring.kafka.enabled: false
+  2. application-team.yml：添加 spring.kafka.enabled: false 和 app.kafka.enabled: false
+  3. application-local.yml：添加 spring.kafka.enabled: false 和 app.kafka.enabled: false
+  4. AuditLogKafkaProducer：添加 @ConditionalOnProperty(name = "app.kafka.enabled", havingValue = "true", matchIfMissing
+   = true)
+  5. AuditLogKafkaConsumer：添加相同条件注解
+
+  现在Kafka相关组件不会加载，审计日志将直接写入数据库（使用 FallbackAuditLogService）。
