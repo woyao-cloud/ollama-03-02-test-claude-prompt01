@@ -56,7 +56,7 @@
 
 | 类别 | 技术 | 版本 | 选型理由 |
 |------|------|------|----------|
-| **框架** | Next.js | 14.x | SSR/SSG支持，App Router |
+| **框架** | Next.js | 16.x | SSR/SSG支持，App Router |
 | **语言** | TypeScript | 5+ | 类型安全 |
 | **样式** | Tailwind CSS | 3.x | 原子化CSS，开发高效 |
 | **UI组件** | shadcn/ui | - | 现代化UI组件库 |
