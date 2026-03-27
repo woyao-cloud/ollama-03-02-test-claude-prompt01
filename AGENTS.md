@@ -14,83 +14,46 @@
 | E2E测试工程师 | Playwright E2E测试、关键用户流程验证 | 只修改 e2e/ 目录 |
 | 部署工程师 | CI/CD、容器化、监控 | 只修改基础设施文件 |
 
-## 协作流程
+## Agent 提示词位置
 
-1. **阶段一**: 产品经理定义产品 → 业务分析师梳理需求 → 架构师设计 → 数据库工程师建模
-2. **阶段二**: 前后端并行开发 → 测试工程师编写单元/集成测试
-3. **阶段三**: API 集成调试 → E2E测试工程师编写端到端测试
-4. **阶段四**: 部署工程师配置 → 全团队验证
+所有 Agent 的详细提示词文档存储在：`~/.claude/agents/`
 
-## 详细协作时序
+| Agent | 用途 | 详细文档 |
+|-------|------|----------|
+| **business-analyst.md** | 需求分析、FRD/NFRD 编写 | 输出: `FUNCTIONAL_REQUIREMENTS.md`, `NON_FUNCTIONAL_REQUIREMENTS.md`, `CONTEXT.md` |
+| **architect.md** | 系统架构设计、技术选型 | 输出: `SYSTEM_ARCHITECTURE.md`, `adr/ADR-*.md` |
+| **tdd-guide.md** | 测试驱动开发，覆盖率 > 85% | 输出: 测试代码、覆盖率报告 |
+| **code-reviewer.md** | 代码审查（功能/性能/安全/质量） | 审查报告 |
+| **security-reviewer.md** | 安全审查（OWASP Top 10） | 安全漏洞、改进建议 |
+| **e2e-runner.md** | E2E 测试（Playwright） | 输出: E2E 测试套件、测试报告 |
+| **gsd-planner.md** | 项目规划、任务拆分 | 输出: `PLAN.md` |
+| **gsd-executor.md** | 任务执行脚手架 | 执行结果 |
+
+## 协作流程概览
 
 ```
-产品经理
-    ↓ 输出: PRD, 产品路线图, 用户画像
-业务分析师
-    ↓ 输出: FRD, NFRD, CONTEXT.md
-架构师
-    ↓ 输出: SYSTEM_ARCHITECTURE.md, ADRs
-数据库工程师 + 后端工程师 + 前端工程师（并行）
-    ↓
-测试工程师（单元/集成测试）
-    ↓
-E2E测试工程师（Playwright E2E测试）
-    ↓
-部署工程师（CI/CD, 容器化）
-    ↓
-全团队验证
+业务分析师  →  架构师  →  (开发并行)  →  测试工程师  →  E2E测试  →  部署工程师
+  (需求)        (架构)      (编码实现)      (单元/集成)     (端到端)      (CI/CD)
 ```
 
-## 交付物清单
+## 调用方式
 
-### 产品经理输出
-- `docs/product/PRD.md` - 产品需求文档 ⭐ 已创建
-- `docs/product/ROADMAP.md` - 产品路线图 ⭐ 已创建
-- `docs/product/USER_PERSONAS.md` - 用户画像 ⭐ 已创建
-- `docs/product/COMPETITIVE_ANALYSIS.md` - 竞品分析
+```bash
+# 启动特定 Agent 进行工作
+claude agent business-analyst      # 需求分析
+claude agent architect             # 架构设计
+claude agent gsd-planner           # 项目规划
+claude agent tdd-guide             # TDD 开发指导
+claude agent code-reviewer         # 代码审查
+claude agent security-reviewer     # 安全审查
+claude agent e2e-runner            # E2E 测试
+claude agent gsd-executor          # 执行计划任务
+```
 
-### 业务分析师输出
-- `docs/requirements/FUNCTIONAL_REQUIREMENTS.md` - 系统功能需求说明书
-- `docs/requirements/NON_FUNCTIONAL_REQUIREMENTS.md` - 系统非功能需求说明书
-- `docs/requirements/USER_STORIES.md` - 用户故事列表
-- `docs/requirements/REQUIREMENTS_TRACEABILITY_MATRIX.md` - 需求跟踪矩阵
+## 详细文档链接
 
-### 数据库工程师输出
-- `backend/src/main/java/com/usermanagement/domain/*.java` - JPA 实体
-- `backend/src/main/resources/db/migration/V*__*.sql` - Flyway 迁移脚本
-- `DATABASE_SCHEMA.md` - 数据库设计文档
-- `docs/database/ER_DIAGRAM.md` - 实体关系图
-
-### E2E测试工程师输出
-- `frontend/e2e/playwright.config.ts` - Playwright 配置
-- `frontend/e2e/pages/*.ts` - Page Object Model
-- `frontend/e2e/specs/**/*.spec.ts` - E2E 测试用例
-- `frontend/e2e/fixtures/*.ts` - 测试数据
-- `frontend/e2e/snapshots/` - 视觉回归基线
-- `e2e-report/` - 测试报告（HTML/JSON/JUnit）
-
-### 架构师输出
-- `docs/architecture/SYSTEM_ARCHITECTURE.md` - 系统架构设计
-- `docs/architecture/adr/ADR-XXX.md` - 架构决策记录
-- `docs/architecture/DIAGRAMS/*.md` - 架构图
-
-### 测试工程师输出
-- `backend/src/test/**/*Test.java` - 单元/集成测试
-- `backend/target/site/jacoco/` - 覆盖率报告
-- `frontend/**/*.test.ts` - 前端单元测试
-
-### 其他角色输出
-参见各角色具体工作说明书。
-
-
-## 质量门禁
-
-- 需求文档通过评审（业务分析师输出）
-- 架构设计通过评审（架构师输出）
-- 代码规范检查通过
-- 单元测试覆盖率 > 85%
-- 集成测试通过
-- E2E 测试通过（关键用户流程）
-- 安全审查通过（security-reviewer）
-- 性能基准测试通过
-- 文档同步更新
+- [Agent 协作详解](docs/prompts/AGENT_COLLABORATION.md) - 协作时序、触发机制、交接规范
+- [交付物清单](docs/DELIVERABLES.md) - 各角色的输出物
+- [质量门禁](docs/QUALITY_GATES.md) - 质量检查标准
+- [开发工作流程](../../rules/development-workflow.md) - 开发流程规范
+- [测试策略](docs/TESTING_STRATEGY.md) - 测试设计与执行
