@@ -2,7 +2,7 @@
 
 ## 技术栈
 
-- Next.js 16 (App Router)
+- Next.js 16+ (App Router)
 - TypeScript 5+
 - Tailwind CSS + shadcn/ui
 - Zustand (状态管理)
