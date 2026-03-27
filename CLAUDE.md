@@ -56,17 +56,28 @@ usermanagement/
 
 ## 关键文档
 
+### 项目配置
 - AGENTS.md - 多代理协作配置
-- DATABASE_SCHEMA.md - 数据库设计
-- API_SPECIFICATION.md - API 接口规范
-- AUTHENTICATION_FLOW.md - 认证流程
-- BACKEND_ARCHITECTURE.md - 后端架构
-- FRONTEND_ARCHITECTURE.md - 前端架构
-- **ENVIRONMENT_ARCHITECTURE.md - 多环境部署架构** ⭐
-- TESTING_STRATEGY.md - 测试策略
-- DEPLOYMENT_GUIDE.md - 部署指南
-- DEVELOPMENT_WORKFLOW.md - 开发流程
-- .claude/plans/partitioned-enchanting-coral.md - 详细规划文档
+- CLAUDE.md - 项目级 Claude 配置
+
+### Agent 协作
+- **docs/AGENT_GUIDE.md** - Agent 协作指南（统一文档）
+- ~/.claude/agents/ - 全局 Agent 提示词
+- ~/.claude/rules/ - 全局开发规则
+
+### 需求文档
+- docs/requirements/FUNCTIONAL_REQUIREMENTS.md - 功能需求
+- docs/requirements/NON_FUNCTIONAL_REQUIREMENTS.md - 非功能需求
+- docs/requirements/USER_STORIES.md - 用户故事
+- docs/requirements/CONTEXT.md - 用户决策与技术约束
+
+### 架构文档
+- docs/architecture/SYSTEM_ARCHITECTURE.md - 系统架构
+- docs/architecture/adr/ - 架构决策记录
+- docs/architecture/TECHNICAL_CONSTRAINTS.md - 技术约束
+
+### 实施计划
+- PLAN.md - 可执行项目计划
 
 ## 质量指标
 
