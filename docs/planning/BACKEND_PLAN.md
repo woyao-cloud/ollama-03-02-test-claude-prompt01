@@ -8,6 +8,58 @@
 
 ---
 
+## 零、需求概述与差距分析
+
+### 0.1 功能模块划分
+
+| 模块 | 优先级 | 用例 |
+|------|--------|------|
+| **用户管理模块** | P0 | 用户 CRUD、部门管理、用户状态管理、个人资料管理、登录历史查看 |
+| **角色权限模块** | P0 | 角色 CRUD、权限定义 (四级模型)、用户角色分配、数据权限范围、角色模板、角色继承 |
+| **认证授权模块** | P0 | JWT 认证、密码策略、会话管理 |
+| **审计日志模块** | P0 | 操作日志记录、登录日志、日志查询 |
+| **系统配置模块** | P0/P1 | 安全策略配置 (P0)、邮件服务配置 (P1)、性能配置管理 (P1) |
+
+### 0.2 关键业务规则
+
+| 规则 ID | 描述 | 实现位置 |
+|---------|------|----------|
+| BR-001 | 邮箱必须全局唯一 | `UserRepository.existsByEmail()` |
+| BR-002 | 用户软删除 | `deleted_at` 字段 + `@SQLRestriction` |
+| BR-201 | 密码 BCrypt 加密 (强度 12) | `PasswordEncoder` Bean |
+| BR-202 | 登录失败 5 次锁定 30 分钟 | `failed_login_attempts`, `locked_until` 字段 |
+| BR-203 | JWT Token RSA256 签名 | `JwtService` |
+| BR-104 | 权限变更后需重新登录生效 | Token 刷新时重新加载权限 |
+
+### 0.3 需求 - 实现差距表
+
+| 用例 ID | 用例名称 | 实现状态 | 实现文件 | 备注 |
+|--------|----------|----------|----------|------|
+| UC-01.01 | 用户 CRUD | 未实现 | `UserService`, `UserController` | 核心功能 |
+| UC-01.05 | 部门管理 | 未实现 | `DepartmentService`, `DepartmentController` | 五级组织架构 |
+| UC-01.04 | 用户状态管理 | 未实现 | `UserService` | 状态变更和锁定 |
+| UC-01.06 | 用户个人资料管理 | 未实现 | `UserController` | 个人资料更新 |
+| UC-01.07 | 用户登录历史查看 | 未实现 | `AuditLogService` | 登录记录查询 |
+| UC-02.01 | 角色 CRUD | 未实现 | `RoleService`, `RoleController` | 角色管理 |
+| UC-02.02 | 权限定义与管理 | 未实现 | `PermissionService` | 四级权限模型 |
+| UC-02.03 | 用户角色分配 | 未实现 | `UserService.assignRoles()` | 用户 - 角色关联 |
+| UC-02.04 | 数据权限范围 | 未实现 | `Role.dataScope` | ALL/DEPT/SELF/CUSTOM |
+| UC-02.05 | 角色权限模板 | 未实现 | `PermissionTemplate` 实体 | 权限模板 |
+| UC-02.06 | 角色继承管理 | 未实现 | `Role.parentRoleId` | 角色多继承 |
+| UC-03.01 | JWT 认证 | 未实现 | `JwtService`, `AuthService` | JWT+Refresh Token |
+| UC-03.03 | 密码策略 | 未实现 | `SecurityConfig` | 密码复杂度配置 |
+| UC-03.05 | 会话管理 | 未实现 | `UserSession` 实体 | 会话查看和强制下线 |
+| UC-04.01 | 操作日志记录 | 未实现 | `AuditLogService` | AOP 拦截记录 |
+| UC-04.02 | 登录日志 | 未实现 | `AuditLogService` | 登录成功/失败记录 |
+| UC-04.03 | 日志查询 | 未实现 | `AuditLogController` | 日志筛选查询 |
+| UC-05.03 | 安全策略配置 | 未实现 | `SecurityConfigService` | 密码和登录策略 |
+| UC-05.02 | 邮件服务配置 | 未实现 | `MailConfigService` | SMTP 配置和模板 |
+| UC-05.04 | 性能配置管理 | 未实现 | `PerformanceConfigService` | 缓存和连接池配置 |
+
+---
+
+---
+
 ## 一、任务分解（按阶段）
 
 ### 阶段 1: 项目初始化与配置
