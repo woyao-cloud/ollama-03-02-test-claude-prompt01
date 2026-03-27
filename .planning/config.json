@@ -1,0 +1,38 @@
+{
+  "project": {
+    "name": "全栈用户角色权限管理系统",
+    "id": "usermanagement",
+    "version": "1.0.0",
+    "language": "java",
+    "framework": "spring-boot"
+  },
+  "gsd": {
+    "version": "1.0",
+    "granularity": "standard",
+    "mode": "phased"
+  },
+  "workflow": {
+    "research_first": true,
+    "auto_test": true,
+    "coverage_threshold": 85,
+    "require_review": true,
+    "commit_style": "conventional"
+  },
+  "planning": {
+    "auto_generate_tasks": true,
+    "task_depth": 3,
+    "include_tests": true,
+    "include_docs": true
+  },
+  "phases": {
+    "max_parallel": 1,
+    "auto_advance": false,
+    "require_validation": true
+  },
+  "preferences": {
+    "verbose": true,
+    "confirm_destructive": true,
+    "show_progress": true,
+    "context_window": 80
+  }
+}

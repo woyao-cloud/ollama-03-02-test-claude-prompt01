@@ -1,0 +1,195 @@
+
+
+     背景
+
+     用户报告 Next.js (14.2.35) 版本过时。当前项目使用 Next.js 14.2.0，最新稳定版本为
+     16.2（2026年3月发布）。升级可带来性能提升（~400% faster dev startup, ~50% faster rendering）和新特性。
+      
+Updated plan
+  ⎿  /plan to preview
+
+● User approved Claude's plan
+  ⎿  Plan saved to: C:\Users\laido\.claude\plans\zippy-jingling-flame.md · /plan to edit
+     Next.js 14.2 到 16.2 升级计划
+
+     背景
+
+     用户报告 Next.js (14.2.35) 版本过时。当前项目使用 Next.js 14.2.0，最新稳定版本为
+     16.2（2026年3月发布）。升级可带来性能提升（~400% faster dev startup, ~50% faster rendering）和新特性。
+
+     现状分析
+
+     - 项目规模：小型项目，5个页面文件，8+组件文件
+     - Next.js特性使用：App Router、Metadata API、next/font、next/navigation、代理配置
+     - 代码模式：所有页面为客户端组件（'use client'），无动态路由、服务器操作等高级功能
+     - 配置：简单 next.config.js 和标准 tsconfig.json
+
+     破坏性变化评估
+
+     根据官方迁移指南和项目分析：
+     1. 路由API：next/navigation 钩子可能变为异步（项目中使用 useRouter 进行导航）
+     2. 配置：appDir: true 在 Next.js 15+ 中默认启用，需移除
+     3. 图片配置：images.domains 格式变为 images.remotePatterns
+     4. 依赖兼容性：需要 React 18.3+ 和 TypeScript 5.4+（当前已满足）
+
+     升级策略
+
+     采用直接升级到 16.2.x 的策略（非逐步升级），原因：
+     1. 项目规模小，风险可控
+     2. 代码结构简单，无复杂功能
+     3. 可一次性适应所有变化
+
+     具体实施步骤
+
+     阶段1：准备（30分钟）
+
+     1. 创建分支：git checkout -b feat/upgrade-nextjs-16
+     2. 备份当前状态：git commit -m "chore: backup before Next.js upgrade"
+     3. 确保无未提交更改
+
+     阶段2：依赖升级（60分钟）
+
+     修改文件：frontend/package.json
+     -   "next": "^14.2.0",
+     +   "next": "^16.2.0",
+        "react": "^18.3.0",
+        "react-dom": "^18.3.0",
+     -   "eslint-config-next": "^14.2.0",
+     +   "eslint-config-next": "^16.2.0",
+
+     运行命令：
+     cd frontend
+     npm install next@latest react@latest react-dom@latest
+     npm install -D @types/node@latest @types/react@latest @types/react-dom@latest eslint-config-next@latest
+
+     阶段3：配置更新（30分钟）
+
+     修改文件：frontend/next.config.js
+      const nextConfig = {
+     -  appDir: true,  // 移除，Next.js 15+默认启用
+        async rewrites() {
+          return [
+            {
+              source: '/api/:path*',
+              destination: 'http://localhost:8080/api/:path*',
+            },
+          ];
+        },
+        images: {
+     -    domains: ['localhost'],
+     +    remotePatterns: [
+     +      {
+     +        protocol: 'http',
+     +        hostname: 'localhost',
+     +        port: '',
+     +        pathname: '/**',
+     +      },
+     +    ],
+        },
+      };
+
+     检查文件：frontend/tsconfig.json
+     - 确认 target 为 ES2020（已满足）
+     - 确认 jsx 为 "preserve"（Next.js 推荐）
+
+     阶段4：代码检查与修正（60分钟）
+
+     检查以下文件中的API使用：
+     1. frontend/src/app/layout.tsx - Metadata API 兼容性
+     2. frontend/src/app/login/page.tsx - useRouter 导入和使用
+     3. frontend/src/app/dashboard/page.tsx - 类似检查
+     4. frontend/src/app/users/page.tsx - 类似检查
+     5. frontend/src/app/departments/page.tsx - 类似检查
+
+     预期修改：
+     - 无需修改代码：项目使用基础API，Next.js 16保持向后兼容
+     - 如果遇到导入错误，使用官方codemod：npx @next/codemod@latest upgrade
+
+     阶段5：测试验证（60分钟）
+
+     自动化测试：
+
+     cd frontend
+     npx tsc --noEmit                    # 类型检查
+     npm run lint                        # ESLint检查
+     npm run build                       # 构建测试
+     npm test                            # 单元测试
+
+     手动测试清单：
+
+     - npm run dev - 开发服务器启动
+     - 首页重定向到 /login
+     - 登录功能正常（邮箱/密码表单，路由跳转）
+     - /dashboard 页面加载
+     - /users 页面加载
+     - /departments 页面加载
+     - API代理功能正常（前端 /api/* 转发到后端）
+     - 控制台无错误警告
+
+     阶段6：清理与提交（30分钟）
+
+     1. 删除 node_modules 和 .next 缓存（可选）：
+     rm -rf node_modules .next
+     npm install
+     2. 最终验证：npm run build && npm run dev
+     3. 提交更改：git commit -m "feat: upgrade Next.js from 14.2 to 16.2"
+
+     回滚计划
+
+     如果升级失败：
+     1. 还原 package.json 和 package-lock.json
+     2. 删除 node_modules 和 .next
+     3. 重新安装：npm ci
+     4. 恢复分支：git checkout feat/upgrade-nextjs-16 -- frontend/next.config.js
+
+     关键文件
+
+     1. frontend/package.json - 核心依赖版本
+     2. frontend/next.config.js - Next.js 配置
+     3. frontend/src/app/login/page.tsx - 路由使用示例
+     4. frontend/src/app/layout.tsx - Metadata API 使用
+
+     风险评估与缓解
+
+     ┌───────────────┬──────┬──────┬─────────────────────────────────────────────┐
+     │     风险      │ 概率 │ 影响 │                  缓解措施                   │
+     ├───────────────┼──────┼──────┼─────────────────────────────────────────────┤
+     │ 路由API不兼容 │ 低   │ 中   │ 使用官方codemod，检查next/navigation导入    │
+     ├───────────────┼──────┼──────┼─────────────────────────────────────────────┤
+     │ 构建配置错误  │ 中   │ 中   │ 备份原配置，逐步修改                        │
+     ├───────────────┼──────┼──────┼─────────────────────────────────────────────┤
+     │ 依赖冲突      │ 低   │ 高   │ 锁定React版本为18.3+，检查peer dependencies │
+     ├───────────────┼──────┼──────┼─────────────────────────────────────────────┤
+     │ 类型错误      │ 中   │ 低   │ 更新@types包，修复TypeScript错误            │
+     └───────────────┴──────┴──────┴─────────────────────────────────────────────┘
+
+     成功标准
+
+     1. ✅ npm run build 成功完成
+     2. ✅ npm run dev 服务器正常启动
+     3. ✅ 所有页面功能正常
+     4. ✅ TypeScript无类型错误
+     5. ✅ 现有测试通过
+
+     参考资料
+
+     - https://nextjs.org/blog/next-16-2 (2026-03-18)
+     - https://dev.to/abhilashlr/migrating-a-large-scale-monorepo-from-nextjs-14-to-16-a-real-world-journey-5383
+     - https://nextjs.org/docs/app/guides/upgrading/version-14
+
+
+      [browser] ./src/app/globals.css
+Error evaluating Node.js code
+Error: Cannot find module 'tailwindcss-animate'
+
+  Read 1 file (ctrl+o to expand)
+
+● tailwind配置需要tailwindcss-animate插件，但未安装。
+
+  运行：
+  ! cd frontend && npm install tailwindcss-animate
+
+  然后测试：
+  ! cd frontend && npm run dev
+
+  如果npm install有问题，检查网络或使用npm install --verbose。

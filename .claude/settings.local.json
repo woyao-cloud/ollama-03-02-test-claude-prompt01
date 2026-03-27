@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find backend:*)",
+      "Bash(where gemini:*)",
+      "Bash(where claude:*)",
+      "Skill(gsd:execute-phase)",
+      "Bash(git -C D:claude-code-projectagentic-projectsollama-03-02-test-claude-prompt01 diff --stat HEAD)",
+      "Bash(git -C D:claude-code-projectagentic-projectsollama-03-02-test-claude-prompt01 add -A)",
+      "Bash(git -C D:claude-code-projectagentic-projectsollama-03-02-test-claude-prompt01 commit -m \"feat\\(phase2-06\\): implement frontend department management UI\")",
+      "Bash(mvn dependency:resolve -q)",
+      "Bash(mvn test:*)",
+      "Bash(mvn compile:*)",
+      "Skill(gsd:progress)",
+      "Skill(gsd:plan-phase)",
+      "WebSearch",
+      "Bash(node:*)",
+      "Bash(mvn clean:*)",
+      "Bash(mvn --version)",
+      "Bash(tee test-output.txt)",
+      "Bash(mvn:*)",
+      "Read(//d D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/**)",
+      "Bash(dir /s /b *.tsx *.ts *.js *.json)",
+      "Bash(dir:*)",
+      "Bash(npm --version)",
+      "Bash(npm install:*)",
+      "Bash(npm list:*)",
+      "Bash(npm view:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+# =============================================
+# Frontend Dockerfile - 开发环境
+# Next.js 16 + Node.js 18
+# 支持热重载
+# =============================================
+
+FROM node:18-alpine AS development
+
+# 安装必要的工具
+RUN apk add --no-cache \
+    git \
+    bash \
+    && rm -rf /var/cache/apk/*
+
+# 设置工作目录
+WORKDIR /app
+
+# 首先只复制 package 文件（利用 Docker 缓存层）
+COPY package*.json ./
+
+# 安装依赖
+RUN npm ci
+
+# 复制其他配置文件
+COPY next.config.* ./
+COPY tsconfig.json ./
+COPY tailwind.config.* ./
+COPY postcss.config.* ./
+COPY .env* ./
+
+# 创建必要的目录
+RUN mkdir -p public src
+
+# 暴露端口
+EXPOSE 3000
+
+# 设置环境变量
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=development
+ENV PORT=3000
+
+# 启动命令
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,15 @@
+{
+  "Servers": [
+    {
+      "Name": "UMS Dev PostgreSQL",
+      "Group": "User Management System",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "user_management",
+      "Username": "devuser",
+      "SSLMode": "prefer",
+      "DBRestriction": "user_management",
+      "PassFile": "/var/lib/pgadmin/pgpass"
+    }
+  ]
+}

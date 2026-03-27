@@ -1,0 +1,1234 @@
+> agent
+
+● I see you want to work with agents. Based on your project configuration, here are the available options:
+
+  Available Agents (from ~/.claude/agents/)
+
+  ┌──────────────────────┬─────────────────────────┬───────────────────────────────┐
+  │        Agent         │         Purpose         │          When to Use          │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ planner              │ Implementation planning │ Complex features, refactoring │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ architect            │ System design           │ Architectural decisions       │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ tdd-guide            │ Test-driven development │ New features, bug fixes       │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ code-reviewer        │ Code review             │ After writing code            │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ security-reviewer    │ Security analysis       │ Before commits                │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ build-error-resolver │ Fix build errors        │ When build fails              │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ e2e-runner           │ E2E testing             │ Critical user flows           │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ refactor-cleaner     │ Dead code cleanup       │ Code maintenance              │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ doc-updater          │ Documentation           │ Updating docs                 │
+  ├──────────────────────┼─────────────────────────┼───────────────────────────────┤
+  │ rust-reviewer        │ Rust code review        │ Rust projects                 │
+  └──────────────────────┴─────────────────────────┴───────────────────────────────┘
+
+  How to Use
+
+  Option 1: Direct invocation
+  /gsd:execute-phase  # Execute planned phases with agents
+  /gsd:plan-phase     # Create detailed phase plans
+
+  Option 2: Skill-based approach
+  - Use Skill: superpowers:subagent-driven-development for executing implementation plans
+  - Use Skill: superpowers:dispatching-parallel-agents for parallel tasks
+
+  Option 3: Agent tool for specific tasks
+  Let me know which agent you want to invoke and what task you need.
+
+  ---
+  What would you like to do? For example:
+  - "Plan a new feature" → I'll use the planner agent
+  - "Review my code" → I'll use the code-reviewer agent
+  - "Fix build errors" → I'll use the build-error-resolver agent
+  - "Execute phase 3" → I'll use the GSD execution workflow
+
+✻ Worked for 10m 33s
+
+> 测试工程师打算生成本地测试用的测试数据生成脚本，以便部署工程师在生成docker-compose 文件时使用
+
+● 我来帮你创建本地测试用的测试数据生成脚本。首先让我了解项目结构和现有配置。
+
+  Searched for 7 patterns, read 4 files (ctrl+o to expand)
+
+● 现在我已经了解了项目结构。让我查看是否有现有的脚本目录，然后为测试工程师创建测试数据生成脚本。
+
+  Read 2 files (ctrl+o to expand)
+
+● 让我创建测试数据生成脚本目录和文件。
+
+● Bash(mkdir -p scripts/test-data)
+  ⎿  Done
+
+● missions
+
+● Write(scripts\test-data\01-departments.sql)
+  ⎿  Wrote 98 lines to scripts\test-data\01-departments.sql
+     -- =============================================
+     -- 测试数据: 部门数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 01 (最先执行)
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有测试数据 (保留已有关联数据的处理)
+     TRUNCATE TABLE departments CASCADE;
+     … +88 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\02-roles.sql)
+  ⎿  Wrote 59 lines to scripts\test-data\02-roles.sql
+     -- =============================================
+     -- 测试数据: 角色数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 02
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有角色数据
+     TRUNCATE TABLE roles CASCADE;
+     … +49 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\03-permissions.sql)
+  ⎿  Wrote 135 lines to scripts\test-data\03-permissions.sql
+     -- =============================================
+     -- 测试数据: 权限数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 03
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有权限数据
+     TRUNCATE TABLE permissions CASCADE;
+     … +125 lines (ctrl+o to expand)
+
+● r
+
+● Write(scripts\test-data\04-role-permissions.sql)
+  ⎿  Wrote 402 lines to scripts\test-data\04-role-permissions.sql
+     -- =============================================
+     -- 测试数据: 角色权限关联数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 04 (在角色和权限之后执行)
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有关联数据
+     TRUNCATE TABLE role_permissions CASCADE;
+     … +392 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\05-users.sql)
+  ⎿  Wrote 142 lines to scripts\test-data\05-users.sql
+     -- =============================================
+     -- 测试数据: 用户数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 05 (在部门和角色之后执行)
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有用户数据 (保留系统用户)
+     DELETE FROM users WHERE email NOT LIKE '%admin%';
+     … +132 lines (ctrl+o to expand)
+
+● "
+
+● Write(scripts\test-data\06-user-roles.sql)
+  ⎿  Wrote 159 lines to scripts\test-data\06-user-roles.sql
+     -- =============================================
+     -- 测试数据: 用户角色关联数据
+     -- 用于本地开发和测试环境
+     -- 执行顺序: 06 (最后执行)
+     -- =============================================
+
+     BEGIN;
+
+     -- 清空现有关联数据
+     TRUNCATE TABLE user_roles CASCADE;
+     … +149 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\init-test-data.sh)
+  ⎿  Wrote 108 lines to scripts\test-data\init-test-data.sh
+     #!/bin/bash
+     # =============================================
+     # 本地测试数据初始化脚本
+     # 用于 Docker Compose 环境初始化测试数据
+     # =============================================
+
+     set -e
+
+     echo "========================================="
+     echo "User Management System - 测试数据初始化"
+     … +98 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\init-test-data.bat)
+  ⎿  Wrote 113 lines to scripts\test-data\init-test-data.bat
+     @echo off
+     chcp 65001 >nul
+     REM =============================================
+     REM 本地测试数据初始化脚本 (Windows)
+     REM 用于 Docker Compose 环境初始化测试数据
+     REM =============================================
+
+     echo =========================================
+     echo User Management System - 测试数据初始化
+     echo =========================================
+     … +103 lines (ctrl+o to expand)
+
+● \n
+
+● Write(scripts\test-data\README.md)
+  ⎿  Wrote 202 lines to scripts\test-data\README.md
+     # 本地测试数据生成脚本
+
+     ## 概述
+
+     本目录包含用于本地开发和测试环境的测试数据生成脚本。这些脚本由 **测试工程师** 维护，供 **部署工程师** 在生成 Docker Compose 文件时使用。
+
+     ## 文件说明
+
+     ### SQL 数据脚本
+
+     … +192 lines (ctrl+o to expand)
+
+● Write(scripts\test-data\DOCKER_INTEGRATION.md)
+  ⎿  Wrote 358 lines to scripts\test-data\DOCKER_INTEGRATION.md
+     # Docker Compose 集成指南
+
+     本文档供 **部署工程师** 参考，说明如何将测试数据生成脚本集成到 Docker Compose 环境中。
+
+     ## 概述
+
+     测试数据生成脚本位于 `scripts/test-data/` 目录，包含：
+     - 6 个 SQL 数据文件（按顺序执行）
+     - 2 个执行脚本（Linux/macOS 和 Windows）
+
+     … +348 lines (ctrl+o to expand)
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● 测试数据生成脚本已创建完成！以下是完整的交付内容：
+
+  创建的脚本文件
+
+  scripts/test-data/
+  ├── 01-departments.sql       # 12 个部门数据
+  ├── 02-roles.sql            # 16 种角色数据
+  ├── 03-permissions.sql      # 30+ 权限数据
+  ├── 04-role-permissions.sql # 角色权限关联
+  ├── 05-users.sql            # 35+ 测试用户
+  ├── 06-user-roles.sql       # 用户角色关联
+  ├── init-test-data.sh       # Linux/macOS 一键执行
+  ├── init-test-data.bat      # Windows 一键执行
+  ├── README.md               # 使用说明
+  └── DOCKER_INTEGRATION.md   # Docker Compose 集成指南
+
+  测试数据概览
+
+  ┌──────┬──────┬──────────────────────────────┐
+  │ 类型 │ 数量 │             说明             │
+  ├──────┼──────┼──────────────────────────────┤
+  │ 部门 │ 12   │ 3级层级结构                  │
+  ├──────┼──────┼──────────────────────────────┤
+  │ 角色 │ 16   │ 系统/管理/技术/业务/职能角色 │
+  ├──────┼──────┼──────────────────────────────┤
+  │ 权限 │ 30+  │ 菜单权限 + 操作权限          │
+  ├──────┼──────┼──────────────────────────────┤
+  │ 用户 │ 35+  │ 包含各种状态和角色的测试账号 │
+  └──────┴──────┴──────────────────────────────┘
+
+  测试账号 (密码: Test@123)
+
+  - 超级管理员: superadmin@test.com
+  - 系统管理员: admin@test.com
+  - 测试工程师: qa.tester1@test.com
+  - 开发工程师: fe.dev1@test.com / be.dev1@test.com
+  - 特殊状态账号: pending.user@test.com / locked.user@test.com
+
+  给部署工程师
+
+  参考 DOCKER_INTEGRATION.md 文档，提供了 4 种集成方式：
+  1. PostgreSQL 初始化目录（自动执行）
+  2. 独立数据初始化容器
+  3. 后端应用初始化
+  4. 手动执行脚本
+
+  执行方式
+
+  # 一键初始化（自动按顺序执行所有 SQL）
+  cd scripts/test-data
+  ./init-test-data.sh        # Linux/macOS
+  init-test-data.bat         # Windows
+
+  脚本由测试工程师维护，可直接用于 Docker Compose 环境。
+  ⎿  Interrupted · What should Claude do instead?
+
+> /plugin
+  ⎿  ✓ Disabled figma. Run /reload-plugins to apply.
+
+> /plugin
+  ⎿  ✓ Disabled playwright. Run /reload-plugins to apply.
+
+> /plugin
+  ⎿  ✓ Disabled skill-creator. Run /reload-plugins to apply.
+
+> 作为部署工程师，开始上面的数据库脚本文件，生成本地环境及team环境使用的docker-compose 文件以便本地开发及测试代码
+
+● 我来为本地环境和team环境创建docker-compose配置文件，集成测试数据脚本。
+
+  Searched for 4 patterns, read 2 files (ctrl+o to expand)
+
+● 现在我来创建完整的部署配置。首先创建本地开发环境的docker-compose文件：
+
+● Write(docker-compose.yml)
+  ⎿  Wrote 280 lines to docker-compose.yml
+     version: '3.8'
+
+     # =============================================
+     # 本地开发环境 Docker Compose 配置
+     # 用途: 本地开发、单元测试、集成测试
+     # 特点: 热重载、调试支持、测试数据自动初始化
+     # =============================================
+
+     services:
+       # PostgreSQL 数据库
+     … +270 lines (ctrl+o to expand)
+
+● ./
+
+● Write(docker-compose.team.yml)
+  ⎿  Wrote 353 lines to docker-compose.team.yml
+     version: '3.8'
+
+     # =============================================
+     # Team 共享开发环境 Docker Compose 配置
+     # 用途: 团队协作开发、功能验证、集成测试
+     # 特点: 稳定、预构建镜像、共享测试数据
+     # =============================================
+
+     services:
+       # PostgreSQL 数据库
+     … +343 lines (ctrl+o to expand)
+
+● 现在创建 Backend 和 Frontend 的 Dockerfile：
+
+● Bash(mkdir -p scripts/docker backend frontend)
+  ⎿  Done
+
+● Write(backend\Dockerfile.dev)
+  ⎿  Wrote 37 lines to backend\Dockerfile.dev
+     # =============================================
+     # Backend Dockerfile - 开发环境
+     # Spring Boot + JDK 21 + Maven
+     # 支持热重载和远程调试
+     # =============================================
+
+     FROM eclipse-temurin:21-jdk-alpine AS development
+
+     # 安装必要的工具
+     RUN apk add --no-cache \
+     … +27 lines (ctrl+o to expand)
+
+● Write(backend\Dockerfile)
+  ⎿  Wrote 77 lines to backend\Dockerfile
+     # =============================================
+     # Backend Dockerfile - 生产环境
+     # Spring Boot + JDK 21
+     # 多阶段构建，优化镜像大小
+     # =============================================
+
+     # 阶段 1: 构建
+     FROM eclipse-temurin:21-jdk-alpine AS builder
+
+     # 安装 Maven
+     … +67 lines (ctrl+o to expand)
+
+● Write(frontend\Dockerfile.dev)
+  ⎿  Wrote 43 lines to frontend\Dockerfile.dev
+     # =============================================
+     # Frontend Dockerfile - 开发环境
+     # Next.js 16 + Node.js 18
+     # 支持热重载
+     # =============================================
+
+     FROM node:18-alpine AS development
+
+     # 安装必要的工具
+     RUN apk add --no-cache \
+     … +33 lines (ctrl+o to expand)
+
+● Write(frontend\Dockerfile)
+  ⎿  Wrote 77 lines to frontend\Dockerfile
+     # =============================================
+     # Frontend Dockerfile - 生产环境
+     # Next.js 16 + Node.js 18
+     # 多阶段构建，优化镜像大小
+     # =============================================
+
+     # 阶段 1: 依赖安装
+     FROM node:18-alpine AS dependencies
+
+     WORKDIR /app
+     … +67 lines (ctrl+o to expand)
+
+● 现在创建 Docker 所需的辅助脚本和配置文件：
+
+● Bash(mkdir -p scripts/docker/init-scripts scripts/docker/grafana/dashboards scripts/docker/grafana/datasources)
+  ⎿  Done
+
+● Write(scripts\docker\wait-for-db.sh)
+  ⎿  Wrote 38 lines to scripts\docker\wait-for-db.sh
+     #!/bin/sh
+     # =============================================
+     # 等待数据库就绪脚本
+     # 用于 Docker Compose 健康检查
+     # =============================================
+
+     set -e
+
+     HOST="$1"
+     PORT="$2"
+     … +28 lines (ctrl+o to expand)
+
+● Write(scripts\docker\redis.conf)
+  ⎿  Wrote 51 lines to scripts\docker\redis.conf
+     # Redis 配置文件
+     # Team 环境优化配置
+
+     # 基本配置
+     bind 0.0.0.0
+     port 6379
+     tcp-backlog 511
+     timeout 0
+     tcp-keepalive 300
+
+     … +41 lines (ctrl+o to expand)
+
+● Write(scripts\docker\pgadmin-servers.json)
+  ⎿  Wrote 15 lines to scripts\docker\pgadmin-servers.json
+     {
+       "Servers": [
+         {
+           "Name": "UMS Dev PostgreSQL",
+           "Group": "User Management System",
+           "Host": "postgres",
+           "Port": 5432,
+           "MaintenanceDB": "user_management",
+           "Username": "devuser",
+           "SSLMode": "prefer",
+     … +5 lines (ctrl+o to expand)
+
+● Write(scripts\docker\pgadmin-servers-team.json)
+  ⎿  Wrote 15 lines to scripts\docker\pgadmin-servers-team.json
+     {
+       "Servers": [
+         {
+           "Name": "UMS Team PostgreSQL",
+           "Group": "User Management System",
+           "Host": "postgres",
+           "Port": 5432,
+           "MaintenanceDB": "user_management",
+           "Username": "teamuser",
+           "SSLMode": "prefer",
+     … +5 lines (ctrl+o to expand)
+
+● Write(scripts\docker\init-scripts\01-init-extensions.sql)
+  ⎿  Wrote 52 lines to scripts\docker\init-scripts\01-init-extensions.sql
+     #!/bin/bash
+     # =============================================
+     # PostgreSQL 初始化脚本 - Team 环境
+     # 在 PostgreSQL 首次启动时执行
+     # =============================================
+
+     set -e
+
+     echo "======================================"
+     echo "PostgreSQL 初始化脚本"
+     … +42 lines (ctrl+o to expand)
+
+● Write(scripts\docker\nginx.team.conf)
+  ⎿  Wrote 110 lines to scripts\docker\nginx.team.conf
+     # =============================================
+     # Nginx 配置文件 - Team 环境
+     # 反向代理配置
+     # =============================================
+
+     events {
+         worker_connections 1024;
+         use epoll;
+         multi_accept on;
+     }
+     … +100 lines (ctrl+o to expand)
+
+● Write(scripts\docker\prometheus.yml)
+  ⎿  Wrote 57 lines to scripts\docker\prometheus.yml
+     # =============================================
+     # Prometheus 配置文件
+     # 用于 Team 环境监控
+     # =============================================
+
+     global:
+       scrape_interval: 15s
+       evaluation_interval: 15s
+       external_labels:
+         cluster: 'ums-team'
+     … +47 lines (ctrl+o to expand)
+
+● Write(scripts\docker\grafana\datasources\datasource.yml)
+  ⎿  Wrote 26 lines to scripts\docker\grafana\datasources\datasource.yml
+     # =============================================
+     # Grafana 数据源配置
+     # =============================================
+
+     apiVersion: 1
+
+     datasources:
+       - name: Prometheus
+         type: prometheus
+         access: proxy
+     … +16 lines (ctrl+o to expand)
+
+● Write(scripts\docker\grafana\dashboards\dashboard.yml)
+  ⎿  Wrote 15 lines to scripts\docker\grafana\dashboards\dashboard.yml
+     # =============================================
+     # Grafana 仪表板配置
+     # =============================================
+
+     apiVersion: 1
+
+     providers:
+       - name: 'default'
+         orgId: 1
+         folder: ''
+     … +5 lines (ctrl+o to expand)
+
+● 现在创建 Spring Boot 的 Team 环境配置和部署指南：
+
+● Bash(mkdir -p backend/src/main/resources)
+  ⎿  Done
+
+● roles
+
+● Write(backend\src\main\resources\application-team.yml)
+  ⎿  Wrote 142 lines to backend\src\main\resources\application-team.yml
+     # =============================================
+     # Spring Boot Team 环境配置文件
+     # =============================================
+
+     spring:
+       config:
+         activate:
+           on-profile: team
+
+       # 数据源配置
+     … +132 lines (ctrl+o to expand)
+
+● Write(DEPLOYMENT_GUIDE.md)
+  ⎿  Error writing file
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Added 4 lines
+      1  # 部署指南
+      2
+      3 +## 概述
+      4 +
+      5 +本文档供部署工程师使用，说明如何在本地开发环境和 Team 共享环境中部署用户管理系统。
+      6 +
+      7  ## 环境架构总览
+      8
+      9  ### 5环境部署架构
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Added 70 lines, removed 7 lines
+       28  ## 快速启动
+       29
+       30  ### 本地开发环境
+       31 +
+       32  ```bash
+       33 -# 启动 PostgreSQL + Redis
+       34 -docker-compose -f docker-compose.local.yml up -d
+       33 +# 1. 启动基础服务（数据库、缓存、消息队列）
+       34 +docker-compose up -d postgres redis zookeeper kafka
+       35
+       36 -# 查看状态
+       37 -docker-compose -f docker-compose.local.yml ps
+       36 +# 2. 等待数据库就绪
+       37 +docker-compose exec postgres pg_isready -U devuser -d user_management
+       38 +
+       39 +# 3. 初始化测试数据（可选）
+       40 +docker-compose --profile seed run --rm db-seed
+       41 +
+       42 +# 4. 启动后端服务（开发模式，热重载）
+       43 +docker-compose up -d backend
+       44 +
+       45 +# 5. 启动前端服务（开发模式）
+       46 +docker-compose up -d frontend
+       47 +
+       48 +# 6. 访问服务
+       49 +# 前端: http://localhost:3000
+       50 +# 后端 API: http://localhost:8080/api/v1
+       51 +# pgAdmin: http://localhost:5050 (admin@example.com / admin123)
+       52 +# Kafka UI: http://localhost:8081
+       53 +# MailHog: http://localhost:8025
+       54  ```
+       55
+       56 -### Team开发环境
+       56 +### Team 环境
+       57 +
+       58  ```bash
+       59 -# 启动完整开发栈（含前后端）
+       59 +# 1. 构建镜像
+       60 +docker-compose -f docker-compose.team.yml build
+       61 +
+       62 +# 2. 启动所有服务
+       63  docker-compose -f docker-compose.team.yml up -d
+       64 +
+       65 +# 3. 查看服务状态
+       66 +docker-compose -f docker-compose.team.yml ps
+       67 +
+       68 +# 4. 访问服务
+       69 +# 统一入口: http://localhost (Nginx 反向代理)
+       70 +# pgAdmin: http://localhost:5050
+       71 +# Kafka UI: http://localhost:8081
+       72 +# Grafana: http://localhost:3001
+       73 +# Prometheus: http://localhost:9090
+       74  ```
+       75
+       76 -## 环境配置详情
+       76 +## Docker Compose 配置
+       77
+       78 +### 本地开发环境 (docker-compose.yml)
+       79 +
+       80 +| 服务 | 容器端口 | 主机端口 | 说明 |
+       81 +|------|----------|----------|------|
+       82 +| PostgreSQL | 5432 | 5432 | 开发数据库，命名卷持久化 |
+       83 +| Redis | 6379 | 6379 | 开发缓存 |
+       84 +| Zookeeper | 2181 | 2181 | Kafka 协调 |
+       85 +| Kafka | 9092, 29092 | 9092, 29092 | 消息队列 |
+       86 +| Kafka UI | 8080 | 8081 | Kafka 管理界面 |
+       87 +| Backend | 8080, 5005 | 8080, 5005 | 后端服务（含调试端口） |
+       88 +| Frontend | 3000 | 3000 | 前端开发服务器 |
+       89 +| pgAdmin | 80 | 5050 | 数据库管理工具 |
+       90 +| MailHog | 1025, 8025 | 1025, 8025 | 邮件测试服务 |
+       91 +
+       92 +### Team 开发环境 (docker-compose.team.yml)
+       93 +
+       94 +| 服务 | 容器端口 | 主机端口 | 说明 |
+       95 +|------|----------|----------|------|
+       96 +| Nginx | 80, 443 | 80, 443 | 反向代理入口 |
+       97 +| PostgreSQL | 5432 | 5432 | 团队共享数据库 |
+       98 +| Redis | 6379 | 6379 | 团队共享缓存 |
+       99 +| Zookeeper | 2181 | 2181 | Kafka 协调 |
+      100 +| Kafka | 9092, 29092 | 9092, 29092 | 消息队列 |
+      101 +| Kafka UI | 8080 | 8081 | Kafka 管理界面 |
+      102 +| Backend | 8080 | - | 后端服务（内部） |
+      103 +| Frontend | 3000 | - | 前端服务（内部） |
+      104 +| pgAdmin | 80 | 5050 | 数据库管理工具 |
+      105 +| Prometheus | 9090 | 9090 | 监控系统 |
+      106 +| Grafana | 3000 | 3001 | 可视化仪表板 |
+      107 +
+      108 +## 详细操作指南
+      109 +
+      110  ### 1. 本地开发环境 (docker-compose.local.yml)
+      111
+      112  | 服务 | 端口 | 说明 |
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Added 73 lines, removed 1 line
+      152  - Team → 本地: SQL导出（协作调试）
+      153  - 禁止逆向数据流动
+      154
+      155 +## 测试数据初始化
+      156 +
+      157 +### 数据脚本说明
+      158 +
+      159 +测试数据由测试工程师维护，位于 `scripts/test-data/` 目录：
+      160 +
+      161 +| 脚本 | 内容 | 执行顺序 | 数据量 |
+      162 +|------|------|----------|--------|
+      163 +| `01-departments.sql` | 部门数据 | 1 | 12 个部门 |
+      164 +| `02-roles.sql` | 角色数据 | 2 | 16 种角色 |
+      165 +| `03-permissions.sql` | 权限数据 | 3 | 30+ 权限 |
+      166 +| `04-role-permissions.sql` | 角色权限关联 | 4 | 按角色分配 |
+      167 +| `05-users.sql` | 用户数据 | 5 | 35+ 用户 |
+      168 +| `06-user-roles.sql` | 用户角色关联 | 6 | 按用户分配 |
+      169 +
+      170 +### 初始化方式
+      171 +
+      172 +**方式 1: 使用 Docker Compose (推荐)**
+      173 +
+      174 +```bash
+      175 +# 本地开发环境
+      176 +docker-compose --profile seed run --rm db-seed
+      177 +
+      178 +# Team 环境 (需先挂载测试数据卷)
+      179 +docker-compose -f docker-compose.team.yml exec postgres psql -U teamuser -d user_management -f /scripts/01-departments.sql
+      180 +```
+      181 +
+      182 +**方式 2: 使用 Shell 脚本**
+      183 +
+      184 +```bash
+      185 +cd scripts/test-data
+      186 +
+      187 +# Linux/macOS
+      188 +./init-test-data.sh
+      189 +
+      190 +# Windows
+      191 +init-test-data.bat
+      192 +```
+      193 +
+      194 +**方式 3: 手动执行**
+      195 +
+      196 +```bash
+      197 +# 使用 psql 直接执行
+      198 +psql -h localhost -U devuser -d user_management -f scripts/test-data/01-departments.sql
+      199 +psql -h localhost -U devuser -d user_management -f scripts/test-data/02-roles.sql
+      200 +# ... 依次执行其他脚本
+      201 +```
+      202 +
+      203 +### 测试账号
+      204 +
+      205 +所有测试账号密码为：`Test@123`
+      206 +
+      207 +| 账号 | 角色 | 说明 |
+      208 +|------|------|------|
+      209 +| superadmin@test.com | 超级管理员 | 拥有所有权限 |
+      210 +| admin@test.com | 系统管理员 | 系统管理权限 |
+      211 +| tech.lead@test.com | 技术总监 | 技术研发中心负责人 |
+      212 +| fe.dev1@test.com | 前端开发 | 前端开发工程师 |
+      213 +| be.dev1@test.com | 后端开发 | 后端开发工程师 |
+      214 +| qa.lead@test.com | 测试负责人 | 测试质量部负责人 |
+      215 +| qa.tester1@test.com | 测试工程师 | 测试人员 |
+      216 +| product.lead@test.com | 产品总监 | 产品运营中心负责人 |
+      217 +| pm1@test.com | 产品经理 | 产品策划部 |
+      218 +| sales.lead@test.com | 销售总监 | 市场销售中心负责人 |
+      219 +
+      220 +**特殊状态账号**:
+      221 +| 账号 | 状态 | 说明 |
+      222 +|------|------|------|
+      223 +| pending.user@test.com | 待激活 | 测试待激活流程 |
+      224 +| locked.user@test.com | 已锁定 | 测试账号锁定功能 |
+      225 +| inactive.user@test.com | 已禁用 | 测试禁用状态 |
+      226 +
+      227  ## 容器化部署
+      228
+      229 -### 开发环境
+      229 +### 本地开发环境
+      230  ```bash
+      231  docker-compose -f docker-compose.dev.yml up -d
+      232  ```
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Error editing file
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Added 71 lines, removed 13 lines
+      245
+      246  #### Dockerfile
+      247  ```dockerfile
+      248 +# 多阶段构建 - 本地开发
+      249 +FROM eclipse-temurin:21-jdk-alpine AS development
+      250 +RUN apk add --no-cache bash curl git maven
+      251 +WORKDIR /app
+      252 +COPY pom.xml .
+      253 +RUN mvn dependency:go-offline -B
+      254 +COPY src ./src
+      255 +RUN mvn compile -DskipTests -q
+      256 +EXPOSE 8080 5005
+      257 +CMD ["mvn", "spring-boot:run", \
+      258 +     "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
+      259 +```
+      260 +
+      261 +### Team 开发环境 Dockerfile
+      262 +
+      263 +**Backend Dockerfile** (`backend/Dockerfile`):
+      264 +```dockerfile
+      265  # 多阶段构建
+      266  FROM eclipse-temurin:21-jdk-alpine AS builder
+      267 -WORKDIR /app
+      267 +RUN apk add --no-cache maven
+      268 +WORKDIR /build
+      269  COPY pom.xml .
+      270  COPY src ./src
+      271 -RUN ./mvnw clean package -DskipTests
+      271 +RUN mvn clean package -DskipTests -B -q
+      272
+      273 -FROM eclipse-temurin:21-jre-alpine
+      273 +FROM eclipse-temurin:21-jre-alpine AS production
+      274 +RUN apk add --no-cache curl ca-certificates tzdata
+      275 +ENV TZ=Asia/Shanghai
+      276 +RUN addgroup -g 1000 appgroup && adduser -u 1000 -G appgroup -s /bin/sh -D appuser
+      277  WORKDIR /app
+      278 -COPY --from=builder /app/target/*.jar app.jar
+      278 +COPY --from=builder /build/target/dependency/BOOT-INF/lib /app/lib
+      279 +COPY --from=builder /build/target/dependency/META-INF /app/META-INF
+      280 +COPY --from=builder /build/target/dependency/BOOT-INF/classes /app
+      281 +RUN chown -R appuser:appgroup /app
+      282 +USER appuser
+      283 +EXPOSE 8080
+      284 +HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+      285 +    CMD curl -f http://localhost:8080/actuator/health || exit 1
+      286 +ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0",
+      287 +    "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=200",
+      288 +    "-Djava.security.egd=file:/dev/./urandom",
+      289 +    "-cp", "app:app/lib/*", "com.usermanagement.Application"]
+      290 +```
+      291
+      292 -# JVM 配置 (生产环境)
+      293 -ENV JAVA_OPTS="-XX:+UseContainerSupport \
+      294 -               -XX:MaxRAMPercentage=75.0 \
+      295 -               -XX:+UseG1GC \
+      296 -               -XX:MaxGCPauseMillis=200 \
+      297 -               -Djava.security.egd=file:/dev/./urandom \
+      298 -               -Dspring.backgroundpreinitializer.ignore=true"
+      292 +**Frontend Dockerfile** (`frontend/Dockerfile`):
+      293 +```dockerfile
+      294 +FROM node:18-alpine AS dependencies
+      295 +WORKDIR /app
+      296 +COPY package*.json ./
+      297 +RUN npm ci --only=production
+      298
+      299 -EXPOSE 8080
+      300 -ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+      299 +FROM node:18-alpine AS builder
+      300 +WORKDIR /app
+      301 +COPY package*.json ./
+      302 +COPY --from=dependencies /app/node_modules ./node_modules
+      303 +COPY . .
+      304 +ENV NEXT_TELEMETRY_DISABLED=1
+      305 +ENV NODE_ENV=production
+      306 +RUN npm run build
+      307 +
+      308 +FROM node:18-alpine AS production
+      309 +RUN apk add --no-cache curl ca-certificates
+      310 +RUN addgroup -g 1000 appgroup && adduser -u 1000 -G appgroup -s /bin/sh -D appuser
+      311 +WORKDIR /app
+      312 +COPY --from=builder /app/package*.json ./
+      313 +COPY --from=builder /app/next.config.* ./
+      314 +COPY --from=builder /app/public ./public
+      315 +COPY --from=builder /app/.next/standalone ./
+      316 +COPY --from=builder /app/.next/static ./.next/static
+      317 +RUN chown -R appuser:appgroup /app
+      318 +USER appuser
+      319 +EXPOSE 3000
+      320 +ENV NEXT_TELEMETRY_DISABLED=1
+      321 +ENV NODE_ENV=production
+      322 +ENV PORT=3000
+      323 +ENV HOSTNAME="0.0.0.0"
+      324 +HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=5 \
+      325 +    CMD curl -f http://localhost:3000/api/health || exit 1
+      326 +CMD ["node", "server.js"]
+      327  ```
+      328
+      329  #### 内存配置建议
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(DEPLOYMENT_GUIDE.md)
+  ⎿  Added 281 lines
+      427  | 活跃线程数 | > 200 | 虚拟线程池监控 |
+      428  | 数据库连接池 | > 80% | HikariCP 连接使用率 |
+      429  | GC 暂停时间 | > 1s | 垃圾回收停顿 |
+      430 +
+      431 +## 常用命令
+      432 +
+      433 +### Docker Compose 常用命令
+      434 +
+      435 +```bash
+      436 +# 查看所有服务状态
+      437 +docker-compose ps
+      438 +docker-compose -f docker-compose.team.yml ps
+      439 +
+      440 +# 查看日志
+      441 +docker-compose logs -f [service_name]
+      442 +docker-compose logs -f backend
+      443 +docker-compose logs -f postgres
+      444 +
+      445 +# 进入容器
+      446 +docker-compose exec backend bash
+      447 +docker-compose exec postgres psql -U devuser -d user_management
+      448 +
+      449 +# 重启服务
+      450 +docker-compose restart [service_name]
+      451 +docker-compose restart backend
+      452 +
+      453 +# 停止所有服务
+      454 +docker-compose down
+      455 +
+      456 +# 停止并删除数据卷（彻底重置）
+      457 +docker-compose down -v
+      458 +
+      459 +# 重建镜像
+      460 +docker-compose up -d --build [service_name]
+      461 +
+      462 +# 扩展服务
+      463 +docker-compose up -d --scale backend=3
+      464 +```
+      465 +
+      466 +### 数据库常用命令
+      467 +
+      468 +```bash
+      469 +# 进入 PostgreSQL
+      470 +docker-compose exec postgres psql -U devuser -d user_management
+      471 +
+      472 +# 导出数据
+      473 +docker-compose exec postgres pg_dump -U devuser user_management > backup.sql
+      474 +
+      475 +# 导入数据
+      476 +cat backup.sql | docker-compose exec -T postgres psql -U devuser -d user_management
+      477 +
+      478 +# 查看连接
+      479 +docker-compose exec postgres psql -U devuser -c "SELECT * FROM pg_stat_activity;"
+      480 +
+      481 +# 查看表大小
+      482 +docker-compose exec postgres psql -U devuser -d user_management -c "
+      483 +SELECT schemaname, tablename, pg_size_pretty(pg_total_relation_size(tablename::regclass))
+      484 +FROM pg_tables WHERE schemaname = 'public' ORDER BY pg_total_relation_size(tablename::regclass) DESC;"
+      485 +```
+      486 +
+      487 +## 故障排查
+      488 +
+      489 +### 常见问题
+      490 +
+      491 +#### 1. 数据库连接失败
+      492 +
+      493 +**症状**: 应用无法连接数据库
+      494 +
+      495 +**排查**:
+      496 +```bash
+      497 +# 检查 PostgreSQL 状态
+      498 +docker-compose ps postgres
+      499 +docker-compose logs postgres
+      500 +
+      501 +# 手动连接测试
+      502 +docker-compose exec postgres psql -U devuser -d user_management -c "SELECT 1;"
+      503 +
+      504 +# 检查网络
+      505 +docker-compose exec backend ping postgres
+      506 +```
+      507 +
+      508 +**解决**:
+      509 +- 等待数据库完全启动（首次启动需要初始化）
+      510 +- 检查数据库用户名密码是否正确
+      511 +- 检查数据库是否已创建
+      512 +
+      513 +#### 2. Flyway 迁移失败
+      514 +
+      515 +**症状**: 应用启动时报 Flyway 错误
+      516 +
+      517 +**排查**:
+      518 +```bash
+      519 +# 查看迁移状态
+      520 +docker-compose exec backend ./mvnw flyway:info -Dspring.profiles.active=dev
+      521 +
+      522 +# 查看具体错误
+      523 +docker-compose logs backend
+      524 +```
+      525 +
+      526 +**解决**:
+      527 +```bash
+      528 +# 修复迁移（谨慎操作，仅开发环境）
+      529 +docker-compose exec backend ./mvnw flyway:repair -Dspring.profiles.active=dev
+      530 +
+      531 +# 或者清理数据库后重新迁移
+      532 +docker-compose exec postgres psql -U devuser -d user_management -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+      533 +docker-compose restart backend
+      534 +```
+      535 +
+      536 +#### 3. 测试数据初始化失败
+      537 +
+      538 +**症状**: 执行 SQL 脚本报错
+      539 +
+      540 +**排查**:
+      541 +```bash
+      542 +# 检查脚本是否存在
+      543 +ls -la scripts/test-data/
+      544 +
+      545 +# 手动执行并查看错误
+      546 +docker-compose exec postgres psql -U devuser -d user_management -f /scripts/01-departments.sql
+      547 +
+      548 +# 查看详细错误
+      549 +psql -h localhost -U devuser -d user_management -a -f scripts/test-data/01-departments.sql
+      550 +```
+      551 +
+      552 +**解决**:
+      553 +- 确保按顺序执行脚本（01 -> 06）
+      554 +- 检查 Flyway 迁移是否已完成
+      555 +- 检查是否有外键约束错误（父表数据是否已插入）
+      556 +
+      557 +#### 4. 端口被占用
+      558 +
+      559 +**症状**: `docker-compose up` 报错端口已被占用
+      560 +
+      561 +**排查**:
+      562 +```bash
+      563 +# 查找占用端口的进程
+      564 +# Linux/macOS
+      565 +sudo lsof -i :8080
+      566 +sudo lsof -i :5432
+      567 +
+      568 +# Windows
+      569 +netstat -ano | findstr :8080
+      570 +```
+      571 +
+      572 +**解决**:
+      573 +- 停止占用端口的服务
+      574 +- 或修改 `docker-compose.yml` 中的端口映射：`"8081:8080"`
+      575 +
+      576 +#### 5. 内存不足
+      577 +
+      578 +**症状**: 容器频繁重启或 OOM
+      579 +
+      580 +**排查**:
+      581 +```bash
+      582 +# 查看容器资源使用
+      583 +docker stats
+      584 +
+      585 +# 查看日志中的 OOM
+      586 +docker-compose logs backend | grep -i "out of memory"
+      587 +```
+      588 +
+      589 +**解决**:
+      590 +- 增加 Docker 内存限制（Docker Desktop Settings -> Resources）
+      591 +- 限制服务内存使用：
+      592 +```yaml
+      593 +services:
+      594 +  backend:
+      595 +    deploy:
+      596 +      resources:
+      597 +        limits:
+      598 +          memory: 1G
+      599 +```
+      600 +
+      601 +#### 6. Kafka 连接失败
+      602 +
+      603 +**症状**: 应用无法发送/接收消息
+      604 +
+      605 +**排查**:
+      606 +```bash
+      607 +# 检查 Kafka 状态
+      608 +docker-compose ps kafka
+      609 +docker-compose logs kafka
+      610 +
+      611 +# 测试 Kafka 连接
+      612 +docker-compose exec kafka kafka-broker-api-versions --bootstrap-server localhost:9092
+      613 +```
+      614 +
+      615 +**解决**:
+      616 +- 确保 Zookeeper 先启动
+      617 +- 等待 Kafka 完全启动（首次启动较慢）
+      618 +- 检查 `KAFKA_ADVERTISED_LISTENERS` 配置
+      619 +
+      620 +#### 7. 前端构建失败
+      621 +
+      622 +**症状**: Frontend 容器启动失败
+      623 +
+      624 +**排查**:
+      625 +```bash
+      626 +# 查看前端日志
+      627 +docker-compose logs frontend
+      628 +
+      629 +# 进入前端容器
+      630 +docker-compose exec frontend sh
+      631 +npm install
+      632 +npm run build
+      633 +```
+      634 +
+      635 +**解决**:
+      636 +- 删除 node_modules 重新安装
+      637 +```bash
+      638 +docker-compose exec frontend rm -rf node_modules
+      639 +docker-compose exec frontend npm install
+      640 +```
+      641 +- 检查 package.json 是否有冲突
+      642 +
+      643 +### 日志收集
+      644 +
+      645 +```bash
+      646 +# 收集所有服务日志
+      647 +docker-compose logs --no-color > logs.txt
+      648 +
+      649 +# 收集特定时间段的日志
+      650 +docker-compose logs --since 2024-01-01T00:00:00 backend
+      651 +
+      652 +# 实时跟踪多个服务
+      653 +docker-compose logs -f backend frontend
+      654 +```
+      655 +
+      656 +### 性能排查
+      657 +
+      658 +```bash
+      659 +# 查看容器资源使用
+      660 +docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}"
+      661 +
+      662 +# 进入容器分析
+      663 +docker-compose exec backend sh
+      664 +# 安装分析工具
+      665 +apk add --no-cache htop
+      666 +htop
+      667 +```
+      668 +
+      669 +## 安全注意事项
+      670 +
+      671 +1. **生产环境**: 绝不使用这些 Docker Compose 配置直接部署到生产环境
+      672 +2. **JWT 密钥**: Team 环境必须使用强密钥，不要在代码中硬编码
+      673 +3. **数据库密码**: 定期更换数据库密码，使用环境变量管理
+      674 +4. **网络隔离**: 确保 Docker 网络与生产网络隔离
+      675 +5. **数据备份**: 定期备份 PostgreSQL 数据卷
+      676 +
+      677 +## 维护任务
+      678 +
+      679 +### 定期清理
+      680 +
+      681 +```bash
+      682 +# 清理未使用的镜像
+      683 +docker image prune -a
+      684 +
+      685 +# 清理未使用的卷
+      686 +docker volume prune
+      687 +
+      688 +# 清理构建缓存
+      689 +docker builder prune
+      690 +
+      691 +# 清理所有（谨慎操作）
+      692 +docker system prune -a --volumes
+      693 +```
+      694 +
+      695 +### 备份策略
+      696 +
+      697 +```bash
+      698 +# 备份 PostgreSQL
+      699 +docker-compose exec postgres pg_dump -U devuser -d user_management -Fc > backup.dump
+      700 +
+      701 +# 备份 Redis
+      702 +docker-compose exec redis redis-cli BGSAVE
+      703 +docker cp $(docker-compose ps -q redis):/data/dump.rdb redis-backup.rdb
+      704 +```
+      705 +
+      706 +## 联系信息
+      707 +
+      708 +- **部署工程师**: Docker 配置、环境部署问题
+      709 +- **测试工程师**: 测试数据脚本、数据初始化问题
+      710 +- **开发工程师**: 应用配置、代码相关问题
+      711   No newline at end of file
+
+● 最后让我创建一个文件清单和快速参考文档：
+
+● Write(DOCKER_FILES_MANIFEST.md)
+  ⎿  Wrote 246 lines to DOCKER_FILES_MANIFEST.md
+     # Docker Compose 部署文件清单
+
+     ## 概述
+
+     本文档列出了为本地开发环境和 Team 环境创建的所有 Docker Compose 相关文件。
+
+     ## 文件结构
+
+     ```
+     usermanagement/
+     … +236 lines (ctrl+o to expand)
+
+● Docker Compose 部署配置已完成！以下是创建的所有文件：
+
+  创建的文件清单
+
+  Docker Compose 配置
+
+  ┌─────────────────────────┬──────────────────────────────────┐
+  │          文件           │               用途               │
+  ├─────────────────────────┼──────────────────────────────────┤
+  │ docker-compose.yml      │ 本地开发环境（热重载、调试支持） │
+  ├─────────────────────────┼──────────────────────────────────┤
+  │ docker-compose.team.yml │ Team 环境（监控、Nginx代理）     │
+  └─────────────────────────┴──────────────────────────────────┘
+
+  Dockerfile
+
+  ┌─────────────────────────┬──────────────────────────────────────────┐
+  │          文件           │                   用途                   │
+  ├─────────────────────────┼──────────────────────────────────────────┤
+  │ backend/Dockerfile      │ 后端生产环境（多阶段构建、JVM优化）      │
+  ├─────────────────────────┼──────────────────────────────────────────┤
+  │ backend/Dockerfile.dev  │ 后端开发环境（热重载、远程调试端口5005） │
+  ├─────────────────────────┼──────────────────────────────────────────┤
+  │ frontend/Dockerfile     │ 前端生产环境（Next.js standalone）       │
+  ├─────────────────────────┼──────────────────────────────────────────┤
+  │ frontend/Dockerfile.dev │ 前端开发环境（Node热重载）               │
+  └─────────────────────────┴──────────────────────────────────────────┘
+
+  Spring Boot 配置
+
+  ┌─────────────────────────────────────────────────┬──────────────────┐
+  │                      文件                       │       用途       │
+  ├─────────────────────────────────────────────────┼──────────────────┤
+  │ backend/src/main/resources/application-team.yml │ Team环境配置文件 │
+  └─────────────────────────────────────────────────┴──────────────────┘
+
+  Docker 辅助脚本和配置
+
+  ┌────────────────────────────────────────────────────┬────────────────────┐
+  │                        文件                        │        用途        │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/wait-for-db.sh                      │ 数据库等待脚本     │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/redis.conf                          │ Redis优化配置      │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/nginx.team.conf                     │ Nginx反向代理配置  │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/prometheus.yml                      │ Prometheus监控配置 │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/pgadmin-servers.json                │ pgAdmin本地配置    │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/pgadmin-servers-team.json           │ pgAdmin Team配置   │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/init-scripts/01-init-extensions.sql │ PostgreSQL初始化   │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/grafana/datasources/datasource.yml  │ Grafana数据源      │
+  ├────────────────────────────────────────────────────┼────────────────────┤
+  │ scripts/docker/grafana/dashboards/dashboard.yml    │ Grafana仪表板      │
+  └────────────────────────────────────────────────────┴────────────────────┘
+
+  文档
+
+  ┌──────────────────────────┬────────────────────────┐
+  │           文件           │          用途          │
+  ├──────────────────────────┼────────────────────────┤
+  │ DEPLOYMENT_GUIDE.md      │ 完整部署指南（已更新） │
+  ├──────────────────────────┼────────────────────────┤
+  │ DOCKER_FILES_MANIFEST.md │ 文件清单和快速参考     │
+  └──────────────────────────┴────────────────────────┘
+
+  快速启动
+
+  # 本地开发环境
+  docker-compose up -d
+  docker-compose --profile seed run --rm db-seed  # 初始化测试数据
+
+  # Team 环境
+  docker-compose -f docker-compose.team.yml up -d
+
+  访问地址
+
+  本地开发:
+  - 前端: http://localhost:3000
+  - 后端: http://localhost:8080
+  - pgAdmin: http://localhost:5050 (admin@example.com / admin123)
+  - Kafka UI: http://localhost:8081
+  - MailHog: http://localhost:8025
+
+  Team 环境:
+  - 统一入口: http://localhost (Nginx)
+  - Grafana: http://localhost:3001
+  - Prometheus: http://localhost:9090
+
+  配置已集成测试数据脚本，支持一键初始化测试数据！

@@ -1,0 +1,57 @@
+# =============================================
+# Prometheus 配置文件
+# 用于 Team 环境监控
+# =============================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'ums-team'
+    replica: '{{.ExternalURL}}'
+
+# 告警规则
+rule_files:
+  # - "rules/*.yml"
+
+# 告警管理器
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# 抓取配置
+scrape_configs:
+  # Prometheus 自身监控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+
+  # Spring Boot 后端应用
+  - job_name: 'ums-backend'
+    static_configs:
+      - targets: ['backend:8080']
+    metrics_path: /actuator/prometheus
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # PostgreSQL 数据库 (需要 postgres_exporter)
+  # - job_name: 'postgresql'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
+
+  # Redis 缓存 (需要 redis_exporter)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']
+
+  # Kafka (需要 kafka_exporter)
+  # - job_name: 'kafka'
+  #   static_configs:
+  #     - targets: ['kafka-exporter:9308']
+
+  # Nginx
+  # - job_name: 'nginx'
+  #   static_configs:
+  #     - targets: ['nginx:9113']

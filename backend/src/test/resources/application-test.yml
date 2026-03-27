@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: user-management-system-test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false
+
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: all
+    consumer:
+      group-id: audit-log-test-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.usermanagement.service.dto
+        spring.json.value.default.type: com.usermanagement.service.dto.AuditLogEvent
+
+  main:
+    allow-bean-definition-overriding: true
+
+app:
+  kafka:
+    enabled: true
+    topics:
+      audit-logs: audit-logs
+      audit-logs-retry: audit-logs-retry
+      audit-logs-dlt: audit-logs-dlt
+    partitions: 1
+    replication-factor: 1
+
+logging:
+  level:
+    root: WARN
+    com.usermanagement: DEBUG
+    org.springframework.kafka: WARN
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
