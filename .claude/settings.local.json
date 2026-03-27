@@ -27,7 +27,11 @@
       "Bash(npm list:*)",
       "Bash(npm view:*)",
       "Bash(npm run:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(Get-Content \"D:\\\\claude-code-project\\\\agentic-projects\\\\ollama-03-02-test-claude-prompt01\\\\docs\\\\planning\\\\FRONTEND_TASK_LIST.md\" -Tail 20)",
+      "Bash(bash -c 'tail -20 \"D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/docs/planning/FRONTEND_TASK_LIST.md\"')",
+      "Bash(\"D:/claude-code-project/agentic-projects/ollama-03-02-test-claude-prompt01/docs/planning/FRONTEND_TASK_LIST.md\":*)",
+      "Bash(del:*)"
     ]
   }
 }
